@@ -1,0 +1,16 @@
+{
+  "id": "pandas_apply_type_mismatch_001",
+  "category": "PANDAS",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\nimport numpy as np\n\ndf = pd.read_csv('returns.csv', parse_dates=['date'], index_col='date')\n\ndef compute_stats(window):\n    return {'mean': window.mean(), 'std': window.std(), 'skew': window.skew()}\n\n# apply returning dict creates unexpected column structure\nstats = df['returns'].rolling(60).apply(compute_stats)\n\n# This returns a single column of dicts, not a multi-column DataFrame\nprint(stats.dtype)",
+  "clean_code": "import pandas as pd\nimport numpy as np\n\ndf = pd.read_csv('returns.csv', parse_dates=['date'], index_col='date')\n\n# Compute each stat separately for correct types\ndf['mean_60'] = df['returns'].rolling(60).mean()\ndf['std_60'] = df['returns'].rolling(60).std()\ndf['skew_60'] = df['returns'].rolling(60).skew()\n\nstats = df[['mean_60', 'std_60', 'skew_60']]\nprint(stats.dtypes)",
+  "description": "rolling().apply() with a function returning a dict does not produce a multi-column DataFrame.",
+  "explanation": "rolling().apply() expects the function to return a scalar. Returning a dict produces a Series of dict objects, not a DataFrame with multiple columns. Downstream operations on stats expecting numeric columns will fail silently or raise TypeErrors.",
+  "suggested_fix": "Compute each statistic separately using dedicated rolling methods, or use pd.concat with multiple rolling computations.",
+  "expected": {
+    "issues": [
+      {"title": "rolling().apply() returning dict produces Series of objects not DataFrame", "severity": "HIGH", "category": "PANDAS"}
+    ]
+  }
+}

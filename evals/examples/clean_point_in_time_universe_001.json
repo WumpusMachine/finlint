@@ -1,0 +1,14 @@
+{
+  "id": "clean_point_in_time_universe_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\n# Load point-in-time universe — includes delisted stocks\nuniverse = pd.read_csv('universe_history.csv', parse_dates=['date', 'delist_date'])\n\ndef get_universe_at_date(as_of_date):\n    \"\"\"\n    Returns stocks that were active on a given date.\n    Includes stocks that were later delisted — no survivorship bias.\n    \"\"\"\n    active = universe[\n        (universe['date'] <= as_of_date) &\n        ((universe['delist_date'].isna()) | (universe['delist_date'] > as_of_date))\n    ]\n    return active['symbol'].tolist()\n\n# Get universe as of a specific date\nsymbols_2020 = get_universe_at_date(pd.Timestamp('2020-01-01'))",
+  "clean_code": "import pandas as pd\n\nuniverse = pd.read_csv('universe_history.csv', parse_dates=['date', 'delist_date'])\n\ndef get_universe_at_date(as_of_date):\n    active = universe[\n        (universe['date'] <= as_of_date) &\n        ((universe['delist_date'].isna()) | (universe['delist_date'] > as_of_date))\n    ]\n    return active['symbol'].tolist()\n\nsymbols_2020 = get_universe_at_date(pd.Timestamp('2020-01-01'))",
+  "description": "Clean example — point-in-time universe that includes delisted stocks, avoiding survivorship bias.",
+  "explanation": "The universe is filtered by both entry date and delist date. Stocks that were delisted after as_of_date are included. Stocks delisted before as_of_date are excluded. This correctly models what a trader would have known at that point in time.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

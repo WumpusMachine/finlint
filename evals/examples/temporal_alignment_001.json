@@ -1,0 +1,25 @@
+{
+  "id": "temporal_alignment_001",
+  "category": "TEMPORAL",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "features = np.dstack(inputs)\noutcome = returns.flatten()\nfeatures = features.reshape(-1, n_features)",
+  "clean_code": "lagged_returns = np.roll(returns, 1, axis=0)\nlagged_returns[0] = np.nan\nfeatures = np.dstack(inputs)\noutcome = lagged_returns.flatten()\nfeatures = features.reshape(-1, n_features)",
+  "description": "Features and returns are stacked and flattened without any temporal lag between them.",
+  "explanation": "np.dstack(inputs) and returns.flatten() are aligned at the same time index. The model is trained to predict returns at time T using features also from time T, which constitutes lookahead bias. The return at time T is not known until after time T closes.",
+  "suggested_fix": "Lag returns by one period before training: lagged_returns = np.roll(returns, 1, axis=0). Set first row to NaN and filter before fitting.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Lookahead bias from feature-target alignment",
+        "severity": "CRITICAL",
+        "category": "TEMPORAL"
+      },
+      {
+        "title": "Lookahead bias from feature-target alignment",
+        "severity": "CRITICAL",
+        "category": "PANDAS"
+      }
+    ]
+  }
+}

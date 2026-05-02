@@ -1,0 +1,14 @@
+{
+  "id": "clean_timezone_aware_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\nimport pytz\n\n# Load market data with explicit timezone handling\ndf = pd.read_csv('ohlcv.csv', parse_dates=['timestamp'])\n\n# Localize to UTC first, then convert to market timezone\ndf['timestamp'] = df['timestamp'].dt.tz_localize('UTC')\ndf['timestamp_et'] = df['timestamp'].dt.tz_convert('America/New_York')\ndf = df.set_index('timestamp')\n\n# Filter to regular market hours only (9:30 AM - 4:00 PM ET)\nmarket_open = pd.Timestamp('09:30', tz='America/New_York').time()\nmarket_close = pd.Timestamp('16:00', tz='America/New_York').time()\n\ndf_market_hours = df[\n    (df['timestamp_et'].dt.time >= market_open) &\n    (df['timestamp_et'].dt.time < market_close)\n]\n\nprint(f'Total rows: {len(df)}, Market hours rows: {len(df_market_hours)}')",
+  "clean_code": "import pandas as pd\nimport pytz\n\ndf = pd.read_csv('ohlcv.csv', parse_dates=['timestamp'])\n\ndf['timestamp'] = df['timestamp'].dt.tz_localize('UTC')\ndf['timestamp_et'] = df['timestamp'].dt.tz_convert('America/New_York')\ndf = df.set_index('timestamp')\n\nmarket_open = pd.Timestamp('09:30', tz='America/New_York').time()\nmarket_close = pd.Timestamp('16:00', tz='America/New_York').time()\n\ndf_market_hours = df[\n    (df['timestamp_et'].dt.time >= market_open) &\n    (df['timestamp_et'].dt.time < market_close)\n]\n\nprint(f'Total rows: {len(df)}, Market hours rows: {len(df_market_hours)}')",
+  "description": "Clean example — timezone-aware market data handling with explicit UTC localization and ET conversion.",
+  "explanation": "Data is localized to UTC before any conversion. Conversion to America/New_York handles daylight saving time automatically. Market hours filter uses the converted timezone, not naive timestamps.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "clean_sort_reindex_target_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\nimport numpy as np\n\nfeatures = pd.DataFrame({\n    'momentum': [0.01, -0.02, 0.03, 0.01, -0.01],\n    'volume': [1000, 1200, 800, 1100, 900]\n}, index=pd.date_range('2020-01-01', periods=5))\n\ntarget = pd.Series(\n    [0.02, -0.01, 0.04, 0.00, -0.02],\n    index=pd.date_range('2020-01-01', periods=5)\n)\n\n# Sort features\nfeatures_sorted = features.sort_values('momentum', ascending=False)\n\n# Realign target to match sorted index\ntarget_aligned = target.loc[features_sorted.index]\n\nX = features_sorted.values\ny = target_aligned.values\n\nassert len(X) == len(y)\nprint('Feature-target pairs aligned correctly')",
+  "clean_code": "import pandas as pd\nimport numpy as np\n\nfeatures = pd.DataFrame({\n    'momentum': [0.01, -0.02, 0.03, 0.01, -0.01],\n    'volume': [1000, 1200, 800, 1100, 900]\n}, index=pd.date_range('2020-01-01', periods=5))\n\ntarget = pd.Series(\n    [0.02, -0.01, 0.04, 0.00, -0.02],\n    index=pd.date_range('2020-01-01', periods=5)\n)\n\nfeatures_sorted = features.sort_values('momentum', ascending=False)\ntarget_aligned = target.loc[features_sorted.index]\n\nX = features_sorted.values\ny = target_aligned.values\n\nassert len(X) == len(y)\nprint('Feature-target pairs aligned correctly')",
+  "description": "Clean example — target realigned to sorted feature index before extracting values.",
+  "explanation": "After sort_values(), target is realigned using .loc[features_sorted.index] to match the new row order. Both arrays extracted to numpy only after alignment is confirmed.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

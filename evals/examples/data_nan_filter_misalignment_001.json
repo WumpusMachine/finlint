@@ -1,0 +1,20 @@
+{
+  "id": "data_nan_filter_misalignment_001",
+  "category": "DATA",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "features = features[~np.isnan(outcome)]\noutcome = outcome[~np.isnan(outcome)]\noutcome = outcome[np.all(~np.isnan(features), axis=1)]\nfeatures = features[np.all(~np.isnan(features), axis=1)]",
+  "clean_code": "# Filter both arrays using a single shared mask computed once\nvalid_outcome = ~np.isnan(outcome)\nvalid_features = np.all(~np.isnan(features), axis=1)\ncombined_mask = valid_outcome & valid_features\nfeatures = features[combined_mask]\noutcome = outcome[combined_mask]",
+  "description": "Features and outcome are filtered with separate masks applied sequentially, causing index misalignment.",
+  "explanation": "Line 1 filters features using outcome's NaN mask, changing features' shape. Line 2 filters outcome using the ORIGINAL outcome mask — which is now applied to the already-filtered features array. After this, features and outcome have been filtered by different effective masks and are silently misaligned. The model trains on wrong (feature, label) pairs.",
+  "suggested_fix": "Compute a single combined boolean mask from both arrays before filtering. Apply it once to both features and outcome.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Silent misalignment from sequential independent NaN filtering",
+        "severity": "HIGH",
+        "category": "PANDAS"
+      }
+    ]
+  }
+}

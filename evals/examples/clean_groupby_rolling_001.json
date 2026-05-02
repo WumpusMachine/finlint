@@ -1,0 +1,14 @@
+{
+  "id": "clean_groupby_rolling_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ndf = pd.read_csv('returns.csv', parse_dates=['date'])\ndf = df.sort_values(['asset', 'date'])\n\n# Rolling mean per asset using only past data\ndf['rolling_mean'] = (\n    df.groupby('asset')['returns']\n    .transform(lambda x: x.rolling(window=60, min_periods=20).mean())\n)\n\n# Shift by 1 to avoid lookahead when using as feature\ndf['rolling_mean'] = df.groupby('asset')['rolling_mean'].shift(1)\n\n# Drop NaN from rolling window warmup\ndf = df.dropna(subset=['rolling_mean'])\n\nprint(df.head())",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('returns.csv', parse_dates=['date'])\ndf = df.sort_values(['asset', 'date'])\n\ndf['rolling_mean'] = (\n    df.groupby('asset')['returns']\n    .transform(lambda x: x.rolling(window=60, min_periods=20).mean())\n)\n\ndf['rolling_mean'] = df.groupby('asset')['rolling_mean'].shift(1)\n\ndf = df.dropna(subset=['rolling_mean'])\n\nprint(df.head())",
+  "description": "Clean example — per-asset rolling mean using groupby transform, then shifted by 1.",
+  "explanation": "rolling() inside transform computes per-asset windowed mean using only past data. Shifted by 1 after computation to avoid lookahead when used as a feature. min_periods=20 prevents noisy early values.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

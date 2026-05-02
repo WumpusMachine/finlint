@@ -1,0 +1,16 @@
+{
+  "id": "statistical_in_sample_optimization_001",
+  "category": "STATISTICAL",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "import pandas as pd\nimport numpy as np\nfrom itertools import product\n\nprices = pd.read_csv('prices.csv', index_col='date', parse_dates=True)\nreturns = prices['close'].pct_change().dropna()\n\nbest_sharpe = -np.inf\nbest_params = None\n\n# Grid search over ALL data\nfor short, long_ in product(range(5, 50), range(20, 200)):\n    if short >= long_:\n        continue\n    sma_short = prices['close'].rolling(short).mean().shift(1)\n    sma_long = prices['close'].rolling(long_).mean().shift(1)\n    signal = (sma_short > sma_long).astype(int)\n    strategy_returns = signal * returns\n    sharpe = strategy_returns.mean() / strategy_returns.std() * np.sqrt(252)\n    if sharpe > best_sharpe:\n        best_sharpe = sharpe\n        best_params = (short, long_)\n\nprint(f'Best params: {best_params}, Sharpe: {best_sharpe:.2f}')",
+  "clean_code": "import pandas as pd\nimport numpy as np\nfrom itertools import product\n\nprices = pd.read_csv('prices.csv', index_col='date', parse_dates=True)\nreturns = prices['close'].pct_change().dropna()\n\n# Split into train and test BEFORE optimization\nsplit = int(len(prices) * 0.7)\ntrain_prices = prices.iloc[:split]\ntrain_returns = returns.iloc[:split]\ntest_prices = prices.iloc[split:]\ntest_returns = returns.iloc[split:]\n\nbest_sharpe = -np.inf\nbest_params = None\n\n# Grid search on TRAINING data only\nfor short, long_ in product(range(5, 50), range(20, 200)):\n    if short >= long_:\n        continue\n    sma_short = train_prices['close'].rolling(short).mean().shift(1)\n    sma_long = train_prices['close'].rolling(long_).mean().shift(1)\n    signal = (sma_short > sma_long).astype(int)\n    strategy_returns = signal * train_returns\n    sharpe = strategy_returns.mean() / strategy_returns.std() * np.sqrt(252)\n    if sharpe > best_sharpe:\n        best_sharpe = sharpe\n        best_params = (short, long_)\n\n# Evaluate best params on UNSEEN test data\nshort, long_ = best_params\nsma_short = test_prices['close'].rolling(short).mean().shift(1)\nsma_long = test_prices['close'].rolling(long_).mean().shift(1)\nsignal = (sma_short > sma_long).astype(int)\ntest_sharpe = (signal * test_returns).mean() / (signal * test_returns).std() * np.sqrt(252)\nprint(f'Out-of-sample Sharpe: {test_sharpe:.2f}')",
+  "description": "Strategy parameters optimized on entire dataset and reported as performance.",
+  "explanation": "Optimizing parameters on all data and then reporting performance on the same data is pure overfitting. The best_sharpe reported is the in-sample optimum, not a realistic estimate of live performance. Any real deployment will see dramatically worse results.",
+  "suggested_fix": "Always optimize parameters on training data only. Report performance on a held-out test set that was not used during optimization.",
+  "expected": {
+    "issues": [
+      {"title": "Parameter optimization on full dataset overfits in-sample", "severity": "CRITICAL", "category": "STATISTICAL"}
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "statistical_train_test_leak_001",
+  "category": "STATISTICAL",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "X = prepare_features(df)\ny = prepare_targets(df)\n\n# Split data\nX_train, X_test = X[:800], X[800:]\ny_train, y_test = y[:800], y[800:]\n\n# FIT SCALER ON FULL DATASET (includes test data!)\nscaler = StandardScaler()\nscaler.fit(X)\n\n# Transform both train and test\nX_train_scaled = scaler.transform(X_train)\nX_test_scaled = scaler.transform(X_test)",
+  "clean_code": "X = prepare_features(df)\ny = prepare_targets(df)\n\n# Split data\nX_train, X_test = X[:800], X[800:]\ny_train, y_test = y[:800], y[800:]\n\n# FIT SCALER ON TRAINING DATA ONLY\nscaler = StandardScaler()\nscaler.fit(X_train)  # Fit only on training data\n\n# Transform both train and test using the scaler fit on train\nX_train_scaled = scaler.transform(X_train)\nX_test_scaled = scaler.transform(X_test)",
+  "description": "Scaler is fit on the entire dataset before train-test split is properly applied.",
+  "explanation": "When you fit(X) on the full dataset, the scaler learns the mean and standard deviation from both training and test data. This leaks information from the test set into the training phase. When X_test is transformed, it uses scaling parameters computed with knowledge of test data statistics, which inflates performance metrics.",
+  "suggested_fix": "Fit the scaler ONLY on training data: scaler.fit(X_train). Then transform both train and test using the scaler trained on train only.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Scaler fit on full dataset leaks test information",
+        "severity": "HIGH",
+        "category": "STATISTICAL"
+      }
+    ]
+  }
+}

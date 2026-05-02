@@ -1,0 +1,14 @@
+{
+  "id": "clean_walk_forward_cv_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import numpy as np\nfrom sklearn.linear_model import Ridge\nfrom sklearn.preprocessing import StandardScaler\n\ndef walk_forward_predict(X, y, train_size=500, test_size=20):\n    \"\"\"\n    Walk-forward cross validation.\n    Each fold trains on past data only and tests on future data.\n    No data leakage between folds.\n    \"\"\"\n    predictions = np.full(len(y), np.nan)\n\n    for start in range(0, len(X) - train_size - test_size, test_size):\n        train_end = start + train_size\n        test_end = train_end + test_size\n\n        X_train = X[start:train_end]\n        y_train = y[start:train_end]\n        X_test = X[train_end:test_end]\n\n        # Fit scaler on training fold only\n        scaler = StandardScaler()\n        X_train_scaled = scaler.fit_transform(X_train)\n        X_test_scaled = scaler.transform(X_test)\n\n        model = Ridge(alpha=1.0)\n        model.fit(X_train_scaled, y_train)\n        predictions[train_end:test_end] = model.predict(X_test_scaled)\n\n    return predictions",
+  "clean_code": "import numpy as np\nfrom sklearn.linear_model import Ridge\nfrom sklearn.preprocessing import StandardScaler\n\ndef walk_forward_predict(X, y, train_size=500, test_size=20):\n    predictions = np.full(len(y), np.nan)\n\n    for start in range(0, len(X) - train_size - test_size, test_size):\n        train_end = start + train_size\n        test_end = train_end + test_size\n\n        X_train = X[start:train_end]\n        y_train = y[start:train_end]\n        X_test = X[train_end:test_end]\n\n        scaler = StandardScaler()\n        X_train_scaled = scaler.fit_transform(X_train)\n        X_test_scaled = scaler.transform(X_test)\n\n        model = Ridge(alpha=1.0)\n        model.fit(X_train_scaled, y_train)\n        predictions[train_end:test_end] = model.predict(X_test_scaled)\n\n    return predictions",
+  "description": "Clean example — proper walk-forward cross validation with no data leakage between folds.",
+  "explanation": "Each fold trains strictly on past data and tests on future data with no overlap. Scaler is fit fresh on each training fold only. Model is re-trained each fold. Predictions are only written for the test window, never the training window.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

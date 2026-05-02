@@ -1,0 +1,16 @@
+{
+  "id": "statistical_multiple_testing_001",
+  "category": "STATISTICAL",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\nimport numpy as np\nfrom scipy import stats\n\nreturns = pd.read_csv('strategy_returns.csv', index_col='date')['returns']\n\n# Test 100 different parameter combinations\np_values = []\nfor i in range(100):\n    params = generate_params(i)\n    strategy_returns = run_strategy(returns, params)\n    t_stat, p_value = stats.ttest_1samp(strategy_returns, 0)\n    p_values.append((params, p_value))\n\n# Report strategies with p < 0.05 as 'statistically significant'\nsignificant = [(p, v) for p, v in p_values if v < 0.05]\nprint(f'Found {len(significant)} significant strategies')",
+  "clean_code": "import pandas as pd\nimport numpy as np\nfrom scipy import stats\nfrom statsmodels.stats.multitest import multipletests\n\nreturns = pd.read_csv('strategy_returns.csv', index_col='date')['returns']\n\np_values = []\nall_params = []\nfor i in range(100):\n    params = generate_params(i)\n    strategy_returns = run_strategy(returns, params)\n    t_stat, p_value = stats.ttest_1samp(strategy_returns, 0)\n    p_values.append(p_value)\n    all_params.append(params)\n\n# Apply Bonferroni or Benjamini-Hochberg correction\nreject, p_corrected, _, _ = multipletests(p_values, alpha=0.05, method='fdr_bh')\n\nsignificant = [(all_params[i], p_corrected[i]) for i in range(len(p_values)) if reject[i]]\nprint(f'Found {len(significant)} significant strategies after correction')",
+  "description": "100 strategies tested at p<0.05 threshold without multiple testing correction.",
+  "explanation": "With 100 independent tests at p=0.05, you expect 5 false positives by chance alone. Reporting 'significant strategies' without correcting for multiple comparisons is a form of p-hacking. You will find strategies that appear profitable purely due to luck, not real alpha.",
+  "suggested_fix": "Apply Bonferroni correction (divide alpha by number of tests) or Benjamini-Hochberg FDR correction.",
+  "expected": {
+    "issues": [
+      {"title": "Multiple testing without correction inflates false discovery rate", "severity": "HIGH", "category": "STATISTICAL"}
+    ]
+  }
+}

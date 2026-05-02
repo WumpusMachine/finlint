@@ -1,0 +1,16 @@
+{
+  "id": "logic_global_state_001",
+  "category": "LOGIC",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "# Global variable for position tracking\ncurrent_position = 0\n\ndef handle_data(context, data):\n    global current_position\n\n    price = data.current(context.asset, 'price')\n    if price > context.entry_price and current_position == 0:\n        order(context.asset, 100)\n        current_position = 100\n    elif price < context.stop_loss and current_position > 0:\n        order(context.asset, -100)\n        current_position = 0",
+  "clean_code": "def initialize(context):\n    context.current_position = 0\n    context.entry_price = None\n\ndef handle_data(context, data):\n    price = data.current(context.asset, 'price')\n    if price > context.entry_price and context.current_position == 0:\n        order(context.asset, 100)\n        context.current_position = 100\n    elif context.entry_price and price < context.stop_loss and context.current_position > 0:\n        order(context.asset, -100)\n        context.current_position = 0",
+  "description": "Global variable used to track position state instead of context object.",
+  "explanation": "Global variables in Zipline strategies persist across multiple backtests in the same Python session. If you run two backtests sequentially, the second backtest starts with current_position left over from the first. This causes incorrect position tracking and potentially wrong orders in the second run.",
+  "suggested_fix": "Store all state in the context object, which is properly initialized for each backtest run.",
+  "expected": {
+    "issues": [
+      {"title": "Global variable for state persists across backtest runs", "severity": "HIGH", "category": "LOGIC"}
+    ]
+  }
+}

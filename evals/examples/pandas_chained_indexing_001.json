@@ -1,0 +1,16 @@
+{
+  "id": "pandas_chained_indexing_001",
+  "category": "PANDAS",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ndf = pd.read_csv('prices.csv', parse_dates=['date'], index_col='date')\n\n# Chained indexing — may not modify original DataFrame\ndf[df['volume'] > 1000000]['signal'] = 1\ndf[df['volume'] <= 1000000]['signal'] = 0\n\n# df['signal'] may still be all NaN\nprint(df['signal'].value_counts())",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('prices.csv', parse_dates=['date'], index_col='date')\n\n# Use .loc to avoid chained indexing\ndf['signal'] = 0  # Initialize first\ndf.loc[df['volume'] > 1000000, 'signal'] = 1\n\nprint(df['signal'].value_counts())",
+  "description": "Chained indexing used to assign values — silently fails to modify the original DataFrame.",
+  "explanation": "df[condition]['column'] = value creates a temporary copy of the filtered rows and assigns to that copy, not the original. The original DataFrame is unchanged. This is a SettingWithCopyWarning in pandas and a silent data error — the signal column never gets set, producing wrong strategy behavior with no error message.",
+  "suggested_fix": "Always use .loc[condition, column] = value for conditional assignment to avoid chained indexing.",
+  "expected": {
+    "issues": [
+      {"title": "Chained indexing silently fails to assign values", "severity": "HIGH", "category": "PANDAS"}
+    ]
+  }
+}

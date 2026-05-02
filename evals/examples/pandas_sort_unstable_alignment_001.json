@@ -1,0 +1,20 @@
+{
+  "id": "pandas_sort_unstable_alignment_001",
+  "category": "PANDAS",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\nimport numpy as np\n\n# Feature matrix and target series, both indexed by date\nfeatures = pd.DataFrame({\n    'momentum': [0.01, -0.02, 0.03, 0.01, -0.01],\n    'volume': [1000, 1200, 800, 1100, 900]\n}, index=pd.date_range('2020-01-01', periods=5))\n\ntarget = pd.Series(\n    [0.02, -0.01, 0.04, 0.00, -0.02],\n    index=pd.date_range('2020-01-01', periods=5)\n)\n\n# Sort features by momentum score for ranking\nfeatures_sorted = features.sort_values('momentum', ascending=False)\n\n# Fit model using sorted features with ORIGINAL target\nX = features_sorted.values\ny = target.values  # BUG: target not reindexed to match sorted features\n\nmodel.fit(X, y)",
+  "clean_code": "import pandas as pd\nimport numpy as np\n\nfeatures = pd.DataFrame({\n    'momentum': [0.01, -0.02, 0.03, 0.01, -0.01],\n    'volume': [1000, 1200, 800, 1100, 900]\n}, index=pd.date_range('2020-01-01', periods=5))\n\ntarget = pd.Series(\n    [0.02, -0.01, 0.04, 0.00, -0.02],\n    index=pd.date_range('2020-01-01', periods=5)\n)\n\n# Sort features by momentum\nfeatures_sorted = features.sort_values('momentum', ascending=False)\n\n# ALWAYS realign target to match the sorted index\ntarget_aligned = target.loc[features_sorted.index]\n\nX = features_sorted.values\ny = target_aligned.values  # Now correctly aligned\n\nmodel.fit(X, y)",
+  "description": "features are sorted by a column but target is extracted from original unsorted order.",
+  "explanation": "After sort_values(), features_sorted has rows in a different order than the original. But target.values extracts the target in the original date order, not the sorted order. X[0] is now the row with highest momentum, but y[0] is still the return from 2020-01-01 — completely different observations. The model trains on mismatched (feature, label) pairs, silently producing a model with random predictive power.",
+  "suggested_fix": "After any sort operation, always realign all arrays using the sorted index: target_aligned = target.loc[features_sorted.index]",
+  "expected": {
+    "issues": [
+      {
+        "title": "Target not realigned after sort_values causes feature-label mismatch",
+        "severity": "HIGH",
+        "category": "PANDAS"
+      }
+    ]
+  }
+}

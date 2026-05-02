@@ -1,0 +1,17 @@
+{
+  "id": "statistical_target_in_feature_001",
+  "category": "STATISTICAL",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "import pandas as pd\nfrom sklearn.linear_model import Ridge\n\ndf = pd.read_csv('data.csv', parse_dates=['date'], index_col='date')\n\n# Target: next-day return\ndf['target'] = df['returns'].shift(-1)\n\n# Features include current-day return — which is correlated with target\ndf['feature_1'] = df['returns']  # Current return\ndf['feature_2'] = df['returns'].rolling(5).mean()  # 5-day mean\ndf['feature_3'] = df['volume']\n\ndf = df.dropna()\n\nX = df[['feature_1', 'feature_2', 'feature_3']].values\ny = df['target'].values\n\nmodel = Ridge()\nmodel.fit(X, y)",
+  "clean_code": "import pandas as pd\nfrom sklearn.linear_model import Ridge\n\ndf = pd.read_csv('data.csv', parse_dates=['date'], index_col='date')\n\n# Target: next-day return\ndf['target'] = df['returns'].shift(-1)\n\n# Features use LAGGED returns — not current day\ndf['feature_1'] = df['returns'].shift(1)  # Previous day's return\ndf['feature_2'] = df['returns'].shift(1).rolling(5).mean()  # 5-day mean of past returns\ndf['feature_3'] = df['volume'].shift(1)  # Previous day's volume\n\ndf = df.dropna()\n\nX = df[['feature_1', 'feature_2', 'feature_3']].values\ny = df['target'].values\n\nmodel = Ridge()\nmodel.fit(X, y)",
+  "description": "Feature includes current-day return which is correlated with next-day return target.",
+  "explanation": "feature_1 = df['returns'] is the current day's return. The target is the next day's return. In momentum/mean-reversion strategies, current returns are often correlated with next-day returns. Including them as a feature when predicting next-day returns is subtle lookahead — you're using same-period data. In live trading, you wouldn't know today's full return before the day ends.",
+  "suggested_fix": "Shift all return-based features by at least 1 to ensure only past information is used.",
+  "expected": {
+    "issues": [
+      {"title": "Feature includes same-day return correlated with next-day target", "severity": "CRITICAL", "category": "STATISTICAL"},
+      {"title": "Feature includes same-day return correlated with next-day target", "severity": "CRITICAL", "category": "TEMPORAL"}
+    ]
+  }
+}

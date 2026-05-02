@@ -1,0 +1,20 @@
+{
+  "id": "logic_index_error_001",
+  "category": "LOGIC",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "def initialize(context):\n    context.weights = [0.2, 0.3, 0.5]\n    context.i = 0\n\ndef rebalance(context, data):\n    target = context.weights[context.i]\n    order_target_percent(context.asset, target)\n    context.i += 1",
+  "clean_code": "def initialize(context):\n    context.weights = [0.2, 0.3, 0.5]\n    context.i = 0\n\ndef rebalance(context, data):\n    if context.i < len(context.weights):\n        target = context.weights[context.i]\n        order_target_percent(context.asset, target)\n        context.i += 1\n    else:\n        # Hold final weight or reset\n        order_target_percent(context.asset, context.weights[-1])",
+  "description": "Index context.i increments without bounds checking against context.weights length.",
+  "explanation": "If rebalance() is called more times than there are weights, context.weights[context.i] will raise an IndexError and crash the backtest. This is a silent logic error that only manifests when the index exceeds the array bounds.",
+  "suggested_fix": "Add bounds checking before accessing the array. Either stop incrementing, cycle/wrap the index, or hold the last weight.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Potential index out-of-bounds access",
+        "severity": "HIGH",
+        "category": "LOGIC"
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "temporal_lookahead_001",
+  "category": "TEMPORAL",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "df['signal'] = df['returns'].shift(-1) > 0",
+  "clean_code": "df['signal'] = df['returns'].shift(1) > 0",
+  "description": "Signal is computed using future returns via shift(-1).",
+  "explanation": "shift(-1) moves data backward in time, meaning the signal at time T uses the return from time T+1. In a backtest, this creates fake profits because the strategy can see the future.",
+  "suggested_fix": "Replace shift(-1) with shift(1) to use only past returns.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Lookahead bias from future returns",
+        "severity": "CRITICAL",
+        "category": "TEMPORAL"
+      }
+    ]
+  }
+}

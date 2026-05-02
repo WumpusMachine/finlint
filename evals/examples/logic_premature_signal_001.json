@@ -1,0 +1,16 @@
+{
+  "id": "logic_premature_signal_001",
+  "category": "LOGIC",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "from zipline.api import order_target_percent, data\n\ndef initialize(context):\n    context.i = 0\n\ndef handle_data(context, data):\n    context.i += 1\n    # Only skip first 10 bars but need 50 for the SMA\n    if context.i < 10:\n        return\n\n    price = data.history(context.asset, 'close', 50, '1d')\n    sma_50 = price.mean()\n    current_price = price.iloc[-1]\n\n    if current_price > sma_50:\n        order_target_percent(context.asset, 1.0)\n    else:\n        order_target_percent(context.asset, 0.0)",
+  "clean_code": "from zipline.api import order_target_percent\n\ndef initialize(context):\n    context.i = 0\n    context.warmup_period = 50  # Match the SMA window\n\ndef handle_data(context, data):\n    context.i += 1\n    # Skip until we have a full window of data\n    if context.i < context.warmup_period:\n        return\n\n    price = data.history(context.asset, 'close', 50, '1d')\n    sma_50 = price.mean()\n    current_price = price.iloc[-1]\n\n    if current_price > sma_50:\n        order_target_percent(context.asset, 1.0)\n    else:\n        order_target_percent(context.asset, 0.0)",
+  "description": "Warmup period of 10 bars is shorter than the 50-bar SMA window required.",
+  "explanation": "The strategy skips only the first 10 bars but immediately computes a 50-bar SMA. During bars 10-49, data.history() returns fewer than 50 observations, and the SMA is based on partial data. The early SMA values are not meaningful and can generate misleading signals during the warmup period.",
+  "suggested_fix": "Set warmup_period equal to the longest lookback window used in the strategy.",
+  "expected": {
+    "issues": [
+      {"title": "Warmup period shorter than SMA window produces invalid early signals", "severity": "HIGH", "category": "LOGIC"}
+    ]
+  }
+}

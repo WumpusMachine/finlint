@@ -1,0 +1,17 @@
+{
+  "id": "data_report_vs_filing_date_001",
+  "category": "DATA",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\n# Earnings data with report_date (when earnings reported) and filing_date (when filed with SEC)\nearnings = pd.read_csv('earnings.csv', parse_dates=['report_date', 'filing_date'])\nprices = pd.read_csv('prices.csv', parse_dates=['date'], index_col='date')\n\n# Merge on report_date — this is when earnings are public\n# BUT: actual SEC filing (10-K, 10-Q) may come weeks later with more detail\nmerged = pd.merge_asof(\n    prices.reset_index().sort_values('date'),\n    earnings.sort_values('report_date'),\n    left_on='date',\n    right_on='report_date',\n    direction='backward'\n)\n\n# Using EPS from report_date is fine for most purposes\n# but detailed financial ratios from the 10-K filing are only available after filing_date",
+  "clean_code": "import pandas as pd\n\nearnings = pd.read_csv('earnings.csv', parse_dates=['report_date', 'filing_date'])\nprices = pd.read_csv('prices.csv', parse_dates=['date'], index_col='date')\n\n# Use filing_date for fundamental data that requires the full SEC filing\nmerged = pd.merge_asof(\n    prices.reset_index().sort_values('date'),\n    earnings.sort_values('filing_date'),\n    left_on='date',\n    right_on='filing_date',\n    direction='backward'\n)",
+  "description": "Fundamental data merged using report_date instead of filing_date for data requiring full SEC filing.",
+  "explanation": "Companies report earnings (report_date) before their formal 10-K/10-Q SEC filing (filing_date). Detailed financial ratios, footnotes, and segment data are only available after the filing date, which can be 30-90 days after the earnings call. Using report_date for these detailed metrics introduces lookahead bias for the filing period.",
+  "suggested_fix": "Use the appropriate date — report_date for headline EPS/revenue, filing_date for detailed financial metrics.",
+  "expected": {
+    "issues": [
+      {"title": "Fundamental data merged on report_date before full filing is available", "severity": "CRITICAL", "category": "DATA"},
+      {"title": "Fundamental data merged on report_date before full filing is available", "severity": "CRITICAL", "category": "TEMPORAL"}
+    ]
+  }
+}

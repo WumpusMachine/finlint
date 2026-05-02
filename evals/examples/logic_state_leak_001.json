@@ -1,0 +1,20 @@
+{
+  "id": "logic_state_leak_001",
+  "category": "LOGIC",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "def handle_data(context, data):\n    if not hasattr(context, 'prices'):\n        context.prices = []\n    context.prices.append(data.current(context.asset, 'price'))\n\n    if len(context.prices) > 100:\n        signal = sum(context.prices[-5:]) / 5\n        order_target_percent(context.asset, signal)",
+  "clean_code": "def handle_data(context, data):\n    if not hasattr(context, 'prices'):\n        context.prices = deque(maxlen=100)\n    context.prices.append(data.current(context.asset, 'price'))\n\n    if len(context.prices) > 100:\n        signal = sum(list(context.prices)[-5:]) / 5\n        order_target_percent(context.asset, signal)",
+  "description": "Price history is stored indefinitely in context.prices without size bounds.",
+  "explanation": "The context.prices list grows unbounded throughout the backtest. Over a multi-year backtest, this can cause memory issues. More importantly, old prices from years ago remain in the list and could unintentionally influence calculations. A rolling window (deque with maxlen) ensures only recent data is kept.",
+  "suggested_fix": "Use collections.deque with maxlen parameter to limit stored history to a fixed window (e.g., 100 days).",
+  "expected": {
+    "issues": [
+      {
+        "title": "Unbounded state accumulation in context",
+        "severity": "HIGH",
+        "category": "LOGIC"
+      }
+    ]
+  }
+}

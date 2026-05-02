@@ -1,0 +1,16 @@
+{
+  "id": "statistical_sharpe_no_rf_001",
+  "category": "STATISTICAL",
+  "severity": "MEDIUM",
+  "language": "python",
+  "buggy_code": "import numpy as np\nimport pandas as pd\n\nreturns = pd.read_csv('strategy_returns.csv', index_col='date')['returns']\n\n# Sharpe without risk-free rate subtraction\nsharpe = returns.mean() / returns.std() * np.sqrt(252)\n\nprint(f'Sharpe Ratio: {sharpe:.2f}')",
+  "clean_code": "import numpy as np\nimport pandas as pd\n\nreturns = pd.read_csv('strategy_returns.csv', index_col='date')['returns']\n\n# Annualized risk-free rate (e.g., current T-bill rate)\nrisk_free_annual = 0.05\ndaily_rf = (1 + risk_free_annual) ** (1/252) - 1\n\n# Excess returns over risk-free rate\nexcess_returns = returns - daily_rf\n\n# Proper Sharpe ratio\nsharpe = excess_returns.mean() / excess_returns.std() * np.sqrt(252)\n\nprint(f'Sharpe Ratio: {sharpe:.2f}')",
+  "description": "Sharpe ratio computed without subtracting the risk-free rate from returns.",
+  "explanation": "The Sharpe ratio measures excess return per unit of risk, where 'excess' means above the risk-free rate. Omitting the risk-free rate deduction overstates the Sharpe ratio by ignoring the opportunity cost of not investing in Treasury bills. In high interest rate environments (4-5%), this error is significant.",
+  "suggested_fix": "Subtract daily risk-free rate from each day's return before computing mean/std.",
+  "expected": {
+    "issues": [
+      {"title": "Sharpe ratio computed without risk-free rate deduction", "severity": "MEDIUM", "category": "STATISTICAL"}
+    ]
+  }
+}

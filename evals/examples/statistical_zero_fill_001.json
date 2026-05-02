@@ -1,0 +1,25 @@
+{
+  "id": "statistical_zero_fill_001",
+  "category": "STATISTICAL",
+  "severity": "MEDIUM",
+  "language": "python",
+  "buggy_code": "missing = np.any(np.isnan(X), axis=1)\nX[missing, :] = 0",
+  "clean_code": "# Option 1: exclude assets with missing features\nmissing = np.any(np.isnan(X), axis=1)\nout[missing] = np.nan  # signal these as invalid\nX = X[~missing]\n\n# Option 2: impute with column mean, not zero\ncol_means = np.nanmean(X, axis=0)\nnan_mask = np.isnan(X)\nX[nan_mask] = np.take(col_means, np.where(nan_mask)[1])",
+  "description": "Missing feature values are replaced with zero before model inference.",
+  "explanation": "Zero is rarely a neutral value for financial features. For a momentum feature, zero means 'no momentum.' For a volatility feature, zero means 'no volatility.' Replacing NaN with zero injects artificial signals that the model was never trained on, causing unpredictable predictions for assets with missing data.",
+  "suggested_fix": "Either exclude assets with missing features from predictions (set out[:] = np.nan for those assets) or impute with the column mean/median computed on non-missing data.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Zero imputation for missing features introduces artificial signals",
+        "severity": "MEDIUM",
+        "category": "DATA"
+      },
+      {
+        "title": "Zero imputation for missing features introduces artificial signals",
+        "severity": "MEDIUM",
+        "category": "STATISTICAL"
+      }
+    ]
+  }
+}

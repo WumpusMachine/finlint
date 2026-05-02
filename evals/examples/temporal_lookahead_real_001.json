@@ -1,0 +1,20 @@
+{
+  "id": "temporal_lookahead_real_001",
+  "category": "TEMPORAL",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ndf = pd.read_csv('prices.csv', parse_dates=['date'], index_col='date')\ndf['returns'] = df['price'].pct_change()\n\n# Generate signal using FUTURE returns\ndf['signal'] = df['returns'].shift(-1) > 0\n\n# Strategy returns\ndf['strategy'] = df['signal'] * df['returns']\n\nprint(df[['returns', 'signal', 'strategy']].head())",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('prices.csv', parse_dates=['date'], index_col='date')\ndf['returns'] = df['price'].pct_change()\n\n# Generate signal using PAST returns\ndf['signal'] = df['returns'].shift(1) > 0\n\n# Strategy returns\ndf['strategy'] = df['signal'] * df['returns']\n\nprint(df[['returns', 'signal', 'strategy']].head())",
+  "description": "Trading signal is generated using future returns via shift(-1).",
+  "explanation": "shift(-1) moves data backward in time. The signal at row T is computed from the return at row T+1 (tomorrow). In a backtest, this means the strategy knows tomorrow's return when making today's decision, which is impossible in live trading. This introduces lookahead bias and produces artificially inflated backtest results.",
+  "suggested_fix": "Use shift(1) to lag returns so the signal at time T uses information only from time T-1 and earlier.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Lookahead bias from future returns",
+        "severity": "CRITICAL",
+        "category": "TEMPORAL"
+      }
+    ]
+  }
+}

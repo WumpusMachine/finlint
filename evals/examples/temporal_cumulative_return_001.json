@@ -1,0 +1,16 @@
+{
+  "id": "temporal_cumulative_return_001",
+  "category": "TEMPORAL",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\nimport numpy as np\n\ndf = pd.read_csv('returns.csv', parse_dates=['date'], index_col='date')\n\n# Total cumulative return over entire series\ntotal_cum_return = (1 + df['returns']).prod() - 1\n\n# Normalize each return by total cumulative — uses full future series\ndf['normalized'] = df['returns'] / total_cum_return\n\n# Use as feature\ndf['signal'] = (df['normalized'] > 0).astype(int)",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('returns.csv', parse_dates=['date'], index_col='date')\n\n# Use expanding cumulative return — only uses past data\ndf['cum_return'] = (1 + df['returns']).expanding().apply(lambda x: x.prod() - 1)\n\n# Normalize using expanding mean — no future data\ndf['normalized'] = df['returns'] / df['returns'].expanding().std()\n\ndf['signal'] = (df['normalized'].shift(1) > 0).astype(int)",
+  "description": "Total cumulative return computed over full series used to normalize individual returns.",
+  "explanation": "total_cum_return uses ALL returns including future ones. Dividing each row's return by this value means every row's feature depends on future data. The normalization factor at time T includes returns from T+1, T+2, etc.",
+  "suggested_fix": "Use expanding() to compute cumulative statistics that only use data available up to each point in time.",
+  "expected": {
+    "issues": [
+      {"title": "Cumulative return normalization uses full future series", "severity": "HIGH", "category": "TEMPORAL"}
+    ]
+  }
+}

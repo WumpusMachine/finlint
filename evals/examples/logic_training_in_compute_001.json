@@ -1,0 +1,25 @@
+{
+  "id": "logic_training_in_compute_001",
+  "category": "LOGIC",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "def compute(self, today, assets, out, returns, *inputs):\n    self._maybe_train_model(today, returns, inputs)\n    X = np.dstack(inputs)[-1]\n    X = self._scaler.transform(X)\n    out[:] = self._model.predict(X)",
+  "clean_code": "# Train the model once before the pipeline runs, not during compute\ndef before_trading_start(context, data):\n    if should_retrain(context):\n        train_model(context)\n\ndef compute(self, today, assets, out, returns, *inputs):\n    # Only inference here, no training\n    X = np.dstack(inputs)[-1]\n    X = self._scaler.transform(X)\n    out[:] = self._model.predict(X)",
+  "description": "Model training is triggered inside compute(), which is called on every pipeline execution.",
+  "explanation": "compute() is called frequently during a backtest. Training inside it means the model is re-fitted on different data windows at different times depending on execution order, causing non-deterministic behavior. It also means training uses whatever data happens to be passed in at that moment, which may include current-day data that would not be available in live trading.",
+  "suggested_fix": "Separate training from inference. Train the model in a scheduled function before_trading_start or before the backtest loop begins. compute() should only do inference.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Training in compute",
+        "severity": "HIGH",
+        "category": "LOGIC"
+      },
+      {
+        "title": "Training in compute",
+        "severity": "HIGH",
+        "category": "STATISTICAL"
+      }
+    ]
+  }
+}

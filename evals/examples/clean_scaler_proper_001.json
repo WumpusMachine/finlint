@@ -1,0 +1,14 @@
+{
+  "id": "clean_scaler_proper_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "from sklearn.preprocessing import StandardScaler\n\nX_train, X_test = X[:800], X[800:]\ny_train, y_test = y[:800], y[800:]\n\nscaler = StandardScaler()\nscaler.fit(X_train)\nX_train_scaled = scaler.transform(X_train)\nX_test_scaled = scaler.transform(X_test)",
+  "clean_code": "from sklearn.preprocessing import StandardScaler\n\nX_train, X_test = X[:800], X[800:]\ny_train, y_test = y[:800], y[800:]\n\nscaler = StandardScaler()\nscaler.fit(X_train)\nX_train_scaled = scaler.transform(X_train)\nX_test_scaled = scaler.transform(X_test)",
+  "description": "Clean example — no bugs. Scaler is fit on training data only.",
+  "explanation": "The scaler.fit(X_train) learns mean and standard deviation only from training data. Then transform() is applied to both train and test using these parameters. No data leakage from test to train.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

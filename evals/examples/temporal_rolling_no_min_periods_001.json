@@ -1,0 +1,17 @@
+{
+  "id": "temporal_rolling_no_min_periods_001",
+  "category": "TEMPORAL",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\nprices = pd.read_csv('prices.csv', index_col='date', parse_dates=True)\n\n# Rolling with no min_periods — first values use fewer than window observations\nvolatility = prices['close'].pct_change().rolling(window=20).std()\n\n# Use volatility as feature immediately without checking warmup period\nfeatures = pd.DataFrame({'vol': volatility})\nfeatures = features.dropna()\nsignal = (features['vol'] < 0.01).astype(int)",
+  "clean_code": "import pandas as pd\n\nprices = pd.read_csv('prices.csv', index_col='date', parse_dates=True)\n\n# Require full window before producing values\nvolatility = prices['close'].pct_change().rolling(window=20, min_periods=20).std()\n\nfeatures = pd.DataFrame({'vol': volatility})\nfeatures = features.dropna()\nsignal = (features['vol'] < 0.01).astype(int)",
+  "description": "Rolling window without min_periods produces values from fewer observations than the window size.",
+  "explanation": "Without min_periods=window, pandas returns partial window results for early rows. A 20-day volatility computed from 3 days of data is misleading and creates artificially low early volatility readings that can generate false signals.",
+  "suggested_fix": "Set min_periods equal to window size to only produce values when a full window is available.",
+  "expected": {
+    "issues": [
+      {"title": "Rolling window without min_periods uses partial data", "severity": "HIGH", "category": "TEMPORAL"},
+      {"title": "Rolling window without min_periods uses partial data", "severity": "HIGH", "category": "DATA"}
+    ]
+  }
+}

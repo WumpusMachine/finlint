@@ -1,0 +1,14 @@
+{
+  "id": "clean_historical_universe_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\nimport os\n\ndef load_universe_with_delisted(data_dir, as_of_date):\n    \"\"\"\n    Load all symbols active on a given date.\n    Includes delisted stocks to avoid survivorship bias.\n    \"\"\"\n    all_files = os.listdir(data_dir)\n    active_symbols = []\n\n    for fname in all_files:\n        if not fname.endswith('.csv'):\n            continue\n        symbol = fname[:-4]\n        df = pd.read_csv(\n            os.path.join(data_dir, fname),\n            index_col='date',\n            parse_dates=True\n        )\n        # Include symbol if it had data on or before as_of_date\n        if df.index.min() <= as_of_date <= df.index.max():\n            active_symbols.append(symbol)\n\n    return active_symbols\n\nsymbols = load_universe_with_delisted('data/', pd.Timestamp('2010-01-01'))\nprint(f'Active symbols: {len(symbols)}')",
+  "clean_code": "import pandas as pd\nimport os\n\ndef load_universe_with_delisted(data_dir, as_of_date):\n    all_files = os.listdir(data_dir)\n    active_symbols = []\n\n    for fname in all_files:\n        if not fname.endswith('.csv'):\n            continue\n        symbol = fname[:-4]\n        df = pd.read_csv(\n            os.path.join(data_dir, fname),\n            index_col='date',\n            parse_dates=True\n        )\n        if df.index.min() <= as_of_date <= df.index.max():\n            active_symbols.append(symbol)\n\n    return active_symbols\n\nsymbols = load_universe_with_delisted('data/', pd.Timestamp('2010-01-01'))\nprint(f'Active symbols: {len(symbols)}')",
+  "description": "Clean example — universe loader that includes delisted stocks by checking date ranges.",
+  "explanation": "Includes a symbol if as_of_date falls within its data range (min to max date). This correctly captures stocks that were trading on that date, including those later delisted. Not survivorship biased.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

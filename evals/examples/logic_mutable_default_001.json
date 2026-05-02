@@ -1,0 +1,16 @@
+{
+  "id": "logic_mutable_default_001",
+  "category": "LOGIC",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "def compute_signals(prices, lookback=20, results=[]):\n    \"\"\"\n    Compute signals and accumulate in results list.\n    BUG: mutable default argument persists across calls.\n    \"\"\"\n    signal = prices.rolling(lookback).mean().iloc[-1]\n    results.append(signal)\n    return results\n\n# First call\nsignals_a = compute_signals(prices_a)\n\n# Second call — results already contains signals_a!\nsignals_b = compute_signals(prices_b)",
+  "clean_code": "def compute_signals(prices, lookback=20, results=None):\n    if results is None:\n        results = []\n    signal = prices.rolling(lookback).mean().iloc[-1]\n    results.append(signal)\n    return results\n\nsignals_a = compute_signals(prices_a)\nsignals_b = compute_signals(prices_b)",
+  "description": "Mutable default argument (list) persists state across function calls.",
+  "explanation": "In Python, mutable default arguments are created once and reused. The results=[] list accumulates values from ALL previous calls. signals_b will contain both signals_a values AND signals_b values. In a backtesting context, this causes signal contamination across different assets or time periods.",
+  "suggested_fix": "Use None as default and create a new list inside the function if not provided.",
+  "expected": {
+    "issues": [
+      {"title": "Mutable default argument causes state contamination across calls", "severity": "HIGH", "category": "LOGIC"}
+    ]
+  }
+}

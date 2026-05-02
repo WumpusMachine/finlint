@@ -1,0 +1,16 @@
+{
+  "id": "statistical_feature_selection_leak_001",
+  "category": "STATISTICAL",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "import pandas as pd\nimport numpy as np\nfrom sklearn.linear_model import Ridge\nfrom sklearn.feature_selection import SelectKBest, f_regression\n\nX = pd.read_csv('features.csv', index_col='date')\ny = pd.read_csv('returns.csv', index_col='date')['target']\n\n# Select features using FULL dataset including test data\nselector = SelectKBest(f_regression, k=10)\nX_selected = selector.fit_transform(X, y)\n\n# Now split\nX_train, X_test = X_selected[:800], X_selected[800:]\ny_train, y_test = y.iloc[:800], y.iloc[800:]\n\nmodel = Ridge()\nmodel.fit(X_train, y_train)\npreds = model.predict(X_test)",
+  "clean_code": "import pandas as pd\nfrom sklearn.linear_model import Ridge\nfrom sklearn.feature_selection import SelectKBest, f_regression\nfrom sklearn.pipeline import Pipeline\n\nX = pd.read_csv('features.csv', index_col='date')\ny = pd.read_csv('returns.csv', index_col='date')['target']\n\n# Split BEFORE feature selection\nX_train, X_test = X.iloc[:800], X.iloc[800:]\ny_train, y_test = y.iloc[:800], y.iloc[800:]\n\n# Feature selection fitted on TRAINING data only\npipeline = Pipeline([\n    ('selector', SelectKBest(f_regression, k=10)),\n    ('model', Ridge())\n])\npipeline.fit(X_train, y_train)\npreds = pipeline.predict(X_test)",
+  "description": "Feature selection performed on full dataset before train/test split.",
+  "explanation": "SelectKBest.fit_transform(X, y) uses the full X and y to select the 10 best features. This means test-set target values influence which features are selected. The model then appears better on the test set because it was indirectly optimized using test labels during feature selection.",
+  "suggested_fix": "Always perform feature selection inside a pipeline that is fitted only on training data.",
+  "expected": {
+    "issues": [
+      {"title": "Feature selection uses full dataset including test labels", "severity": "CRITICAL", "category": "STATISTICAL"}
+    ]
+  }
+}

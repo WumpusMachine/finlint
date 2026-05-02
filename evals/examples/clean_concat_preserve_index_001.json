@@ -1,0 +1,14 @@
+{
+  "id": "clean_concat_preserve_index_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\n# Two time periods with DatetimeIndex\ndf_2019 = pd.read_csv('2019.csv', index_col='date', parse_dates=True)\ndf_2020 = pd.read_csv('2020.csv', index_col='date', parse_dates=True)\n\n# Concatenate preserving the DatetimeIndex\ncombined = pd.concat([df_2019, df_2020])\n\n# Verify index is still a DatetimeIndex\nassert isinstance(combined.index, pd.DatetimeIndex), 'Index lost after concat'\n\n# Verify no duplicate dates\nassert not combined.index.duplicated().any(), 'Duplicate dates found'\n\n# Sort just in case\ncombined = combined.sort_index()\n\nreturns = combined['close'].pct_change().dropna()",
+  "clean_code": "import pandas as pd\n\ndf_2019 = pd.read_csv('2019.csv', index_col='date', parse_dates=True)\ndf_2020 = pd.read_csv('2020.csv', index_col='date', parse_dates=True)\n\ncombined = pd.concat([df_2019, df_2020])\n\nassert isinstance(combined.index, pd.DatetimeIndex), 'Index lost after concat'\nassert not combined.index.duplicated().any(), 'Duplicate dates found'\n\ncombined = combined.sort_index()\n\nreturns = combined['close'].pct_change().dropna()",
+  "description": "Clean example — pd.concat without ignore_index, preserving DatetimeIndex with validation.",
+  "explanation": "No ignore_index=True so DatetimeIndex is preserved. Assert checks confirm index type and no duplicates. sort_index() ensures chronological order. pct_change() correctly computes returns across the boundary.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

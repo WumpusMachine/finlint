@@ -1,0 +1,17 @@
+{
+  "id": "pandas_fillna_future_mean_001",
+  "category": "PANDAS",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ndf = pd.read_csv('features.csv', parse_dates=['date'], index_col='date')\n\n# Fill NaN with column MEAN — uses full series including future values\ndf = df.fillna(df.mean())\n\n# Use as model features\nX = df.values",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('features.csv', parse_dates=['date'], index_col='date')\n\n# Fill NaN with EXPANDING mean — only uses past values at each point\ndf = df.apply(lambda col: col.fillna(col.expanding().mean()))\n\n# Use as model features\nX = df.values",
+  "description": "NaN values filled with column mean computed over the entire series including future data.",
+  "explanation": "df.mean() computes the mean of each column using all observations, including future ones. A NaN value at time T is filled with a mean that includes data from T+1, T+2, etc. This injects future information into every row that had a missing value, creating subtle lookahead bias that is very hard to detect.",
+  "suggested_fix": "Use expanding().mean() to fill NaN with only historically available mean values.",
+  "expected": {
+    "issues": [
+      {"title": "fillna with column mean uses future data for imputation", "severity": "CRITICAL", "category": "PANDAS"},
+      {"title": "fillna with column mean uses future data for imputation", "severity": "CRITICAL", "category": "STATISTICAL"}
+    ]
+  }
+}

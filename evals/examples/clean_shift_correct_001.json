@@ -1,0 +1,14 @@
+{
+  "id": "clean_shift_correct_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "df['returns'] = df['price'].pct_change()\ndf['signal'] = df['returns'].shift(1) > 0\ndf['strategy'] = df['signal'] * df['returns']",
+  "clean_code": "df['returns'] = df['price'].pct_change()\ndf['signal'] = df['returns'].shift(1) > 0\ndf['strategy'] = df['signal'] * df['returns']",
+  "description": "Clean example — no bugs. Signal correctly uses past returns via shift(1).",
+  "explanation": "shift(1) moves data forward in time. The signal at time T uses the return from time T-1. This is causally correct — at time T, you only know returns up to T-1, so you use that information to make a decision for time T. No lookahead bias.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

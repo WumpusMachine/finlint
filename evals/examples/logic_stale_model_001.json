@@ -1,0 +1,16 @@
+{
+  "id": "logic_stale_model_001",
+  "category": "LOGIC",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "from zipline.api import schedule_function, date_rules, time_rules\nfrom sklearn.linear_model import Ridge\nimport numpy as np\n\ndef initialize(context):\n    context.model = Ridge()\n    context.model_trained = False\n    # Only train once at the start — never retrain\n    schedule_function(train_model, date_rules.month_start(), time_rules.market_open())\n\ndef train_model(context, data):\n    if not context.model_trained:\n        X, y = get_training_data(context)\n        context.model.fit(X, y)\n        context.model_trained = True\n    # After first training, never updates the model\n\ndef rebalance(context, data):\n    X = get_current_features(context, data)\n    pred = context.model.predict(X)",
+  "clean_code": "from zipline.api import schedule_function, date_rules, time_rules\nfrom sklearn.linear_model import Ridge\n\ndef initialize(context):\n    context.model = Ridge()\n    context.training_window = 252  # 1 year of data\n    # Retrain monthly\n    schedule_function(train_model, date_rules.month_start(), time_rules.market_open())\n    schedule_function(rebalance, date_rules.month_start(), time_rules.market_open(minutes=5))\n\ndef train_model(context, data):\n    # Always retrain with latest data\n    X, y = get_training_data(context, window=context.training_window)\n    context.model.fit(X, y)\n\ndef rebalance(context, data):\n    X = get_current_features(context, data)\n    pred = context.model.predict(X)",
+  "description": "Model trained only once at initialization and never updated as market conditions change.",
+  "explanation": "A model trained on data from 2015 may have learned patterns that no longer apply in 2022. Factor loadings, volatility regimes, and market microstructure all change over time. A static model becomes increasingly stale and its predictions increasingly unreliable. This is model staleness — a logic error in the retraining schedule.",
+  "suggested_fix": "Retrain the model periodically (monthly or quarterly) using a rolling window of recent data.",
+  "expected": {
+    "issues": [
+      {"title": "Model trained only once and never updated as market evolves", "severity": "HIGH", "category": "LOGIC"}
+    ]
+  }
+}

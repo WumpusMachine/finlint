@@ -1,0 +1,20 @@
+{
+  "id": "pandas_merge_asof_direction_001",
+  "category": "PANDAS",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\n# Daily price data\nprices = pd.DataFrame({\n    'date': pd.date_range('2020-01-01', periods=5),\n    'price': [100, 101, 102, 103, 104]\n})\n\n# Earnings announcements (sparse events)\nearnings = pd.DataFrame({\n    'date': ['2020-01-02', '2020-01-04'],\n    'eps_surprise': [0.05, -0.03]\n})\nearnings['date'] = pd.to_datetime(earnings['date'])\n\n# Merge prices with NEAREST earnings\nmerged = pd.merge_asof(\n    prices.sort_values('date'),\n    earnings.sort_values('date'),\n    on='date',\n    direction='nearest'  # BUG: uses future earnings\n)\n\nsignal = merged['eps_surprise'].fillna(0)",
+  "clean_code": "import pandas as pd\n\nprices = pd.DataFrame({\n    'date': pd.date_range('2020-01-01', periods=5),\n    'price': [100, 101, 102, 103, 104]\n})\n\nearnings = pd.DataFrame({\n    'date': ['2020-01-02', '2020-01-04'],\n    'eps_surprise': [0.05, -0.03]\n})\nearnings['date'] = pd.to_datetime(earnings['date'])\n\n# Use 'backward' to only use PAST earnings announcements\nmerged = pd.merge_asof(\n    prices.sort_values('date'),\n    earnings.sort_values('date'),\n    on='date',\n    direction='backward'  # Only use earnings already announced\n)\n\nsignal = merged['eps_surprise'].fillna(0)",
+  "description": "merge_asof with direction='nearest' matches each price date to the closest earnings date, which can be in the future.",
+  "explanation": "direction='nearest' finds the closest earnings announcement whether it is before OR after the price date. On 2020-01-01 (before any earnings), this matches to the 2020-01-02 earnings release, which has not happened yet. The signal on 2020-01-01 is now based on tomorrow's earnings surprise \u2014 classic lookahead bias hidden inside a pandas merge operation.",
+  "suggested_fix": "Always use direction='backward' in merge_asof when merging event data with price data. This ensures only past events are used.",
+  "expected": {
+    "issues": [
+      {
+        "title": "merge_asof with direction='nearest' uses future event data",
+        "severity": "CRITICAL",
+        "category": "TEMPORAL"
+      }
+    ]
+  }
+}

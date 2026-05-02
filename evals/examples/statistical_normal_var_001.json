@@ -1,0 +1,16 @@
+{
+  "id": "statistical_normal_var_001",
+  "category": "STATISTICAL",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\nimport numpy as np\nfrom scipy import stats\n\nreturns = pd.read_csv('portfolio_returns.csv', index_col='date')['returns']\n\n# Parametric VaR assuming normal distribution\nmean = returns.mean()\nstd = returns.std()\n\n# 99% VaR assuming normality\nvar_99 = mean - 2.326 * std\n\nprint(f'1-day 99% VaR: {var_99:.4%}')",
+  "clean_code": "import pandas as pd\nimport numpy as np\n\nreturns = pd.read_csv('portfolio_returns.csv', index_col='date')['returns']\n\n# Historical simulation VaR — no distribution assumption\nvar_99_hist = returns.quantile(0.01)\n\n# Conditional VaR (Expected Shortfall) — average of worst 1%\nvar_threshold = returns.quantile(0.01)\nvar_99_es = returns[returns <= var_threshold].mean()\n\nprint(f'1-day 99% Historical VaR: {var_99_hist:.4%}')\nprint(f'1-day 99% Expected Shortfall: {var_99_es:.4%}')",
+  "description": "Value at Risk computed assuming normal distribution of returns.",
+  "explanation": "Financial returns have fat tails — extreme losses occur much more frequently than a normal distribution predicts. The normal 99% VaR using 2.326 standard deviations systematically underestimates tail risk. In the 2008 financial crisis, many banks using normal VaR models suffered losses their models said were near-impossible.",
+  "suggested_fix": "Use historical simulation (empirical quantile) or Expected Shortfall which doesn't assume normality.",
+  "expected": {
+    "issues": [
+      {"title": "VaR computed assuming normal distribution understates tail risk", "severity": "HIGH", "category": "STATISTICAL"}
+    ]
+  }
+}

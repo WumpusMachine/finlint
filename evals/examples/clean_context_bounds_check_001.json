@@ -1,0 +1,14 @@
+{
+  "id": "clean_context_bounds_check_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "from zipline.api import order_target_percent, symbol\nfrom collections import deque\n\ndef initialize(context):\n    context.asset = symbol('AAPL')\n    context.weights = [0.2, 0.3, 0.5, 0.4, 0.3]\n    context.i = 0\n    # Bounded deque prevents unbounded memory growth\n    context.price_history = deque(maxlen=100)\n\ndef handle_data(context, data):\n    price = data.current(context.asset, 'price')\n    context.price_history.append(price)\n\n    # Bounds check before accessing weights\n    if context.i < len(context.weights):\n        target = context.weights[context.i]\n        context.i += 1\n    else:\n        # Hold last weight after exhausting schedule\n        target = context.weights[-1]\n\n    if len(context.price_history) >= 20:\n        order_target_percent(context.asset, target)",
+  "clean_code": "from zipline.api import order_target_percent, symbol\nfrom collections import deque\n\ndef initialize(context):\n    context.asset = symbol('AAPL')\n    context.weights = [0.2, 0.3, 0.5, 0.4, 0.3]\n    context.i = 0\n    context.price_history = deque(maxlen=100)\n\ndef handle_data(context, data):\n    price = data.current(context.asset, 'price')\n    context.price_history.append(price)\n\n    if context.i < len(context.weights):\n        target = context.weights[context.i]\n        context.i += 1\n    else:\n        target = context.weights[-1]\n\n    if len(context.price_history) >= 20:\n        order_target_percent(context.asset, target)",
+  "description": "Clean example — bounded deque for price history and bounds check before index access.",
+  "explanation": "deque(maxlen=100) prevents unbounded memory growth. Bounds check before context.weights[context.i] prevents IndexError. Falls back to last weight after schedule exhausted.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

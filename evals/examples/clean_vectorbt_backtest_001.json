@@ -1,0 +1,14 @@
+{
+  "id": "clean_vectorbt_backtest_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import vectorbt as vbt\nimport pandas as pd\nimport numpy as np\n\nprices = pd.read_csv('prices.csv', index_col='date', parse_dates=True)['close']\n\n# Compute signals using only past data\nfast_ma = prices.rolling(20).mean().shift(1)\nslow_ma = prices.rolling(50).mean().shift(1)\n\nentries = fast_ma > slow_ma\nexits = fast_ma < slow_ma\n\n# Run backtest with realistic fees\npf = vbt.Portfolio.from_signals(\n    prices,\n    entries,\n    exits,\n    fees=0.001,\n    slippage=0.0005,\n    freq='1D'\n)\n\nprint(pf.stats())",
+  "clean_code": "import vectorbt as vbt\nimport pandas as pd\nimport numpy as np\n\nprices = pd.read_csv('prices.csv', index_col='date', parse_dates=True)['close']\n\nfast_ma = prices.rolling(20).mean().shift(1)\nslow_ma = prices.rolling(50).mean().shift(1)\n\nentries = fast_ma > slow_ma\nexits = fast_ma < slow_ma\n\npf = vbt.Portfolio.from_signals(\n    prices,\n    entries,\n    exits,\n    fees=0.001,\n    slippage=0.0005,\n    freq='1D'\n)\n\nprint(pf.stats())",
+  "description": "Clean example — vectorbt backtest with shifted signals and realistic fees and slippage.",
+  "explanation": "Both moving averages are shifted by 1 before generating signals. Realistic fees (10 bps) and slippage (5 bps) are included. No lookahead bias.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

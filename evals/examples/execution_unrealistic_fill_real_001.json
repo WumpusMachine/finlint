@@ -1,0 +1,20 @@
+{
+  "id": "execution_unrealistic_fill_real_001",
+  "category": "EXECUTION",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "from zipline.api import order_target_percent, set_slippage, set_commission\nfrom zipline.finance.slippage import NoSlippage\nfrom zipline.finance.commission import NoCommission\n\ndef initialize(context):\n    # Unrealistic execution model\n    set_slippage(NoSlippage())\n    set_commission(NoCommission())\n\ndef handle_data(context, data):\n    # Trade without transaction costs\n    order_target_percent(context.asset, 1.0)",
+  "clean_code": "from zipline.api import order_target_percent, set_slippage, set_commission\nfrom zipline.finance.slippage import FixedBasisPointsSlippage\nfrom zipline.finance.commission import PerShare\n\ndef initialize(context):\n    # Realistic execution model\n    set_slippage(FixedBasisPointsSlippage(basis_points=5))\n    set_commission(PerShare(cost=0.001, min_trade_cost=1.0))\n\ndef handle_data(context, data):\n    # Trade with realistic costs\n    order_target_percent(context.asset, 0.95)  # Leave some cash buffer",
+  "description": "Strategy uses both zero slippage and zero commission models.",
+  "explanation": "NoSlippage() and NoCommission() assume perfect execution with no costs. In real trading, you always have market impact, bid-ask spread, and commission. A strategy profitable with zero costs is often unprofitable when realistic costs are applied. This inflates backtest performance and creates a false sense of profitability.",
+  "suggested_fix": "Use realistic slippage (5-10 basis points for liquid assets) and commission models. Test strategy profitability after costs.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Unrealistic execution assumptions with zero costs",
+        "severity": "HIGH",
+        "category": "EXECUTION"
+      }
+    ]
+  }
+}

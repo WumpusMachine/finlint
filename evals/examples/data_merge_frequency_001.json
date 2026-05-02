@@ -1,0 +1,25 @@
+{
+  "id": "data_merge_frequency_001",
+  "category": "DATA",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "df = daily.merge(minute, on='date')",
+  "clean_code": "# Resample minute data to daily first\nminute_daily = minute.resample('1D').agg({'close': 'last', 'volume': 'sum'})\ndf = daily.merge(minute_daily, left_index=True, right_index=True, how='left')",
+  "description": "A daily dataset is merged with a minute-frequency dataset on a shared 'date' column.",
+  "explanation": "Daily data has one row per day. Minute data has hundreds of rows per day. Merging on 'date' without resampling will either silently drop most minute rows (if date is a date not datetime) or explode the daily rows into hundreds of duplicates (if date includes time). Either outcome corrupts the dataset.",
+  "suggested_fix": "Resample the higher-frequency dataset to match the lower frequency before merging. Be explicit about the aggregation method (last price, sum volume, etc.).",
+  "expected": {
+    "issues": [
+      {
+        "title": "Merging datasets with different time frequencies",
+        "severity": "HIGH",
+        "category": "PANDAS"
+      },
+      {
+        "title": "Merging datasets with different time frequencies",
+        "severity": "HIGH",
+        "category": "TEMPORAL"
+      }
+    ]
+  }
+}

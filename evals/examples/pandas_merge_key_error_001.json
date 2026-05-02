@@ -1,0 +1,20 @@
+{
+  "id": "pandas_merge_key_error_001",
+  "category": "PANDAS",
+  "severity": "MEDIUM",
+  "language": "python",
+  "buggy_code": "prices = pd.DataFrame({\n    'date': ['2020-01-01', '2020-01-02'],\n    'asset': ['AAPL', 'MSFT'],\n    'price': [100, 200]\n})\n\nfactors = pd.DataFrame({\n    'date': ['2020-01-01', '2020-01-02'],\n    'momentum': [0.1, 0.2]\n})\n\n# Merge on date only\nmerged = prices.merge(factors, on='date')",
+  "clean_code": "prices = pd.DataFrame({\n    'date': ['2020-01-01', '2020-01-02', '2020-01-01', '2020-01-02'],\n    'asset': ['AAPL', 'AAPL', 'MSFT', 'MSFT'],\n    'price': [100, 101, 200, 201]\n})\n\nfactors = pd.DataFrame({\n    'date': ['2020-01-01', '2020-01-02', '2020-01-01', '2020-01-02'],\n    'asset': ['AAPL', 'AAPL', 'MSFT', 'MSFT'],\n    'momentum': [0.1, 0.15, 0.2, 0.25]\n})\n\n# Merge on BOTH date AND asset\nmerged = prices.merge(factors, on=['date', 'asset'])",
+  "description": "Merge uses only the date column without including the asset identifier.",
+  "explanation": "If there are multiple assets (AAPL, MSFT, etc.), merging on date alone will create Cartesian products or mix data across assets. Each date should be merged with factors for the SAME asset, not with all assets on that date.",
+  "suggested_fix": "Include asset as part of the merge keys: on=['date', 'asset']",
+  "expected": {
+    "issues": [
+      {
+        "title": "Merge without asset identifier may mix data across assets",
+        "severity": "MEDIUM",
+        "category": "PANDAS"
+      }
+    ]
+  }
+}

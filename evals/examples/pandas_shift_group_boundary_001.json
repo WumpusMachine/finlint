@@ -1,0 +1,16 @@
+{
+  "id": "pandas_shift_group_boundary_001",
+  "category": "PANDAS",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ndf = pd.read_csv('multi_asset_returns.csv', parse_dates=['date'])\ndf = df.sort_values(['asset', 'date'])\n\n# Shift WITHOUT groupby — last row of asset A bleeds into first row of asset B\ndf['prev_return'] = df['returns'].shift(1)\n\n# Use as feature\ndf['signal'] = (df['prev_return'] > 0).astype(int)",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('multi_asset_returns.csv', parse_dates=['date'])\ndf = df.sort_values(['asset', 'date'])\n\n# Shift WITHIN each asset group\ndf['prev_return'] = df.groupby('asset')['returns'].shift(1)\n\ndf['signal'] = (df['prev_return'] > 0).astype(int)",
+  "description": "shift(1) applied to multi-asset DataFrame without groupby — last row of one asset bleeds into first row of next.",
+  "explanation": "When data is sorted by asset then date, df['returns'].shift(1) shifts across the asset boundary. The first return of MSFT (row N) gets the last return of AAPL (row N-1) as its lagged value. This is cross-asset data contamination — MSFT's signal uses AAPL's prior return.",
+  "suggested_fix": "Always use groupby('asset') when shifting in multi-asset DataFrames: df.groupby('asset')['returns'].shift(1)",
+  "expected": {
+    "issues": [
+      {"title": "shift() without groupby contaminates data across asset boundaries", "severity": "CRITICAL", "category": "PANDAS"}
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "clean_merge_asof_backward_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\nprices = pd.DataFrame({\n    'date': pd.date_range('2020-01-01', periods=5),\n    'price': [100, 101, 102, 103, 104]\n})\n\nearnings = pd.DataFrame({\n    'date': pd.to_datetime(['2020-01-02', '2020-01-04']),\n    'eps_surprise': [0.05, -0.03]\n})\n\n# Use backward direction — only past earnings are used\nmerged = pd.merge_asof(\n    prices.sort_values('date'),\n    earnings.sort_values('date'),\n    on='date',\n    direction='backward'\n)\n\nmerged['eps_surprise'] = merged['eps_surprise'].fillna(0)\nprint(merged)",
+  "clean_code": "import pandas as pd\n\nprices = pd.DataFrame({\n    'date': pd.date_range('2020-01-01', periods=5),\n    'price': [100, 101, 102, 103, 104]\n})\n\nearnings = pd.DataFrame({\n    'date': pd.to_datetime(['2020-01-02', '2020-01-04']),\n    'eps_surprise': [0.05, -0.03]\n})\n\nmerged = pd.merge_asof(\n    prices.sort_values('date'),\n    earnings.sort_values('date'),\n    on='date',\n    direction='backward'\n)\n\nmerged['eps_surprise'] = merged['eps_surprise'].fillna(0)\nprint(merged)",
+  "description": "Clean example — merge_asof with direction='backward' to use only past earnings announcements.",
+  "explanation": "direction='backward' ensures each price row is matched to the most recent earnings that occurred on or before that date. No future earnings data is used.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

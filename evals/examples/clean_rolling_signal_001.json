@@ -1,0 +1,14 @@
+{
+  "id": "clean_rolling_signal_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\nprices = pd.read_csv('prices.csv', index_col='date', parse_dates=True)\n\n# Compute rolling means using only past data\nsma_short = prices['close'].rolling(window=20).mean()\nsma_long = prices['close'].rolling(window=50).mean()\n\n# Signal uses lagged values — no lookahead\nsignal = (sma_short.shift(1) > sma_long.shift(1)).astype(int)\n\n# Strategy returns\nreturns = prices['close'].pct_change()\nstrategy = signal * returns",
+  "clean_code": "import pandas as pd\n\nprices = pd.read_csv('prices.csv', index_col='date', parse_dates=True)\n\nsma_short = prices['close'].rolling(window=20).mean()\nsma_long = prices['close'].rolling(window=50).mean()\n\nsignal = (sma_short.shift(1) > sma_long.shift(1)).astype(int)\n\nreturns = prices['close'].pct_change()\nstrategy = signal * returns",
+  "description": "Clean example — correct rolling mean crossover with proper lagging.",
+  "explanation": "Both SMAs are shifted by 1 before comparison, ensuring the signal at time T only uses information available up to T-1. No lookahead bias.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

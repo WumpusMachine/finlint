@@ -1,0 +1,14 @@
+{
+  "id": "clean_rolling_apply_local_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\nimport numpy as np\n\nprices = pd.Series(\n    [100, 102, 101, 105, 103, 108],\n    index=pd.date_range('2020-01-01', periods=6)\n)\n\ndef local_zscore(window):\n    # Only uses data within the window — no outer scope reference\n    if window.std() == 0:\n        return 0.0\n    return (window[-1] - window.mean()) / window.std()\n\n# raw=True passes numpy array for performance\nzscore = prices.rolling(window=3).apply(local_zscore, raw=True)\n\nsignal = (zscore.shift(1) > 1.0).astype(int)\nprint(signal)",
+  "clean_code": "import pandas as pd\nimport numpy as np\n\nprices = pd.Series(\n    [100, 102, 101, 105, 103, 108],\n    index=pd.date_range('2020-01-01', periods=6)\n)\n\ndef local_zscore(window):\n    if window.std() == 0:\n        return 0.0\n    return (window[-1] - window.mean()) / window.std()\n\nzscore = prices.rolling(window=3).apply(local_zscore, raw=True)\n\nsignal = (zscore.shift(1) > 1.0).astype(int)\nprint(signal)",
+  "description": "Clean example — rolling apply using only local window data with no outer scope references.",
+  "explanation": "local_zscore uses only the window parameter. No closures over full-series variables. raw=True passes numpy array. Signal shifted by 1 before use.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

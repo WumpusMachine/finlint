@@ -1,0 +1,20 @@
+{
+  "id": "execution_slippage_001",
+  "category": "EXECUTION",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "set_slippage(slippage.FixedBasisPointsSlippage(basis_points=0, volume_limit=0.1))",
+  "clean_code": "# Use realistic slippage — 5-10 bps is a common conservative estimate\nset_slippage(slippage.FixedBasisPointsSlippage(basis_points=5, volume_limit=0.1))",
+  "description": "Slippage is explicitly set to zero basis points.",
+  "explanation": "In real trading, you never execute at exactly the last close price. Market impact, bid-ask spread, and latency all cause slippage. Setting basis_points=0 assumes perfect execution, which inflates backtest performance. Strategies that appear profitable at zero slippage often become unprofitable at even 3-5 basis points.",
+  "suggested_fix": "Use at least 5 basis points for liquid large-cap stocks. Use 10-30 basis points for smaller or less liquid instruments.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Zero slippage assumption inflates performance",
+        "severity": "HIGH",
+        "category": "EXECUTION"
+      }
+    ]
+  }
+}

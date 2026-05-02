@@ -1,0 +1,14 @@
+{
+  "id": "clean_rolling_zscore_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ndf = pd.read_csv('prices.csv', index_col='date', parse_dates=True)\n\nwindow = 60\n\n# Rolling stats using only past data\nrolling_mean = df['close'].rolling(window=window).mean()\nrolling_std = df['close'].rolling(window=window).std()\n\n# Lag by 1 to avoid lookahead\ndf['zscore'] = (df['close'] - rolling_mean.shift(1)) / rolling_std.shift(1)\n\n# Signal: buy when zscore < -1, sell when zscore > 1\ndf['signal'] = 0\ndf.loc[df['zscore'] < -1, 'signal'] = 1\ndf.loc[df['zscore'] > 1, 'signal'] = -1\n\n# Lag signal by 1 before multiplying by returns\nreturns = df['close'].pct_change()\ndf['strategy'] = df['signal'].shift(1) * returns",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('prices.csv', index_col='date', parse_dates=True)\n\nwindow = 60\n\nrolling_mean = df['close'].rolling(window=window).mean()\nrolling_std = df['close'].rolling(window=window).std()\n\ndf['zscore'] = (df['close'] - rolling_mean.shift(1)) / rolling_std.shift(1)\n\ndf['signal'] = 0\ndf.loc[df['zscore'] < -1, 'signal'] = 1\ndf.loc[df['zscore'] > 1, 'signal'] = -1\n\nreturns = df['close'].pct_change()\ndf['strategy'] = df['signal'].shift(1) * returns",
+  "description": "Clean example — rolling z-score mean reversion with properly lagged stats and signal.",
+  "explanation": "Rolling mean and std are both shifted by 1 before computing z-score. Signal is also shifted by 1 before multiplying by returns. Double lagging ensures no lookahead at any step.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

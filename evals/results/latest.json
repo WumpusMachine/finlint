@@ -1,0 +1,1179 @@
+[
+  {
+    "id": "clean_concat_preserve_index_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_context_bounds_check_001",
+    "passed": false,
+    "reason": "False positive: flagged 1 issue(s)",
+    "expected_count": 0,
+    "actual_count": 1,
+    "false_positives": 1
+  },
+  {
+    "id": "clean_decimal_money_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_example_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_expanding_features_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_ffill_with_limit_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_groupby_rolling_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_historical_universe_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_iloc_integer_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_log_returns_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_max_drawdown_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_merge_asof_backward_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_merge_asset_date_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_merge_correct_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_nan_mask_alignment_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_pivot_pairwise_corr_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_point_in_time_universe_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_position_sizing_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_reindex_ffill_limit_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_resample_merge_001",
+    "passed": false,
+    "reason": "False positive: flagged 1 issue(s)",
+    "expected_count": 0,
+    "actual_count": 1,
+    "false_positives": 1
+  },
+  {
+    "id": "clean_rolling_apply_local_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_rolling_signal_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_rolling_zscore_001",
+    "passed": false,
+    "reason": "False positive: flagged 1 issue(s)",
+    "expected_count": 0,
+    "actual_count": 1,
+    "false_positives": 1
+  },
+  {
+    "id": "clean_scaler_proper_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_sharpe_ratio_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_shift_correct_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_sort_reindex_target_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_timezone_aware_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_train_inference_separated_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_train_test_split_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_vectorbt_backtest_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_walk_forward_cv_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_zipline_initialize_001",
+    "passed": true,
+    "reason": "Correctly returned no issues",
+    "expected_count": 0,
+    "actual_count": 0,
+    "false_positives": 0
+  },
+  {
+    "id": "clean_zipline_pipeline_factor_001",
+    "passed": false,
+    "reason": "False positive: flagged 2 issue(s)",
+    "expected_count": 0,
+    "actual_count": 2,
+    "false_positives": 2
+  },
+  {
+    "id": "data_adjusted_prices_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (DATA) | ~ Wrong severity (expected HIGH, got ['CRITICAL'])",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "Mixed adjusted and unadjusted price data in same backtest"
+    ]
+  },
+  {
+    "id": "data_forward_fill_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (DATA) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Unvalidated forward fill without limit"
+    ]
+  },
+  {
+    "id": "data_index_constituents_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (DATA) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Survivorship bias from current S&P 500 constituents"
+    ]
+  },
+  {
+    "id": "data_merge_frequency_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (PANDAS) | \u2713 Correct severity (HIGH)",
+    "expected_count": 2,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Merge across mismatched frequencies without alignment"
+    ]
+  },
+  {
+    "id": "data_merge_misalignment_real_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (PANDAS) | \u2713 Correct severity (HIGH)",
+    "expected_count": 2,
+    "actual_count": 2,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Merge across mismatched frequencies without alignment",
+      "Fillna(0) on sentiment signal masks missing data"
+    ]
+  },
+  {
+    "id": "data_nan_as_zero_return_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (DATA) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Missing returns filled with zero instead of NaN"
+    ]
+  },
+  {
+    "id": "data_nan_filter_misalignment_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (PANDAS) | ~ Wrong severity (expected HIGH, got ['CRITICAL'])",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "Feature-target misalignment from sequential filtering with different masks"
+    ]
+  },
+  {
+    "id": "data_price_correlation_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (DATA) | ~ Wrong severity (expected HIGH, got ['CRITICAL'])",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "Correlation computed on raw prices instead of returns"
+    ]
+  },
+  {
+    "id": "data_report_vs_filing_date_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (TEMPORAL) | ~ Wrong severity (expected CRITICAL, got ['HIGH'])",
+    "expected_count": 2,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "Data availability mismatch: using filing_date data before filing_date"
+    ]
+  },
+  {
+    "id": "data_split_handling_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (DATA) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Returns computed from unadjusted prices with stock splits"
+    ]
+  },
+  {
+    "id": "data_survivorship_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (DATA) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Survivorship bias from static symbol list"
+    ]
+  },
+  {
+    "id": "data_weekend_returns_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (DATA) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Reindex to calendar days with forward fill creates artificial zero returns",
+      "Volatility annualization uses 365 instead of 252 trading days"
+    ]
+  },
+  {
+    "id": "execution_bid_ask_midpoint_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (EXECUTION) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Unrealistic execution assumption: fills at midpoint"
+    ]
+  },
+  {
+    "id": "execution_no_can_trade_check_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (EXECUTION) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Missing can_trade() check before order execution"
+    ]
+  },
+  {
+    "id": "execution_no_volume_limit_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (EXECUTION) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Volume limit of 1.0 allows unlimited order size"
+    ]
+  },
+  {
+    "id": "execution_open_fill_assumption_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (EXECUTION) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Lookahead bias: exit price from future open",
+      "Zero slippage and perfect execution assumption"
+    ]
+  },
+  {
+    "id": "execution_partial_fills_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (EXECUTION) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Orders placed without checking for pending fills"
+    ]
+  },
+  {
+    "id": "execution_slippage_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (EXECUTION) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Zero slippage assumption"
+    ]
+  },
+  {
+    "id": "execution_slippage_lookahead_real_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (EXECUTION) | ~ Wrong severity (expected CRITICAL, got ['HIGH', 'MEDIUM'])",
+    "expected_count": 2,
+    "actual_count": 2,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "Using open price at market open for order execution",
+      "No validation of context.wgts or context.i bounds"
+    ]
+  },
+  {
+    "id": "execution_unrealistic_fill_real_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (EXECUTION) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Zero slippage and zero commission assumptions"
+    ]
+  },
+  {
+    "id": "logic_context_reset_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (LOGIC) | ~ Wrong severity (expected HIGH, got ['MEDIUM'])",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "Schedule function execution order ambiguity on month start"
+    ]
+  },
+  {
+    "id": "logic_global_state_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (LOGIC) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Global state persists across backtests",
+      "Orders placed without checking pending fills"
+    ]
+  },
+  {
+    "id": "logic_index_error_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (LOGIC) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Unbounded state accumulation in context.i"
+    ]
+  },
+  {
+    "id": "logic_leverage_error_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (LOGIC) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Fixed weights create unintended leverage"
+    ]
+  },
+  {
+    "id": "logic_mutable_default_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (LOGIC) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Mutable default argument persists across function calls"
+    ]
+  },
+  {
+    "id": "logic_premature_signal_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (LOGIC) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Insufficient warmup period for SMA calculation"
+    ]
+  },
+  {
+    "id": "logic_retrain_loop_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (LOGIC) | ~ Wrong severity (expected MEDIUM, got ['CRITICAL'])",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "Model retrained on every compute call with data leakage"
+    ]
+  },
+  {
+    "id": "logic_stale_model_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (LOGIC) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Model staleness \u2014 no retraining across market regime changes"
+    ]
+  },
+  {
+    "id": "logic_state_leak_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (LOGIC) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Unbounded state accumulation in context.prices",
+      "Signal value used as order target percent without normalization"
+    ]
+  },
+  {
+    "id": "logic_training_in_compute_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['STATISTICAL', 'LOGIC'], got ['TEMPORAL', 'PANDAS']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 2,
+    "actual_count": 2,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "Model trained on current-period returns during inference",
+      "Feature extraction uses only most recent time step"
+    ]
+  },
+  {
+    "id": "logic_unclosed_position_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (LOGIC) | ~ Wrong severity (expected MEDIUM, got ['HIGH'])",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "Missing exit logic creates unbounded position"
+    ]
+  },
+  {
+    "id": "pandas_alignment_bug_real_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (PANDAS) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Same-period feature-target alignment creates lookahead bias",
+      "Feature-target misalignment from sequential filtering"
+    ]
+  },
+  {
+    "id": "pandas_apply_type_mismatch_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (PANDAS) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "rolling().apply() returns dict instead of scalar"
+    ]
+  },
+  {
+    "id": "pandas_boolean_reset_index_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (PANDAS) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Boolean mask applied to misaligned DataFrame after reset_index()"
+    ]
+  },
+  {
+    "id": "pandas_chained_indexing_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (PANDAS) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Chained indexing does not modify original DataFrame"
+    ]
+  },
+  {
+    "id": "pandas_concat_index_loss_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (TEMPORAL) | \u2713 Correct severity (HIGH)",
+    "expected_count": 2,
+    "actual_count": 2,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "DatetimeIndex destroyed by concat with ignore_index=True",
+      "pct_change() across market gap without date awareness"
+    ]
+  },
+  {
+    "id": "pandas_crosstab_temporal_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (TEMPORAL) | ~ Wrong severity (expected HIGH, got ['CRITICAL'])",
+    "expected_count": 2,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "Lookahead bias in transition matrix from future signal data"
+    ]
+  },
+  {
+    "id": "pandas_cumsum_returns_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (PANDAS) | ~ Wrong severity (expected HIGH, got ['CRITICAL'])",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "Cumsum instead of cumprod for compound returns"
+    ]
+  },
+  {
+    "id": "pandas_fillna_future_mean_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['STATISTICAL', 'PANDAS'], got ['TEMPORAL']) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 2,
+    "actual_count": 1,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "Forward-looking mean imputation"
+    ]
+  },
+  {
+    "id": "pandas_groupby_leak_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (TEMPORAL) | ~ Wrong severity (expected HIGH, got ['CRITICAL'])",
+    "expected_count": 3,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "Lookahead bias from full-series mean return calculation"
+    ]
+  },
+  {
+    "id": "pandas_iloc_loc_confusion_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (PANDAS) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "iloc used with string date label instead of integer position",
+      "iloc position 100 assumes continuous trading days without gaps"
+    ]
+  },
+  {
+    "id": "pandas_inplace_slice_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (PANDAS) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "fillna(inplace=True) on slice does not propagate to original DataFrame"
+    ]
+  },
+  {
+    "id": "pandas_melt_alignment_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (PANDAS) | ~ Wrong severity (expected HIGH, got ['CRITICAL'])",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "shift() without groupby contaminates returns across assets"
+    ]
+  },
+  {
+    "id": "pandas_merge_asof_direction_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (TEMPORAL) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "merge_asof with direction='nearest' pulls future earnings data"
+    ]
+  },
+  {
+    "id": "pandas_merge_asof_tolerance_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (DATA) | \u2713 Correct severity (HIGH)",
+    "expected_count": 2,
+    "actual_count": 2,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "merge_asof without tolerance allows stale news data",
+      "fillna(0) misrepresents absence of news as neutral sentiment"
+    ]
+  },
+  {
+    "id": "pandas_merge_key_error_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['PANDAS'], got ['DATA']) | ~ Wrong severity (expected MEDIUM, got ['CRITICAL'])",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": false,
+    "severity_match": false,
+    "actual_titles": [
+      "Cartesian product from unkeyed merge across assets"
+    ]
+  },
+  {
+    "id": "pandas_outer_join_nan_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['PANDAS'], got ['DATA', 'DATA']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "Unvalidated forward fill creates stale signal propagation",
+      "Outer join creates unaligned price-signal pairs"
+    ]
+  },
+  {
+    "id": "pandas_pct_change_boundary_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (PANDAS) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "pct_change() without groupby on multi-asset DataFrame"
+    ]
+  },
+  {
+    "id": "pandas_pivot_nan_drop_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (DATA) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Data loss from dropna() eliminating valid assets",
+      "Correlation matrix computed on incomplete time series"
+    ]
+  },
+  {
+    "id": "pandas_reindex_ffill_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (DATA) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Forward fill propagates stale prices across missing data"
+    ]
+  },
+  {
+    "id": "pandas_resample_ohlc_wrong_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['PANDAS'], got ['DATA']) | ~ Wrong severity (expected HIGH, got ['CRITICAL'])",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": false,
+    "severity_match": false,
+    "actual_titles": [
+      "Incorrect OHLCV aggregation using mean instead of OHLC rules"
+    ]
+  },
+  {
+    "id": "pandas_rolling_apply_closure_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (TEMPORAL) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Lookahead bias from global price statistics in rolling window"
+    ]
+  },
+  {
+    "id": "pandas_shift_group_boundary_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (PANDAS) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Cross-asset data leakage from shift() without groupby"
+    ]
+  },
+  {
+    "id": "pandas_sort_unstable_alignment_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (PANDAS) | ~ Wrong severity (expected HIGH, got ['CRITICAL'])",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "Feature-target misalignment from sorting without reindexing"
+    ]
+  },
+  {
+    "id": "pandas_wrong_shift_direction_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (TEMPORAL) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 2,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Lookahead bias: target uses future returns via shift(-5)"
+    ]
+  },
+  {
+    "id": "statistical_feature_selection_leak_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (STATISTICAL) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Feature selection on full dataset including test labels",
+      "Index misalignment from fit_transform() followed by iloc split"
+    ]
+  },
+  {
+    "id": "statistical_in_sample_optimization_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (STATISTICAL) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Parameter optimization without out-of-sample validation",
+      "Feature-target misalignment from separate dropna() operations"
+    ]
+  },
+  {
+    "id": "statistical_multiple_testing_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (STATISTICAL) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Multiple testing problem without correction",
+      "Optimization on full dataset without train/test split"
+    ]
+  },
+  {
+    "id": "statistical_no_validation_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (STATISTICAL) | ~ Wrong severity (expected MEDIUM, got ['CRITICAL'])",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "Model evaluated on training data without holdout set"
+    ]
+  },
+  {
+    "id": "statistical_normal_var_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (STATISTICAL) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "VaR computed assuming normal distribution"
+    ]
+  },
+  {
+    "id": "statistical_pca_leakage_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (STATISTICAL) | ~ Wrong severity (expected HIGH, got ['CRITICAL'])",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "PCA fitted on full dataset before train-test split"
+    ]
+  },
+  {
+    "id": "statistical_scaler_leakage_real_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (STATISTICAL) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Scaler fit on full dataset before train/test split"
+    ]
+  },
+  {
+    "id": "statistical_sharpe_no_rf_001",
+    "passed": false,
+    "reason": "Missed bug \u2014 returned no issues",
+    "expected_count": 1,
+    "actual_count": 0,
+    "missed": [
+      "Sharpe ratio computed without risk-free rate deduction"
+    ]
+  },
+  {
+    "id": "statistical_target_in_feature_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (TEMPORAL) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 2,
+    "actual_count": 2,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Lookahead bias: current-day return predicting next-day return",
+      "Target construction uses shift(-1) lookahead"
+    ]
+  },
+  {
+    "id": "statistical_target_leak_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (TEMPORAL) | ~ Wrong severity (expected MEDIUM, got ['CRITICAL'])",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "Lookahead bias from future returns in model training"
+    ]
+  },
+  {
+    "id": "statistical_train_test_leak_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (STATISTICAL) | ~ Wrong severity (expected HIGH, got ['CRITICAL'])",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "Scaler fit on full dataset including test data"
+    ]
+  },
+  {
+    "id": "statistical_zero_fill_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (DATA) | ~ Wrong severity (expected MEDIUM, got ['HIGH'])",
+    "expected_count": 2,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "Missing data filled with zero instead of NaN"
+    ]
+  },
+  {
+    "id": "temporal_alignment_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (TEMPORAL) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 2,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Same-period feature-target alignment without temporal lag"
+    ]
+  },
+  {
+    "id": "temporal_cumulative_return_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (TEMPORAL) | ~ Wrong severity (expected HIGH, got ['CRITICAL'])",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": false,
+    "actual_titles": [
+      "Lookahead bias from future cumulative returns"
+    ]
+  },
+  {
+    "id": "temporal_future_reindex_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (TEMPORAL) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Reindex to future dates creates lookahead bias",
+      "Forward fill without limit propagates stale data indefinitely"
+    ]
+  },
+  {
+    "id": "temporal_lookahead_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (TEMPORAL) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Lookahead bias from future returns"
+    ]
+  },
+  {
+    "id": "temporal_lookahead_real_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (TEMPORAL) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 1,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Lookahead bias from future returns in signal generation"
+    ]
+  },
+  {
+    "id": "temporal_rolling_no_min_periods_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (TEMPORAL) | \u2713 Correct severity (HIGH)",
+    "expected_count": 2,
+    "actual_count": 1,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Rolling window without min_periods treats partial windows as full"
+    ]
+  },
+  {
+    "id": "temporal_train_predict_overlap_001",
+    "passed": true,
+    "reason": "\u2713 Correct category (STATISTICAL) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 2,
+    "actual_count": 2,
+    "category_match": true,
+    "severity_match": true,
+    "actual_titles": [
+      "Model trained and evaluated on identical dataset",
+      "No temporal validation \u2014 feature-target misalignment"
+    ]
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "id": "execution_slippage_lookahead_real_001",
+  "category": "EXECUTION",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "class InstantSlippage(SlippageModel):\n    def process_order(self, data, order):\n        price = data.current(order.sid, 'open')\n        return (price, order.amount)\n\ndef initialize_start(context):\n    context.sym = symbol('AAPL')\n    context.set_slippage(InstantSlippage())\n    schedule_function(\n        func=rebal,\n        date_rule=date_rules.every_day(), \n        time_rule=time_rules.market_open(),\n    )\n\ndef rebal(context, data):\n    target = context.wgts[context.i]\n    order(context.sym, target, style=MarketOrder())\n    context.i += 1",
+  "clean_code": "class RealisticSlippage(SlippageModel):\n    def process_order(self, data, order):\n        # Use previous bar's close price, not current bar's open\n        price = data.history(order.sid, 'close', 2, '1d')[0]\n        return (price, order.amount)\n\ndef initialize_start(context):\n    context.sym = symbol('AAPL')\n    context.set_slippage(RealisticSlippage())\n    schedule_function(\n        func=rebal,\n        date_rule=date_rules.every_day(), \n        time_rule=time_rules.market_open(),\n    )\n\ndef rebal(context, data):\n    target = context.wgts[context.i]\n    order(context.sym, target, style=MarketOrder())\n    context.i += 1",
+  "description": "Custom slippage model uses current bar open price for execution at market open.",
+  "explanation": "When process_order is called at market open, the current bar's open price is known. However, the fill is supposed to happen at market open, meaning the price should be the previous bar's close or a realistic execution price. Using data.current(order.sid, 'open') in a slippage model that claims to fill at market open creates lookahead bias \u2014 the model is using today's opening price to execute orders placed today at open, which is impossible.",
+  "suggested_fix": "Use data.history() to get previous bar data, or implement realistic slippage that uses known historical prices.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Lookahead bias via execution price at market open",
+        "severity": "CRITICAL",
+        "category": "EXECUTION"
+      },
+      {
+        "title": "Lookahead bias via execution price at market open",
+        "severity": "CRITICAL",
+        "category": "TEMPORAL"
+      }
+    ]
+  }
+}

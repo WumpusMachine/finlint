@@ -1,0 +1,14 @@
+{
+  "id": "clean_max_drawdown_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import numpy as np\nimport pandas as pd\n\ndef compute_max_drawdown(returns):\n    \"\"\"\n    Compute maximum drawdown from a returns series.\n    Returns a positive fraction (e.g. 0.25 = 25% drawdown).\n    \"\"\"\n    if len(returns) == 0:\n        return 0.0\n\n    # Build equity curve\n    equity = (1 + returns).cumprod()\n\n    # Running maximum\n    running_max = equity.cummax()\n\n    # Drawdown at each point\n    drawdown = (equity - running_max) / running_max\n\n    return float(abs(drawdown.min()))\n\nreturns = pd.Series([0.01, -0.02, 0.03, -0.05, 0.02])\nprint(f'Max drawdown: {compute_max_drawdown(returns):.2%}')",
+  "clean_code": "import numpy as np\nimport pandas as pd\n\ndef compute_max_drawdown(returns):\n    if len(returns) == 0:\n        return 0.0\n\n    equity = (1 + returns).cumprod()\n    running_max = equity.cummax()\n    drawdown = (equity - running_max) / running_max\n\n    return float(abs(drawdown.min()))\n\nreturns = pd.Series([0.01, -0.02, 0.03, -0.05, 0.02])\nprint(f'Max drawdown: {compute_max_drawdown(returns):.2%}')",
+  "description": "Clean example — correct max drawdown calculation using cumulative returns and running max.",
+  "explanation": "Equity curve built with cumprod(). Running max tracked with cummax(). Drawdown computed as fraction of peak. Edge case handled for empty series.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

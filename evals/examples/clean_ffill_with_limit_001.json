@@ -1,0 +1,14 @@
+{
+  "id": "clean_ffill_with_limit_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\nprices = pd.read_csv('prices.csv', index_col='date', parse_dates=True)\n\n# Check missing data before filling\nmissing = prices.isna().sum()\nprint(f'Missing values before fill:\\n{missing}')\n\n# Forward fill with limit of 1 day only\nprices_filled = prices.ffill(limit=1)\n\n# Log remaining gaps after limited fill\nstill_missing = prices_filled.isna().sum()\nif still_missing.any():\n    print(f'Extended gaps remaining (not filled):\\n{still_missing[still_missing > 0]}')\n\n# Drop remaining NaN rather than filling extended gaps\nprices_clean = prices_filled.dropna()\n\nprint(f'Rows before: {len(prices)}, after: {len(prices_clean)}')",
+  "clean_code": "import pandas as pd\n\nprices = pd.read_csv('prices.csv', index_col='date', parse_dates=True)\n\nmissing = prices.isna().sum()\nprint(f'Missing values before fill:\\n{missing}')\n\nprices_filled = prices.ffill(limit=1)\n\nstill_missing = prices_filled.isna().sum()\nif still_missing.any():\n    print(f'Extended gaps remaining (not filled):\\n{still_missing[still_missing > 0]}')\n\nprices_clean = prices_filled.dropna()\n\nprint(f'Rows before: {len(prices)}, after: {len(prices_clean)}')",
+  "description": "Clean example — forward fill with limit=1 and validation before and after.",
+  "explanation": "Missing values are logged before filling. ffill(limit=1) only fills single-day gaps. Remaining NaN logged. Extended gaps dropped rather than silently filled.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

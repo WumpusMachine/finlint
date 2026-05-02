@@ -1,0 +1,20 @@
+{
+  "id": "statistical_target_leak_001",
+  "category": "STATISTICAL",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "X = prepare_features(df)\n\n# Target is FUTURE returns (shift by -1)\ny = df['returns'].shift(-1)\n\nmodel.fit(X, y)",
+  "clean_code": "X = prepare_features(df)\n\n# Target is FUTURE returns (properly lagged by 1 to avoid lookahead)\ny = df['returns'].shift(-1)  # Tomorrow's return from today's perspective\n\n# Remove rows with NaN due to shift\nmask = ~y.isna()\nX = X[mask]\ny = y[mask]\n\n# Ensure features at time T predict returns at time T+1\nmodel.fit(X, y)",
+  "description": "Target variable uses shift(-1) which represents future returns.",
+  "explanation": "shift(-1) moves data backward in time. y = df['returns'].shift(-1) means the target at row T is the return from row T+1 (tomorrow's return). But the features X at row T are from today. So the model learns to predict tomorrow's return using today's features, which is correct. HOWEVER, if this is done naively without careful alignment, row T's features and row T's target may not be properly aligned temporally. The safer pattern is to explicitly lag returns by 1 and ensure alignment.",
+  "suggested_fix": "Use shift(1) or ensure proper temporal alignment. Verify that features at time T align with returns from time T+1.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Ensure proper temporal lag in target variable",
+        "severity": "MEDIUM",
+        "category": "TEMPORAL"
+      }
+    ]
+  }
+}

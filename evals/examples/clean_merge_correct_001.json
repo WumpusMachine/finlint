@@ -1,0 +1,14 @@
+{
+  "id": "clean_merge_correct_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "prices = pd.DataFrame({\n    'date': ['2020-01-01', '2020-01-02'],\n    'asset': ['AAPL', 'MSFT'],\n    'price': [100, 200]\n})\n\nfactors = pd.DataFrame({\n    'date': ['2020-01-01', '2020-01-02'],\n    'asset': ['AAPL', 'MSFT'],\n    'momentum': [0.1, 0.2]\n})\n\nmerged = prices.merge(factors, on=['date', 'asset'])",
+  "clean_code": "prices = pd.DataFrame({\n    'date': ['2020-01-01', '2020-01-02'],\n    'asset': ['AAPL', 'MSFT'],\n    'price': [100, 200]\n})\n\nfactors = pd.DataFrame({\n    'date': ['2020-01-01', '2020-01-02'],\n    'asset': ['AAPL', 'MSFT'],\n    'momentum': [0.1, 0.2]\n})\n\nmerged = prices.merge(factors, on=['date', 'asset'])",
+  "description": "Clean example — no bugs. Merge includes both date and asset as keys.",
+  "explanation": "By merging on ['date', 'asset'], each asset's data on a given date is matched with the correct factors for that same asset and date. No data mixing across assets.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

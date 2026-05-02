@@ -1,0 +1,14 @@
+{
+  "id": "clean_nan_mask_alignment_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import numpy as np\n\ndef prepare_training_data(features, returns):\n    \"\"\"\n    Align features and returns, removing rows with any NaN.\n    Uses a single combined mask to avoid misalignment.\n    \"\"\"\n    # Flatten both arrays\n    outcome = returns.flatten()\n    n_days, n_stocks, n_features = features.shape\n    X = features.reshape(-1, n_features)\n\n    # Build ONE combined mask for both arrays\n    valid_outcome = ~np.isnan(outcome)\n    valid_features = np.all(~np.isnan(X), axis=1)\n    combined_mask = valid_outcome & valid_features\n\n    # Apply mask to BOTH simultaneously\n    X_clean = X[combined_mask]\n    y_clean = outcome[combined_mask]\n\n    assert len(X_clean) == len(y_clean), 'Alignment error'\n    return X_clean, y_clean",
+  "clean_code": "import numpy as np\n\ndef prepare_training_data(features, returns):\n    outcome = returns.flatten()\n    n_days, n_stocks, n_features = features.shape\n    X = features.reshape(-1, n_features)\n\n    valid_outcome = ~np.isnan(outcome)\n    valid_features = np.all(~np.isnan(X), axis=1)\n    combined_mask = valid_outcome & valid_features\n\n    X_clean = X[combined_mask]\n    y_clean = outcome[combined_mask]\n\n    assert len(X_clean) == len(y_clean), 'Alignment error'\n    return X_clean, y_clean",
+  "description": "Clean example — single combined NaN mask applied to both features and target simultaneously.",
+  "explanation": "A single boolean mask is computed from both arrays before filtering. Applied to both X and y at the same time. No sequential filtering that could cause misalignment. Assert verifies alignment after the fact.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

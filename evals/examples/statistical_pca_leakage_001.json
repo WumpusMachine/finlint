@@ -1,0 +1,16 @@
+{
+  "id": "statistical_pca_leakage_001",
+  "category": "STATISTICAL",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\nfrom sklearn.decomposition import PCA\nfrom sklearn.linear_model import Ridge\n\nX = pd.read_csv('factors.csv', index_col='date').values\ny = pd.read_csv('returns.csv', index_col='date').values.ravel()\n\n# PCA fitted on ALL data\npca = PCA(n_components=5)\nX_pca = pca.fit_transform(X)\n\n# Split after PCA transformation\nX_train, X_test = X_pca[:700], X_pca[700:]\ny_train, y_test = y[:700], y[700:]\n\nmodel = Ridge()\nmodel.fit(X_train, y_train)\npreds = model.predict(X_test)",
+  "clean_code": "import pandas as pd\nfrom sklearn.decomposition import PCA\nfrom sklearn.linear_model import Ridge\nfrom sklearn.pipeline import Pipeline\n\nX = pd.read_csv('factors.csv', index_col='date').values\ny = pd.read_csv('returns.csv', index_col='date').values.ravel()\n\n# Split BEFORE PCA\nX_train, X_test = X[:700], X[700:]\ny_train, y_test = y[:700], y[700:]\n\n# PCA fitted on training data only\npipeline = Pipeline([\n    ('pca', PCA(n_components=5)),\n    ('model', Ridge())\n])\npipeline.fit(X_train, y_train)\npreds = pipeline.predict(X_test)",
+  "description": "PCA dimensionality reduction fitted on entire dataset before train/test split.",
+  "explanation": "PCA computes principal components from the covariance structure of all data. When fitted on the full dataset, the components capture variance from test-set observations. The transformed test features are therefore influenced by test-set statistics, creating data leakage.",
+  "suggested_fix": "Fit PCA only on training data. Use sklearn Pipeline to enforce this automatically.",
+  "expected": {
+    "issues": [
+      {"title": "PCA fitted on full dataset leaks test set information", "severity": "HIGH", "category": "STATISTICAL"}
+    ]
+  }
+}

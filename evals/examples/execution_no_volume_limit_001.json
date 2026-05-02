@@ -1,0 +1,16 @@
+{
+  "id": "execution_no_volume_limit_001",
+  "category": "EXECUTION",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "from zipline.api import order_target_percent, set_slippage\nfrom zipline.finance.slippage import FixedBasisPointsSlippage\n\ndef initialize(context):\n    # Slippage with no volume limit — can trade unlimited size\n    set_slippage(FixedBasisPointsSlippage(basis_points=5, volume_limit=1.0))\n\ndef rebalance(context, data):\n    # Allocate 100% to a small-cap stock\n    order_target_percent(context.small_cap_stock, 1.0)",
+  "clean_code": "from zipline.api import order_target_percent, set_slippage\nfrom zipline.finance.slippage import FixedBasisPointsSlippage\n\ndef initialize(context):\n    # Volume limit of 10% — realistic for most strategies\n    set_slippage(FixedBasisPointsSlippage(basis_points=10, volume_limit=0.10))\n\ndef rebalance(context, data):\n    order_target_percent(context.small_cap_stock, 1.0)",
+  "description": "Volume limit set to 1.0 (100% of daily volume), allowing unrealistic position sizes.",
+  "explanation": "A volume_limit=1.0 means the strategy can trade 100% of a stock's daily volume in one day. For small-cap stocks, a $1M portfolio could try to trade the entire day's volume of a thinly traded stock. In reality, such orders would take days to fill and cause massive market impact. This massively overstates achievable returns for capacity-constrained strategies.",
+  "suggested_fix": "Use volume_limit=0.025 to 0.10 (2.5% to 10% of daily volume), which is realistic for institutional trading.",
+  "expected": {
+    "issues": [
+      {"title": "Volume limit of 100% allows unrealistic order sizes", "severity": "HIGH", "category": "EXECUTION"}
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "data_adjusted_prices_001",
+  "category": "DATA",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\n# Load split-adjusted prices\ndf = pd.read_csv('prices_adjusted.csv', parse_dates=['date'], index_col='date')\n\n# Compute returns from adjusted close\ndf['returns'] = df['adj_close'].pct_change()\n\n# Use UNADJUSTED close for position sizing\ndf['position_value'] = df['close'] * df['shares']\n\n# Compare signal (adjusted) vs position (unadjusted) — mismatch\ndf['signal'] = (df['returns'].shift(1) > 0).astype(int)\ndf['pnl'] = df['signal'] * df['position_value'].pct_change()",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('prices_adjusted.csv', parse_dates=['date'], index_col='date')\n\n# Use adjusted prices consistently throughout\ndf['returns'] = df['adj_close'].pct_change()\ndf['position_value'] = df['adj_close'] * df['shares']\n\ndf['signal'] = (df['returns'].shift(1) > 0).astype(int)\ndf['pnl'] = df['signal'] * df['returns']",
+  "description": "Signal computed from adjusted prices but position value computed from unadjusted prices.",
+  "explanation": "Mixing adjusted and unadjusted prices in the same strategy creates P&L calculation errors. After a 2-for-1 split, the unadjusted price drops 50% but the adjusted price does not. The returns computed from each series are different, making signal and P&L incoherent.",
+  "suggested_fix": "Use either adjusted or unadjusted prices consistently throughout. For backtesting, adjusted prices are standard.",
+  "expected": {
+    "issues": [
+      {"title": "Mixing adjusted and unadjusted prices in same strategy", "severity": "HIGH", "category": "DATA"}
+    ]
+  }
+}

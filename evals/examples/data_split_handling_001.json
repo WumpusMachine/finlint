@@ -1,0 +1,16 @@
+{
+  "id": "data_split_handling_001",
+  "category": "DATA",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\n# Raw unadjusted prices — contains splits\nprices = pd.read_csv('raw_prices.csv', parse_dates=['date'], index_col='date')\n\n# Compute returns directly from unadjusted prices\nreturns = prices['close'].pct_change()\n\n# This will show -50% return on split date for a 2-for-1 split\n# and +100% return on reverse split\nprint(returns.describe())",
+  "clean_code": "import pandas as pd\n\n# Use split-adjusted prices for return calculation\nprices = pd.read_csv('adjusted_prices.csv', parse_dates=['date'], index_col='date')\n\n# Returns from adjusted prices correctly handle splits\nreturns = prices['adj_close'].pct_change()\n\n# No artificial return spikes from corporate actions\nprint(returns.describe())",
+  "description": "Returns computed from unadjusted prices containing unhandled stock splits.",
+  "explanation": "A 2-for-1 stock split halves the price overnight. Without adjustment, pct_change() shows a -50% return on the split date followed by +100% on the reverse (when prices recover). These are not real economic returns. Any momentum, mean-reversion, or volatility model trained on unadjusted returns will learn from these phantom returns.",
+  "suggested_fix": "Always use split-adjusted (and dividend-adjusted) closing prices for return calculations in backtesting.",
+  "expected": {
+    "issues": [
+      {"title": "Returns computed from unadjusted prices contain split artifacts", "severity": "CRITICAL", "category": "DATA"}
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "execution_no_can_trade_check_001",
+  "category": "EXECUTION",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "from zipline.api import order_target_percent\n\ndef rebalance(context, data):\n    for asset in context.portfolio_assets:\n        weight = context.target_weights.get(asset, 0)\n        # No can_trade check — may try to trade halted or delisted stocks\n        order_target_percent(asset, weight)",
+  "clean_code": "from zipline.api import order_target_percent\n\ndef rebalance(context, data):\n    for asset in context.portfolio_assets:\n        weight = context.target_weights.get(asset, 0)\n        # Always check before ordering\n        if data.can_trade(asset):\n            order_target_percent(asset, weight)\n        else:\n            # Log that we couldn't trade this asset\n            print(f'Cannot trade {asset} on this date')",
+  "description": "Orders placed without checking data.can_trade() — may attempt to trade halted or delisted assets.",
+  "explanation": "Stocks can be halted for trading halts, circuit breakers, earnings announcements, or delisting. Placing orders on non-tradeable assets in a backtest silently succeeds but would fail in live trading. This creates a backtest/live divergence where the backtest shows impossible trades being executed.",
+  "suggested_fix": "Always check data.can_trade(asset) before placing any order.",
+  "expected": {
+    "issues": [
+      {"title": "Orders placed without checking if asset is tradeable", "severity": "HIGH", "category": "EXECUTION"}
+    ]
+  }
+}

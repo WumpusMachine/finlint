@@ -1,0 +1,16 @@
+{
+  "id": "execution_open_fill_assumption_001",
+  "category": "EXECUTION",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ndf = pd.read_csv('ohlcv.csv', parse_dates=['date'], index_col='date')\n\n# Signal generated on previous close\ndf['signal'] = (df['close'].shift(1) > df['close'].shift(2)).astype(int)\n\n# Assume execution at EXACT open price with zero impact\ndf['entry_price'] = df['open']\ndf['exit_price'] = df['open'].shift(-1)\n\n# P&L assumes perfect fill at open\ndf['pnl'] = df['signal'] * (df['exit_price'] - df['entry_price'])",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('ohlcv.csv', parse_dates=['date'], index_col='date')\n\ndf['signal'] = (df['close'].shift(1) > df['close'].shift(2)).astype(int)\n\n# Apply realistic slippage to open price (5 bps)\nslippage = 0.0005\ndf['entry_price'] = df['open'] * (1 + slippage * df['signal'].replace({0: 0, 1: 1, -1: -1}))\ndf['exit_price'] = df['open'].shift(-1)\n\ndf['pnl'] = df['signal'] * (df['exit_price'] - df['entry_price'])",
+  "description": "Strategy assumes execution at exact open price with no slippage.",
+  "explanation": "In reality, market orders at open compete with other orders and typically fill slightly away from the printed open price. For large orders, market impact can be significant. Assuming zero slippage at open inflates performance, especially for strategies with frequent trading.",
+  "suggested_fix": "Apply realistic slippage to execution prices. For liquid large-caps, 3-10 bps is typical.",
+  "expected": {
+    "issues": [
+      {"title": "Perfect fill at open price with no slippage assumed", "severity": "HIGH", "category": "EXECUTION"}
+    ]
+  }
+}

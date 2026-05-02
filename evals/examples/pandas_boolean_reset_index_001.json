@@ -1,0 +1,16 @@
+{
+  "id": "pandas_boolean_reset_index_001",
+  "category": "PANDAS",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ndf = pd.read_csv('returns.csv', parse_dates=['date'], index_col='date')\n\n# Reset index converts DatetimeIndex to integer\ndf_reset = df.reset_index()\n\n# Create boolean mask on original df\nmask = df['returns'] > 0\n\n# Apply mask to reset DataFrame — index mismatch!\npositive_returns = df_reset[mask]\n\nprint(positive_returns.head())",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('returns.csv', parse_dates=['date'], index_col='date')\n\n# Filter BEFORE reset_index to preserve alignment\npositive_returns = df[df['returns'] > 0].reset_index()\n\nprint(positive_returns.head())",
+  "description": "Boolean mask from original DataFrame applied to reset_index version with different index.",
+  "explanation": "df has a DatetimeIndex. After reset_index(), df_reset has a RangeIndex (0, 1, 2...). The boolean mask from df uses DatetimeIndex positions. Applying this mask to df_reset aligns on integer positions, not dates. If any rows were dropped or reordered, this silently selects wrong rows.",
+  "suggested_fix": "Always filter before resetting the index, or use .loc with the same index on both objects.",
+  "expected": {
+    "issues": [
+      {"title": "Boolean mask applied across different index types after reset_index", "severity": "HIGH", "category": "PANDAS"}
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "statistical_scaler_leakage_real_001",
+  "category": "STATISTICAL",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "from sklearn.preprocessing import StandardScaler\nimport numpy as np\n\nX = np.random.randn(1000, 10)\ny = np.random.randn(1000)\n\nscaler = StandardScaler()\n\n# FIT on full dataset, including future data\nX_scaled = scaler.fit_transform(X)\n\n# Train model on scaled data\nmodel.fit(X_scaled, y)\n\n# Backtest using same scaler\npredictions = model.predict(X_scaled)",
+  "clean_code": "from sklearn.preprocessing import StandardScaler\nimport numpy as np\n\nX = np.random.randn(1000, 10)\ny = np.random.randn(1000)\n\n# Split into train and test FIRST\ntrain_size = int(0.7 * len(X))\nX_train, X_test = X[:train_size], X[train_size:]\ny_train, y_test = y[:train_size], y[train_size:]\n\nscaler = StandardScaler()\n\n# FIT ONLY on training data\nX_train_scaled = scaler.fit_transform(X_train)\n\n# Train model on scaled training data\nmodel.fit(X_train_scaled, y_train)\n\n# Transform test data using train scaler\nX_test_scaled = scaler.transform(X_test)\npredictions = model.predict(X_test_scaled)",
+  "description": "StandardScaler is fit on the entire dataset before training the model.",
+  "explanation": "When you fit_transform on all X data, the scaler learns the mean and standard deviation from all observations including those that would be in the 'future' during backtesting. This leaks information from out-of-sample data into the scaling, which is then used to train the model. The model learns features that are predictive only because they were scaled with knowledge of future data.",
+  "suggested_fix": "Always fit the scaler on training data only. Apply the trained scaler to test/validation data separately.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Data leakage from scaling entire dataset",
+        "severity": "CRITICAL",
+        "category": "STATISTICAL"
+      }
+    ]
+  }
+}

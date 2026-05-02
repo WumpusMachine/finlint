@@ -1,0 +1,14 @@
+{
+  "id": "clean_zipline_pipeline_factor_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "from zipline.pipeline import Pipeline\nfrom zipline.pipeline.factors import Returns, AverageDollarVolume\nfrom zipline.pipeline.filters import StaticAssets\nfrom zipline.api import attach_pipeline, pipeline_output, schedule_function, date_rules, time_rules\n\ndef make_pipeline():\n    # 1-month returns lagged by 1 day to avoid lookahead\n    momentum = Returns(window_length=21)\n\n    # Liquidity filter\n    dollar_volume = AverageDollarVolume(window_length=30)\n    liquid = dollar_volume.top(500)\n\n    return Pipeline(\n        columns={'momentum': momentum},\n        screen=liquid\n    )\n\ndef initialize(context):\n    attach_pipeline(make_pipeline(), 'factors')\n    schedule_function(\n        rebalance,\n        date_rules.month_start(),\n        time_rules.market_open(minutes=30)\n    )\n\ndef before_trading_start(context, data):\n    context.pipeline_data = pipeline_output('factors')\n\ndef rebalance(context, data):\n    factors = context.pipeline_data\n    longs = factors.nlargest(20, 'momentum').index\n    for asset in longs:\n        if data.can_trade(asset):\n            from zipline.api import order_target_percent\n            order_target_percent(asset, 1.0 / len(longs))",
+  "clean_code": "from zipline.pipeline import Pipeline\nfrom zipline.pipeline.factors import Returns, AverageDollarVolume\nfrom zipline.api import attach_pipeline, pipeline_output, schedule_function, date_rules, time_rules, order_target_percent\n\ndef make_pipeline():\n    momentum = Returns(window_length=21)\n    dollar_volume = AverageDollarVolume(window_length=30)\n    liquid = dollar_volume.top(500)\n\n    return Pipeline(\n        columns={'momentum': momentum},\n        screen=liquid\n    )\n\ndef initialize(context):\n    attach_pipeline(make_pipeline(), 'factors')\n    schedule_function(\n        rebalance,\n        date_rules.month_start(),\n        time_rules.market_open(minutes=30)\n    )\n\ndef before_trading_start(context, data):\n    context.pipeline_data = pipeline_output('factors')\n\ndef rebalance(context, data):\n    factors = context.pipeline_data\n    longs = factors.nlargest(20, 'momentum').index\n    for asset in longs:\n        if data.can_trade(asset):\n            order_target_percent(asset, 1.0 / len(longs))",
+  "description": "Clean example — Zipline pipeline with momentum factor, liquidity screen, and can_trade check.",
+  "explanation": "Pipeline data is fetched in before_trading_start() so it is available before trading begins. can_trade() checked before ordering. Rebalancing scheduled 30 minutes after open.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

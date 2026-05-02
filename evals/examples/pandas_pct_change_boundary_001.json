@@ -1,0 +1,16 @@
+{
+  "id": "pandas_pct_change_boundary_001",
+  "category": "PANDAS",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ndf = pd.read_csv('prices_long.csv', parse_dates=['date'])\ndf = df.sort_values(['symbol', 'date'])\n\n# pct_change without groupby — computes return from last price of previous symbol\ndf['returns'] = df['close'].pct_change()\n\n# First return of each symbol is wrong\nprint(df.groupby('symbol')['returns'].first())",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('prices_long.csv', parse_dates=['date'])\ndf = df.sort_values(['symbol', 'date'])\n\n# pct_change within each symbol group\ndf['returns'] = df.groupby('symbol')['close'].pct_change()\n\n# First return of each symbol is correctly NaN\nprint(df.groupby('symbol')['returns'].first())",
+  "description": "pct_change() on multi-symbol DataFrame without groupby computes returns across symbol boundaries.",
+  "explanation": "When sorted by symbol then date, pct_change() computes (MSFT_first_price - AAPL_last_price) / AAPL_last_price for the first row of MSFT. This is not a real return — it's a nonsensical ratio between two different stocks. The first return of every symbol except the first one is completely wrong.",
+  "suggested_fix": "Always use groupby('symbol') before pct_change() in multi-asset DataFrames.",
+  "expected": {
+    "issues": [
+      {"title": "pct_change() without groupby computes returns across symbol boundaries", "severity": "CRITICAL", "category": "PANDAS"}
+    ]
+  }
+}

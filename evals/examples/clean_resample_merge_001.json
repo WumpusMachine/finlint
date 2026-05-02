@@ -1,0 +1,14 @@
+{
+  "id": "clean_resample_merge_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\n# Load minute-level price data\nminute_data = pd.read_csv('minute_prices.csv', parse_dates=['timestamp'], index_col='timestamp')\n\n# Resample to daily OHLCV before any analysis\ndaily_data = minute_data.groupby('symbol').resample('1B').agg({\n    'open': 'first',\n    'high': 'max',\n    'low': 'min',\n    'close': 'last',\n    'volume': 'sum'\n}).reset_index()\n\n# Load daily fundamental data\nfundamentals = pd.read_csv('fundamentals.csv', parse_dates=['date'])\n\n# Now merge at matching daily frequency\nmerged = daily_data.merge(\n    fundamentals,\n    left_on=['symbol', 'timestamp'],\n    right_on=['symbol', 'date'],\n    how='left'\n)",
+  "clean_code": "import pandas as pd\n\nminute_data = pd.read_csv('minute_prices.csv', parse_dates=['timestamp'], index_col='timestamp')\n\ndaily_data = minute_data.groupby('symbol').resample('1B').agg({\n    'open': 'first',\n    'high': 'max',\n    'low': 'min',\n    'close': 'last',\n    'volume': 'sum'\n}).reset_index()\n\nfundamentals = pd.read_csv('fundamentals.csv', parse_dates=['date'])\n\nmerged = daily_data.merge(\n    fundamentals,\n    left_on=['symbol', 'timestamp'],\n    right_on=['symbol', 'date'],\n    how='left'\n)",
+  "description": "Clean example — minute data resampled to daily before merging with daily fundamentals.",
+  "explanation": "Minute data is aggregated to daily OHLCV using correct aggregations (first open, max high, min low, last close, sum volume). Merge uses both symbol and date keys. Frequencies match before merging.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

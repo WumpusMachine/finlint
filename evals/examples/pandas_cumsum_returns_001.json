@@ -1,0 +1,16 @@
+{
+  "id": "pandas_cumsum_returns_001",
+  "category": "PANDAS",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\nimport matplotlib.pyplot as plt\n\nreturns = pd.read_csv('strategy_returns.csv', index_col='date', parse_dates=True)['returns']\n\n# Wrong: cumsum of returns is an approximation that diverges significantly\nequity_curve = (1 + returns).cumsum()\n\nplt.plot(equity_curve)\nplt.title('Equity Curve')\nplt.show()",
+  "clean_code": "import pandas as pd\nimport matplotlib.pyplot as plt\n\nreturns = pd.read_csv('strategy_returns.csv', index_col='date', parse_dates=True)['returns']\n\n# Correct: cumprod for compound returns\nequity_curve = (1 + returns).cumprod()\n\nplt.plot(equity_curve)\nplt.title('Equity Curve')\nplt.show()",
+  "description": "cumsum() used instead of cumprod() for computing equity curve from returns.",
+  "explanation": "cumsum() of (1+r) computes the arithmetic sum, not the geometric compound. Over time, this diverges significantly from actual portfolio value. A 10% gain followed by 10% loss is (1.10 * 0.90 = 0.99) with cumprod — a 1% loss. With cumsum, it appears as (1.10 + 0.90 = 2.0) which is meaningless. Performance metrics derived from this curve will be completely wrong.",
+  "suggested_fix": "Use (1 + returns).cumprod() to compute the correct compound equity curve.",
+  "expected": {
+    "issues": [
+      {"title": "cumsum used instead of cumprod for compound equity curve", "severity": "HIGH", "category": "PANDAS"}
+    ]
+  }
+}

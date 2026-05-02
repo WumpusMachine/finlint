@@ -1,0 +1,16 @@
+{
+  "id": "pandas_resample_ohlc_wrong_001",
+  "category": "PANDAS",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\nminute_data = pd.read_csv('minute_ohlcv.csv', parse_dates=['timestamp'], index_col='timestamp')\n\n# Wrong aggregations — mean of OHLC doesn't make sense\ndaily = minute_data.resample('1D').agg({\n    'open': 'mean',\n    'high': 'mean',\n    'low': 'mean',\n    'close': 'mean',\n    'volume': 'mean'\n})",
+  "clean_code": "import pandas as pd\n\nminute_data = pd.read_csv('minute_ohlcv.csv', parse_dates=['timestamp'], index_col='timestamp')\n\n# Correct OHLCV aggregations\ndaily = minute_data.resample('1D').agg({\n    'open': 'first',\n    'high': 'max',\n    'low': 'min',\n    'close': 'last',\n    'volume': 'sum'\n})",
+  "description": "OHLCV data resampled using mean for all columns instead of correct aggregations.",
+  "explanation": "Open should be the first price of the period. High should be the maximum. Low should be the minimum. Close should be the last. Volume should be summed. Using mean for all of these produces values that never existed in the market — the average open price has no financial meaning and will distort any analysis.",
+  "suggested_fix": "Use first/max/min/last/sum respectively for OHLCV resampling.",
+  "expected": {
+    "issues": [
+      {"title": "OHLCV resampled with wrong aggregation functions", "severity": "HIGH", "category": "PANDAS"}
+    ]
+  }
+}

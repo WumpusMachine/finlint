@@ -1,0 +1,14 @@
+{
+  "id": "clean_decimal_money_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "from decimal import Decimal, ROUND_HALF_UP\n\ndef calculate_pnl(entry_price, exit_price, quantity, commission_per_share):\n    \"\"\"\n    Calculate P&L using Decimal to avoid floating point errors.\n    \"\"\"\n    entry = Decimal(str(entry_price))\n    exit_ = Decimal(str(exit_price))\n    qty = Decimal(str(quantity))\n    commission = Decimal(str(commission_per_share))\n\n    gross_pnl = (exit_ - entry) * qty\n    total_commission = commission * qty * 2  # entry + exit\n    net_pnl = gross_pnl - total_commission\n\n    # Round to cents\n    return float(net_pnl.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP))\n\nprint(calculate_pnl(100.10, 101.30, 1000, 0.001))",
+  "clean_code": "from decimal import Decimal, ROUND_HALF_UP\n\ndef calculate_pnl(entry_price, exit_price, quantity, commission_per_share):\n    entry = Decimal(str(entry_price))\n    exit_ = Decimal(str(exit_price))\n    qty = Decimal(str(quantity))\n    commission = Decimal(str(commission_per_share))\n\n    gross_pnl = (exit_ - entry) * qty\n    total_commission = commission * qty * 2\n    net_pnl = gross_pnl - total_commission\n\n    return float(net_pnl.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP))\n\nprint(calculate_pnl(100.10, 101.30, 1000, 0.001))",
+  "description": "Clean example — P&L calculation using Decimal to avoid floating point precision errors.",
+  "explanation": "Converts all inputs to Decimal via str() to avoid float precision loss. Rounds to cents using ROUND_HALF_UP. Includes both entry and exit commissions.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

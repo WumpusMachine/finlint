@@ -1,0 +1,16 @@
+{
+  "id": "data_price_correlation_001",
+  "category": "DATA",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\nprices = pd.read_csv('multi_asset_prices.csv', parse_dates=['date'], index_col='date')\n\n# Compute correlation on raw prices — non-stationary\ncorr_matrix = prices.corr()\n\nprint('Asset correlations:')\nprint(corr_matrix)",
+  "clean_code": "import pandas as pd\n\nprices = pd.read_csv('multi_asset_prices.csv', parse_dates=['date'], index_col='date')\n\n# Compute correlation on returns — stationary\nreturns = prices.pct_change().dropna()\ncorr_matrix = returns.corr()\n\nprint('Asset return correlations:')\nprint(corr_matrix)",
+  "description": "Correlation matrix computed on raw prices instead of returns.",
+  "explanation": "Raw price series are non-stationary — they have trends and changing means over time. Computing correlation on non-stationary data almost always produces spuriously high correlations (two trending assets appear highly correlated even if unrelated). Portfolio optimization and risk models built on price correlations will be completely wrong.",
+  "suggested_fix": "Always compute correlation on returns (pct_change()) or log returns, not raw prices.",
+  "expected": {
+    "issues": [
+      {"title": "Correlation computed on raw prices instead of returns", "severity": "HIGH", "category": "DATA"}
+    ]
+  }
+}

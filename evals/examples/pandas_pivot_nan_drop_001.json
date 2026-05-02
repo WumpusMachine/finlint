@@ -1,0 +1,20 @@
+{
+  "id": "pandas_pivot_nan_drop_001",
+  "category": "PANDAS",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\n# Long-format DataFrame with asset returns\ndf = pd.DataFrame({\n    'date': ['2020-01-01', '2020-01-01', '2020-01-02', '2020-01-02', '2020-01-03'],\n    'asset': ['AAPL', 'MSFT', 'AAPL', 'MSFT', 'AAPL'],\n    'return': [0.01, 0.02, -0.01, None, 0.03]\n})\n\n# Pivot to wide format for factor model\nwide = df.pivot_table(index='date', columns='asset', values='return')\n\n# Drop any rows with NaN to get clean data\nwide = wide.dropna()\n\n# Compute correlation matrix for portfolio optimization\ncorr = wide.corr()",
+  "clean_code": "import pandas as pd\n\ndf = pd.DataFrame({\n    'date': ['2020-01-01', '2020-01-01', '2020-01-02', '2020-01-02', '2020-01-03'],\n    'asset': ['AAPL', 'MSFT', 'AAPL', 'MSFT', 'AAPL'],\n    'return': [0.01, 0.02, -0.01, None, 0.03]\n})\n\nwide = df.pivot_table(index='date', columns='asset', values='return')\n\n# Check how much data is dropped BEFORE dropping\nprint(f'Rows before dropna: {len(wide)}')\nprint(f'NaN counts:\\n{wide.isna().sum()}')\n\n# Use pairwise correlation instead of dropping rows\n# This uses all available data for each pair\ncorr = wide.corr(min_periods=20)\n\n# Or only drop if ALL assets are missing that day\nwide_clean = wide.dropna(how='all')",
+  "description": "dropna() silently removes entire dates when any single asset has a missing return.",
+  "explanation": "After pivoting to wide format, a single missing return for one asset on one date causes dropna() to remove that entire date for ALL assets. In a 500-asset universe, if any one asset is missing data on a given day, you lose that day's returns for all 499 other assets too. Over a multi-year backtest this can silently remove 30-40% of your data, biasing the correlation matrix and portfolio optimization toward periods when all assets happened to trade normally.",
+  "suggested_fix": "Use corr(min_periods=N) which computes pairwise correlations using all available data. Or use dropna(how='all') to only drop dates where every asset is missing.",
+  "expected": {
+    "issues": [
+      {
+        "title": "dropna() after pivot silently removes valid data for all assets",
+        "severity": "HIGH",
+        "category": "DATA"
+      }
+    ]
+  }
+}

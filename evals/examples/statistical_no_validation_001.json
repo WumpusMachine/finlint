@@ -1,0 +1,20 @@
+{
+  "id": "statistical_no_validation_001",
+  "category": "STATISTICAL",
+  "severity": "MEDIUM",
+  "language": "python",
+  "buggy_code": "X = prepare_features(df)\ny = prepare_targets(df)\n\nmodel = RandomForestRegressor()\nmodel.fit(X, y)\n\n# Evaluate on SAME data used for training\npreds = model.predict(X)\nperformance = mean_squared_error(y, preds)\nprint(f'Performance: {performance}')",
+  "clean_code": "X = prepare_features(df)\ny = prepare_targets(df)\n\n# Split into train and test\nX_train, X_test = X[:800], X[800:]\ny_train, y_test = y[:800], y[800:]\n\nmodel = RandomForestRegressor()\nmodel.fit(X_train, y_train)\n\n# Evaluate on DIFFERENT data (out-of-sample)\npreds = model.predict(X_test)\nperformance = mean_squared_error(y_test, preds)\nprint(f'Performance (out-of-sample): {performance}')",
+  "description": "Model is trained and evaluated on the same data.",
+  "explanation": "When you fit a model on data and then evaluate it on the same data, the performance metrics (accuracy, R², MSE, etc.) are biased upward because the model has already seen those examples. This leads to overestimated performance. In a backtest, this would show fake profits because the model memorized the training data rather than learning generalizable patterns.",
+  "suggested_fix": "Always evaluate on a held-out test set that was NOT used during training. Use train/test split or cross-validation.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Model evaluated on training data only",
+        "severity": "MEDIUM",
+        "category": "STATISTICAL"
+      }
+    ]
+  }
+}

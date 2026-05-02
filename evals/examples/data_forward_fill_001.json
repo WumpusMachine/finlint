@@ -1,0 +1,20 @@
+{
+  "id": "data_forward_fill_001",
+  "category": "DATA",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "df.fillna(method='ffill', inplace=True)",
+  "clean_code": "# First understand why data is missing\nprint(df.isna().sum())\n# Only forward fill a limited number of periods\ndf.fillna(method='ffill', limit=5, inplace=True)\n# Drop remaining NaN rather than silently filling\ndf.dropna(inplace=True)",
+  "description": "Missing values are forward-filled without any limit or validation.",
+  "explanation": "Blind forward fill with no limit can propagate a single stale price for arbitrarily long gaps — days, weeks, or months. This makes a stock appear to have no volatility during the gap and can cause trades to execute at prices that were never real. It also silently introduces stale data into features and return calculations.",
+  "suggested_fix": "Understand the source of missing data first. Use fillna with a limit parameter. For gaps longer than the limit, drop rather than fill.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Unvalidated forward fill of missing data",
+        "severity": "HIGH",
+        "category": "DATA"
+      }
+    ]
+  }
+}

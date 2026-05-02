@@ -1,0 +1,17 @@
+{
+  "id": "pandas_crosstab_temporal_001",
+  "category": "PANDAS",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ndf = pd.read_csv('signals.csv', parse_dates=['date'], index_col='date')\n\n# Crosstab loses the temporal ordering\ntransition_matrix = pd.crosstab(\n    df['signal'],\n    df['signal'].shift(-1),\n    normalize='index'\n)\n\n# Transition matrix used to predict signal changes\n# But it's computed over FULL history including future\nprint(transition_matrix)",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('signals.csv', parse_dates=['date'], index_col='date')\n\n# Split into train and test\nsplit = int(len(df) * 0.7)\ntrain = df.iloc[:split]\n\n# Compute transition matrix on TRAINING data only\ntransition_matrix = pd.crosstab(\n    train['signal'],\n    train['signal'].shift(-1).dropna(),\n    normalize='index'\n)\n\n# Apply to test data for signal prediction\ntest = df.iloc[split:]\ntest['predicted_signal'] = test['signal'].map(\n    lambda s: transition_matrix.loc[s].idxmax() if s in transition_matrix.index else s\n)\nprint(transition_matrix)",
+  "description": "Signal transition matrix computed over full dataset used for prediction.",
+  "explanation": "A transition matrix that says 'signal A is followed by signal B 60% of the time' is computed using future signal values across the entire series. Using this matrix to predict transitions in a backtest means every prediction is informed by future signal patterns the strategy couldn't have known.",
+  "suggested_fix": "Compute the transition matrix on training data only and apply it to the test period.",
+  "expected": {
+    "issues": [
+      {"title": "Signal transition matrix computed on full dataset includes future patterns", "severity": "HIGH", "category": "PANDAS"},
+      {"title": "Signal transition matrix computed on full dataset includes future patterns", "severity": "HIGH", "category": "TEMPORAL"}
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "clean_iloc_integer_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ndf = pd.read_csv('prices.csv', index_col='date', parse_dates=True)\n\n# Use iloc correctly with integer positions\nfirst_row = df.iloc[0]\nlast_row = df.iloc[-1]\n\n# Use loc correctly with date labels\nprice_on_date = df.loc['2020-01-15', 'close']\n\n# Slice with loc using date range\nsubset = df.loc['2020-01-01':'2020-03-31']\n\nprint(f'First date: {df.index[0]}')\nprint(f'Last date: {df.index[-1]}')\nprint(f'Price on 2020-01-15: {price_on_date}')",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('prices.csv', index_col='date', parse_dates=True)\n\nfirst_row = df.iloc[0]\nlast_row = df.iloc[-1]\n\nprice_on_date = df.loc['2020-01-15', 'close']\n\nsubset = df.loc['2020-01-01':'2020-03-31']\n\nprint(f'First date: {df.index[0]}')\nprint(f'Last date: {df.index[-1]}')\nprint(f'Price on 2020-01-15: {price_on_date}')",
+  "description": "Clean example — correct use of iloc for integer positions and loc for date labels.",
+  "explanation": "iloc used only with integers (0, -1). loc used with date strings for label-based access. No confusion between positional and label indexing.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "pandas_groupby_leak_001",
+  "category": "PANDAS",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "# Compute mean return for each asset using entire series\ndf['mean_return'] = df.groupby('asset')['returns'].transform(lambda x: x.mean())\n\n# Use mean_return as a feature\ndf['z_score'] = (df['returns'] - df['mean_return']) / df['returns'].std()",
+  "clean_code": "# Compute rolling mean instead (uses only past data)\ndf['mean_return'] = df.groupby('asset')['returns'].rolling(window=60).mean().reset_index(drop=True)\n\n# Or use expanding mean that respects time order\ndf['mean_return'] = df.groupby('asset')['returns'].expanding().mean().reset_index(drop=True)\n\n# Use mean_return as a feature\ndf['z_score'] = (df['returns'] - df['mean_return']) / df['returns'].std()",
+  "description": "groupby().transform() computes mean over the entire group including future data.",
+  "explanation": "When you compute df.groupby('asset')['returns'].transform(lambda x: x.mean()), the mean includes ALL historical and future returns for each asset across the entire series. At time T, the feature includes information from time T+1, T+2, etc. This is data leakage \u2014 you're using future data to compute a feature used for predictions.",
+  "suggested_fix": "Use rolling or expanding windows that respect time ordering: .rolling(window=60).mean() or .expanding().mean()",
+  "expected": {
+    "issues": [
+      {
+        "title": "Groupby aggregation includes future data",
+        "severity": "HIGH",
+        "category": "PANDAS"
+      },
+      {
+        "title": "Groupby aggregation includes future data",
+        "severity": "HIGH",
+        "category": "STATISTICAL"
+      },
+      {
+        "title": "Groupby aggregation includes future data",
+        "severity": "HIGH",
+        "category": "TEMPORAL"
+      }
+    ]
+  }
+}

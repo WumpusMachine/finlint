@@ -1,0 +1,14 @@
+{
+  "id": "clean_expanding_features_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\nimport numpy as np\n\ndf = pd.read_csv('returns.csv', index_col='date', parse_dates=True).sort_index()\n\n# Use expanding window — only uses data up to current point\ndf['mean_return'] = df['returns'].expanding().mean()\ndf['std_return'] = df['returns'].expanding().std()\n\n# Z-score using only historical data\ndf['zscore'] = (df['returns'] - df['mean_return'].shift(1)) / df['std_return'].shift(1)\n\n# Drop initial NaN rows from expanding window\ndf = df.dropna(subset=['zscore'])\n\n# Use as signal\ndf['signal'] = (df['zscore'] > 1.0).astype(int)",
+  "clean_code": "import pandas as pd\nimport numpy as np\n\ndf = pd.read_csv('returns.csv', index_col='date', parse_dates=True).sort_index()\n\ndf['mean_return'] = df['returns'].expanding().mean()\ndf['std_return'] = df['returns'].expanding().std()\n\ndf['zscore'] = (df['returns'] - df['mean_return'].shift(1)) / df['std_return'].shift(1)\n\ndf = df.dropna(subset=['zscore'])\n\ndf['signal'] = (df['zscore'] > 1.0).astype(int)",
+  "description": "Clean example — expanding window z-score with properly lagged statistics.",
+  "explanation": "expanding() uses all data up to the current row. Both mean and std are shifted by 1 before use, ensuring the z-score at time T uses statistics computed from data up to T-1 only. No lookahead bias.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

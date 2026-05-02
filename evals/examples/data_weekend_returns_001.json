@@ -1,0 +1,16 @@
+{
+  "id": "data_weekend_returns_001",
+  "category": "DATA",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ndf = pd.read_csv('prices.csv', parse_dates=['date'], index_col='date')\n\n# Reindex to ALL calendar days including weekends\nfull_calendar = pd.date_range(df.index.min(), df.index.max(), freq='D')\ndf = df.reindex(full_calendar).ffill()\n\n# Compute returns — Friday to Monday shows as 3 separate zero-return days\ndf['returns'] = df['close'].pct_change()\n\n# Annualize using 365 — wrong multiplier for equity markets\nvol = df['returns'].std() * (365 ** 0.5)",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('prices.csv', parse_dates=['date'], index_col='date')\n\n# Reindex to business days only\nbusiness_days = pd.date_range(df.index.min(), df.index.max(), freq='B')\ndf = df.reindex(business_days).ffill(limit=1)\n\n# Returns computed between actual trading days\ndf['returns'] = df['close'].pct_change()\n\n# Annualize using 252 trading days\nvol = df['returns'].std() * (252 ** 0.5)",
+  "description": "Data reindexed to calendar days including weekends, and annualized using 365.",
+  "explanation": "Including weekends creates phantom zero-return days (Friday close = Monday open via ffill). This artificially deflates volatility and biases all statistics. Annualizing with 365 instead of 252 further distorts risk metrics.",
+  "suggested_fix": "Use freq='B' for business days or the actual trading calendar. Annualize equity returns using 252.",
+  "expected": {
+    "issues": [
+      {"title": "Calendar days used instead of trading days", "severity": "HIGH", "category": "DATA"}
+    ]
+  }
+}

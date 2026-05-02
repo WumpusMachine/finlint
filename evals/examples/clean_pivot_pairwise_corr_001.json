@@ -1,0 +1,14 @@
+{
+  "id": "clean_pivot_pairwise_corr_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ndf = pd.read_csv('returns_long.csv', parse_dates=['date'])\n\n# Pivot to wide format\nwide = df.pivot_table(index='date', columns='asset', values='return')\n\n# Use pairwise correlation with minimum periods\n# so no dates are dropped when one asset is missing\ncorr = wide.corr(min_periods=60)\n\nprint(f'Assets: {wide.shape[1]}, Dates used: {len(wide)}')\nprint(corr)",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('returns_long.csv', parse_dates=['date'])\n\nwide = df.pivot_table(index='date', columns='asset', values='return')\n\ncorr = wide.corr(min_periods=60)\n\nprint(f'Assets: {wide.shape[1]}, Dates used: {len(wide)}')\nprint(corr)",
+  "description": "Clean example — pivot_table followed by pairwise correlation with min_periods.",
+  "explanation": "No dropna() after pivot. corr(min_periods=60) uses all available data for each pair without dropping entire dates. Each asset pair computes correlation from the dates where both have data.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

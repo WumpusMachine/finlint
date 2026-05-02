@@ -1,0 +1,16 @@
+{
+  "id": "logic_context_reset_001",
+  "category": "LOGIC",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "from zipline.api import order_target_percent, schedule_function, date_rules, time_rules\n\ndef initialize(context):\n    context.month_pnl = 0\n    context.trade_count = 0\n    schedule_function(monthly_reset, date_rules.month_start(), time_rules.market_open())\n    schedule_function(rebalance, date_rules.every_day(), time_rules.market_open())\n\ndef rebalance(context, data):\n    context.trade_count += 1\n    order_target_percent(context.asset, 1.0)\n\ndef monthly_reset(context, data):\n    # BUG: rebalance runs BEFORE monthly_reset on month start\n    # trade_count already incremented before reset\n    context.trade_count = 0\n    context.month_pnl = 0",
+  "clean_code": "from zipline.api import order_target_percent, schedule_function, date_rules, time_rules\n\ndef initialize(context):\n    context.month_pnl = 0\n    context.trade_count = 0\n    # Schedule reset BEFORE rebalance by using earlier time\n    schedule_function(monthly_reset, date_rules.month_start(), time_rules.market_open())\n    schedule_function(rebalance, date_rules.month_start(), time_rules.market_open(minutes=1))\n\ndef rebalance(context, data):\n    context.trade_count += 1\n    order_target_percent(context.asset, 1.0)\n\ndef monthly_reset(context, data):\n    context.trade_count = 0\n    context.month_pnl = 0",
+  "description": "Monthly reset scheduled at same time as rebalance — execution order is undefined.",
+  "explanation": "When two functions are scheduled at the exact same time, execution order in Zipline is not guaranteed. If rebalance() runs before monthly_reset(), the trade count increments and then resets, losing the count. If monthly_reset() runs first, trade_count is reset then incremented — correct behavior. This creates non-deterministic strategy behavior.",
+  "suggested_fix": "Explicitly schedule the reset function before the trading function by using different minute offsets.",
+  "expected": {
+    "issues": [
+      {"title": "Non-deterministic execution order between scheduled functions", "severity": "HIGH", "category": "LOGIC"}
+    ]
+  }
+}

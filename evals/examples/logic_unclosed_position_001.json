@@ -1,0 +1,16 @@
+{
+  "id": "logic_unclosed_position_001",
+  "category": "LOGIC",
+  "severity": "MEDIUM",
+  "language": "python",
+  "buggy_code": "from zipline.api import order_target_percent, schedule_function, date_rules, time_rules\n\ndef initialize(context):\n    context.invested = False\n    schedule_function(rebalance, date_rules.every_day(), time_rules.market_open())\n\ndef rebalance(context, data):\n    if context.signal > 0 and not context.invested:\n        order_target_percent(context.asset, 1.0)\n        context.invested = True\n    # No exit logic — position held open indefinitely",
+  "clean_code": "from zipline.api import order_target_percent, schedule_function, date_rules, time_rules, get_datetime\nfrom zipline import run_algorithm\nimport pandas as pd\n\ndef initialize(context):\n    context.invested = False\n    schedule_function(rebalance, date_rules.every_day(), time_rules.market_open())\n\ndef rebalance(context, data):\n    current_date = get_datetime()\n    end_date = pd.Timestamp('2023-12-31', tz='UTC')\n\n    # Exit all positions on last day\n    if current_date >= end_date:\n        order_target_percent(context.asset, 0.0)\n        return\n\n    if context.signal > 0 and not context.invested:\n        order_target_percent(context.asset, 1.0)\n        context.invested = True\n    elif context.signal <= 0 and context.invested:\n        order_target_percent(context.asset, 0.0)\n        context.invested = False",
+  "description": "Strategy enters positions but never has exit logic to close them.",
+  "explanation": "Without exit conditions, a position taken early in the backtest holds through the entire remaining period regardless of market conditions. This is usually not intentional — the strategy's intent was to trade signals but the exit logic was forgotten. The reported P&L includes the full mark-to-market of a permanently held position.",
+  "suggested_fix": "Always implement explicit exit conditions and ensure positions are closed at end of backtest.",
+  "expected": {
+    "issues": [
+      {"title": "Strategy has no exit logic — positions held indefinitely", "severity": "MEDIUM", "category": "LOGIC"}
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "data_index_constituents_001",
+  "category": "DATA",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\n# Current S&P 500 constituents (as of today)\ncurrent_sp500 = pd.read_csv('sp500_current.csv')['ticker'].tolist()\n\n# Backtest from 2010 using CURRENT constituents\nfor ticker in current_sp500:\n    prices = pd.read_csv(f'data/{ticker}.csv', parse_dates=['date'], index_col='date')\n    # Only stocks currently IN the index are tested\n    # Stocks that were in the index in 2010 but later removed are excluded",
+  "clean_code": "import pandas as pd\n\n# Point-in-time S&P 500 constituents — who was in the index on each date\nconstituents = pd.read_csv('sp500_historical_constituents.csv', parse_dates=['date'])\n\ndef get_sp500_on_date(as_of_date):\n    \"\"\"Returns stocks that were in the S&P 500 on a specific date.\"\"\"\n    snapshot = constituents[\n        (constituents['added_date'] <= as_of_date) &\n        ((constituents['removed_date'].isna()) | (constituents['removed_date'] > as_of_date))\n    ]\n    return snapshot['ticker'].tolist()\n\n# Backtest uses different universe for each date\nfor date in backtest_dates:\n    universe = get_sp500_on_date(date)\n    # Includes stocks that were later removed (restructured, delisted, etc.)",
+  "description": "Backtest uses current index constituents instead of historical point-in-time membership.",
+  "explanation": "The S&P 500 composition changes constantly. Companies get added after performing well and removed after performing poorly or going bankrupt. Backtesting with current constituents means you only test on stocks that survived — you never test on stocks that were removed due to poor performance. This is survivorship bias at the index level, which can add 1-3% per year of phantom alpha.",
+  "suggested_fix": "Use a historical point-in-time constituent database that tracks additions and removals.",
+  "expected": {
+    "issues": [
+      {"title": "Backtest uses current index constituents causing survivorship bias", "severity": "CRITICAL", "category": "DATA"}
+    ]
+  }
+}

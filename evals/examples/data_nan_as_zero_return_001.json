@@ -1,0 +1,16 @@
+{
+  "id": "data_nan_as_zero_return_001",
+  "category": "DATA",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\nreturns = pd.read_csv('returns.csv', index_col='date', parse_dates=True)\n\n# Fill NaN returns with 0 — treats missing trading days as zero-return days\nreturns = returns.fillna(0)\n\n# Compute cumulative returns\ncum_returns = (1 + returns).cumprod()\n\n# Compute Sharpe ratio\nsharpe = returns.mean() / returns.std() * (252 ** 0.5)",
+  "clean_code": "import pandas as pd\n\nreturns = pd.read_csv('returns.csv', index_col='date', parse_dates=True)\n\n# Log missing return dates\nmissing = returns.isna().sum()\nif missing.any():\n    print(f'Missing returns: {missing}')\n\n# Drop NaN rather than filling with zero\nreturns_clean = returns.dropna()\n\ncum_returns = (1 + returns_clean).cumprod()\nsharpe = returns_clean.mean() / returns_clean.std() * (252 ** 0.5)",
+  "description": "NaN return values filled with 0, treating missing data as zero-return days.",
+  "explanation": "NaN in a returns series usually means no data available for that date — not that the return was zero. Filling with 0 creates phantom zero-return days that artificially reduce volatility and potentially change the Sharpe ratio. For strategies with many missing values, this distortion can be significant.",
+  "suggested_fix": "Drop NaN returns or investigate why they're missing before deciding how to handle them.",
+  "expected": {
+    "issues": [
+      {"title": "NaN returns filled with zero creates phantom zero-return days", "severity": "HIGH", "category": "DATA"}
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "logic_retrain_loop_001",
+  "category": "LOGIC",
+  "severity": "MEDIUM",
+  "language": "python",
+  "buggy_code": "def compute(self, today, assets, out, returns, *inputs):\n    # Model is fit EVERY TIME compute is called\n    self.model.fit(inputs, returns)\n    preds = self.model.predict(inputs)\n    out[:] = preds",
+  "clean_code": "def initialize(context):\n    context.model = RandomForestRegressor()\n    context.model_trained = False\n\ndef before_trading_start(context, data):\n    # Train model ONCE before trading begins\n    if not context.model_trained and has_sufficient_data(context):\n        X_train = prepare_training_data(context)\n        y_train = prepare_targets(context)\n        context.model.fit(X_train, y_train)\n        context.model_trained = True\n\ndef compute(self, today, assets, out, returns, *inputs):\n    # Only inference here\n    preds = self.model.predict(inputs)\n    out[:] = preds",
+  "description": "Model is fit inside the compute() method, which is called on every pipeline execution.",
+  "explanation": "compute() is called many times during a backtest (once per day or more). Training the model inside compute() means the model is re-fitted with different data windows at different times. This causes non-deterministic behavior and unintended data leakage — the model trains on today's data (including today's returns) to make predictions for today.",
+  "suggested_fix": "Separate training from inference. Train the model once in before_trading_start() or during initialization. Use compute() only for predictions.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Model retrained during inference loop",
+        "severity": "MEDIUM",
+        "category": "LOGIC"
+      }
+    ]
+  }
+}

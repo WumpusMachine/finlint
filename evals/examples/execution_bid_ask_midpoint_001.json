@@ -1,0 +1,16 @@
+{
+  "id": "execution_bid_ask_midpoint_001",
+  "category": "EXECUTION",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ntick_data = pd.read_csv('tick_data.csv', parse_dates=['timestamp'])\n\n# Compute midpoint price\ntick_data['mid'] = (tick_data['bid'] + tick_data['ask']) / 2\n\n# Simulate fills at midpoint — unrealistic\ntick_data['fill_price'] = tick_data['mid']\n\n# Strategy returns computed from midpoint fills\ntick_data['returns'] = tick_data['fill_price'].pct_change()",
+  "clean_code": "import pandas as pd\n\ntick_data = pd.read_csv('tick_data.csv', parse_dates=['timestamp'])\n\n# Buy orders fill at ASK (you pay the ask)\n# Sell orders fill at BID (you receive the bid)\ntick_data['fill_price_buy'] = tick_data['ask']\ntick_data['fill_price_sell'] = tick_data['bid']\n\n# Spread cost per round-trip\ntick_data['spread'] = tick_data['ask'] - tick_data['bid']\ntick_data['spread_bps'] = (tick_data['spread'] / tick_data['mid']) * 10000\n\nprint(f'Average spread: {tick_data[\"spread_bps\"].mean():.1f} bps')",
+  "description": "Trade fills simulated at bid-ask midpoint rather than realistic ask (for buys) or bid (for sells).",
+  "explanation": "The midpoint is never an actual fillable price — it exists between bid and ask. Buy orders must cross the spread and fill at the ask. Sell orders fill at the bid. Simulating fills at the midpoint understates transaction costs by half the spread. For high-frequency strategies, this difference alone can make a profitable backtest unprofitable in live trading.",
+  "suggested_fix": "Fill buy orders at ask price and sell orders at bid price to correctly model transaction costs.",
+  "expected": {
+    "issues": [
+      {"title": "Fills simulated at midpoint instead of bid/ask prices", "severity": "HIGH", "category": "EXECUTION"}
+    ]
+  }
+}

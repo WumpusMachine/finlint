@@ -1,0 +1,20 @@
+{
+  "id": "pandas_rolling_apply_closure_001",
+  "category": "PANDAS",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "import pandas as pd\nimport numpy as np\n\nprices = pd.Series([100, 102, 101, 105, 103, 108],\n                   index=pd.date_range('2020-01-01', periods=6))\n\n# Store all prices in outer scope\nall_prices = prices.values\n\ndef compute_zscore(window):\n    # BUG: uses all_prices from outer scope, not just the window\n    global_mean = all_prices.mean()\n    global_std = all_prices.std()\n    return (window[-1] - global_mean) / global_std\n\n# Apply rolling z-score\nzscore = prices.rolling(window=3).apply(compute_zscore)\n\n# Use as signal\nsignal = zscore > 1.0",
+  "clean_code": "import pandas as pd\nimport numpy as np\n\nprices = pd.Series([100, 102, 101, 105, 103, 108],\n                   index=pd.date_range('2020-01-01', periods=6))\n\ndef compute_zscore(window):\n    # CORRECT: use only data within the window\n    return (window[-1] - window.mean()) / window.std()\n\n# Apply rolling z-score using only window data\nzscore = prices.rolling(window=3).apply(compute_zscore, raw=True)\n\n# Use as signal\nsignal = zscore > 1.0",
+  "description": "Rolling apply function closes over all_prices from outer scope instead of using only the rolling window.",
+  "explanation": "The compute_zscore function uses all_prices.mean() and all_prices.std(), which are computed over the ENTIRE price series including future data. At time T, the z-score is normalized using statistics from T+1, T+2, etc. This is lookahead bias introduced through a pandas closure \u2014 it looks like a windowed calculation but is actually using the full dataset. This is particularly dangerous because the rolling().apply() call looks correct at first glance.",
+  "suggested_fix": "Inside rolling().apply() functions, only use the window parameter for calculations. Never reference outer scope variables that contain full time series data.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Rolling apply closes over full dataset introducing lookahead bias",
+        "severity": "CRITICAL",
+        "category": "TEMPORAL"
+      }
+    ]
+  }
+}

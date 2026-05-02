@@ -1,0 +1,14 @@
+{
+  "id": "clean_reindex_ffill_limit_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\nprices = pd.DataFrame({\n    'AAPL': [100, None, 102, None, 104],\n    'MSFT': [200, 201, None, None, 205]\n}, index=pd.date_range('2020-01-01', periods=5))\n\n# Reindex to full trading calendar\nfull_index = pd.date_range('2020-01-01', '2020-01-05', freq='B')\nprices = prices.reindex(full_index)\n\n# Fill with limit of 1 day only\nprices_filled = prices.ffill(limit=1)\n\n# Mark extended gaps as invalid rather than using stale data\nvalid = prices_filled.notna()\n\n# Only compute returns where data is valid\nreturns = prices_filled.pct_change()\nreturns[~valid] = float('nan')\n\nprint(returns)",
+  "clean_code": "import pandas as pd\n\nprices = pd.DataFrame({\n    'AAPL': [100, None, 102, None, 104],\n    'MSFT': [200, 201, None, None, 205]\n}, index=pd.date_range('2020-01-01', periods=5))\n\nfull_index = pd.date_range('2020-01-01', '2020-01-05', freq='B')\nprices = prices.reindex(full_index)\n\nprices_filled = prices.ffill(limit=1)\n\nvalid = prices_filled.notna()\n\nreturns = prices_filled.pct_change()\nreturns[~valid] = float('nan')\n\nprint(returns)",
+  "description": "Clean example — reindex followed by ffill with limit=1 and NaN masking for extended gaps.",
+  "explanation": "ffill(limit=1) only fills single-day gaps. Extended gaps remain NaN. Returns are masked as NaN where data was not valid. Prevents stale price propagation.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

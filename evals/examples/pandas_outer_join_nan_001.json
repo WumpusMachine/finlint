@@ -1,0 +1,16 @@
+{
+  "id": "pandas_outer_join_nan_001",
+  "category": "PANDAS",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\nprices = pd.read_csv('prices.csv', parse_dates=['date'], index_col='date')\nsignals = pd.read_csv('signals.csv', parse_dates=['date'], index_col='date')\n\n# Outer join — introduces NaN for dates missing in either source\ndf = prices.join(signals, how='outer')\n\n# Forward fill without checking how many NaN rows were introduced\ndf = df.ffill()\n\n# Compute strategy returns on potentially corrupted data\ndf['strategy'] = df['signal'] * df['close'].pct_change()",
+  "clean_code": "import pandas as pd\n\nprices = pd.read_csv('prices.csv', parse_dates=['date'], index_col='date')\nsignals = pd.read_csv('signals.csv', parse_dates=['date'], index_col='date')\n\n# Inner join — only keep dates present in both\ndf = prices.join(signals, how='inner')\n\n# Verify no NaN introduced\nassert df.isna().sum().sum() == 0, 'Unexpected NaN after inner join'\n\ndf['strategy'] = df['signal'] * df['close'].pct_change()",
+  "description": "Outer join used between prices and signals DataFrames, introducing NaN rows.",
+  "explanation": "An outer join includes all dates from both DataFrames, creating NaN for dates present in only one source. If signals are generated on a different calendar than prices (e.g., weekly signals, daily prices), the outer join introduces many NaN rows. Forward filling then propagates old signals forward indefinitely, distorting the strategy.",
+  "suggested_fix": "Use inner join to only keep dates where both sources have data. Verify alignment after joining.",
+  "expected": {
+    "issues": [
+      {"title": "Outer join introduces NaN rows from date misalignment", "severity": "HIGH", "category": "PANDAS"}
+    ]
+  }
+}

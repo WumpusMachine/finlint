@@ -1,0 +1,20 @@
+{
+  "id": "pandas_reindex_ffill_001",
+  "category": "PANDAS",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\n# Multi-asset price DataFrame indexed by date\nprices = pd.DataFrame({\n    'AAPL': [100, None, 102, None, 104],\n    'MSFT': [200, 201, None, None, 205]\n}, index=pd.date_range('2020-01-01', periods=5))\n\n# Reindex to full date range and forward fill ALL columns together\nprices = prices.reindex(pd.date_range('2020-01-01', '2020-01-05')).ffill()\n\n# Compute returns on filled data\nreturns = prices.pct_change()\n\n# Use as features\nfeatures = returns.dropna()",
+  "clean_code": "import pandas as pd\n\nprices = pd.DataFrame({\n    'AAPL': [100, None, 102, None, 104],\n    'MSFT': [200, 201, None, None, 205]\n}, index=pd.date_range('2020-01-01', periods=5))\n\n# Forward fill EACH column independently with a limit\n# so gaps longer than 1 day are NOT filled\nprices = prices.ffill(limit=1)\n\n# Flag remaining NaN as genuinely missing \u2014 don't trade those days\nvalid_mask = prices.notna().all(axis=1)\nprices = prices[valid_mask]\n\n# Compute returns only on valid data\nreturns = prices.pct_change().dropna()",
+  "description": "prices.reindex().ffill() forward fills ALL missing values across ALL assets with no limit.",
+  "explanation": "When a stock has missing prices (e.g. halted trading, data gap), ffill() silently propagates the last known price forward indefinitely. This means: (1) pct_change() returns 0% on filled days, making the stock appear to have no volatility \u2014 a false signal. (2) If one asset has a 3-day gap and another has none, their returns are computed on mismatched real trading days. (3) In a multi-asset portfolio, this creates fake correlations \u2014 filled assets appear to have returns of exactly 0% while others have real returns.",
+  "suggested_fix": "Use ffill(limit=1) to fill only single-day gaps. For longer gaps, drop the rows or mark them as invalid. Never compute returns or signals on forward-filled prices without validating the fill length.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Unbounded forward fill on multi-asset prices distorts returns",
+        "severity": "HIGH",
+        "category": "DATA"
+      }
+    ]
+  }
+}

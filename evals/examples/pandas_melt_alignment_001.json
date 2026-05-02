@@ -1,0 +1,16 @@
+{
+  "id": "pandas_melt_alignment_001",
+  "category": "PANDAS",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\n# Wide format: rows=dates, columns=assets\nreturns_wide = pd.read_csv('returns_wide.csv', parse_dates=['date'], index_col='date')\n\n# Melt to long format\nreturns_long = returns_wide.reset_index().melt(\n    id_vars=['date'],\n    var_name='asset',\n    value_name='return'\n)\n\n# Sort by asset then date — WRONG order for time series\nreturns_long = returns_long.sort_values(['asset', 'date'])\n\n# Shift without groupby — contaminates across assets\nreturns_long['prev_return'] = returns_long['return'].shift(1)",
+  "clean_code": "import pandas as pd\n\nreturns_wide = pd.read_csv('returns_wide.csv', parse_dates=['date'], index_col='date')\n\nreturns_long = returns_wide.reset_index().melt(\n    id_vars=['date'],\n    var_name='asset',\n    value_name='return'\n)\n\nreturns_long = returns_long.sort_values(['asset', 'date'])\n\n# Always use groupby when shifting in long format multi-asset data\nreturns_long['prev_return'] = returns_long.groupby('asset')['return'].shift(1)\n\nreturns_long = returns_long.dropna(subset=['prev_return'])",
+  "description": "After melt() and sort by asset/date, shift() applied without groupby contaminates across asset boundaries.",
+  "explanation": "After melting to long format and sorting by asset then date, the last return of AAPL immediately precedes the first return of MSFT. shift(1) without groupby gives MSFT's first row the value of AAPL's last return. This is exactly the same cross-asset contamination as direct shift on multi-asset data.",
+  "suggested_fix": "Always use groupby('asset').shift(1) after melt in multi-asset long-format DataFrames.",
+  "expected": {
+    "issues": [
+      {"title": "shift() without groupby after melt contaminates across asset boundaries", "severity": "HIGH", "category": "PANDAS"}
+    ]
+  }
+}

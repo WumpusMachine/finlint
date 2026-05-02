@@ -1,0 +1,20 @@
+{
+  "id": "data_survivorship_001",
+  "category": "DATA",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "symbols = [f[:-4] for f in os.listdir(path) if f[0] != '.']",
+  "clean_code": "# Load from a historical point-in-time universe that includes delisted symbols\nsymbols = load_historical_universe(as_of_date=start_date)",
+  "description": "Symbol list is derived from files currently present on disk.",
+  "explanation": "os.listdir() returns only files that exist today. If you downloaded data for currently-listed S&P 500 stocks, every delisted or bankrupt company is missing. Your backtest never loses money on stocks that went to zero, which massively inflates performance.",
+  "suggested_fix": "Use a point-in-time historical universe that includes all companies that were in the index at each date, including those subsequently delisted.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Survivorship bias from static symbol list",
+        "severity": "CRITICAL",
+        "category": "DATA"
+      }
+    ]
+  }
+}

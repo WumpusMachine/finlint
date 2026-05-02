@@ -1,0 +1,20 @@
+{
+  "id": "pandas_alignment_bug_real_001",
+  "category": "PANDAS",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import numpy as np\n\nfeatures = np.dstack(inputs)\noutcome = returns.flatten()\n\nn_days, n_stocks, n_features = features.shape\nfeatures = features.reshape(-1, n_features)\n\n# Remove NaNs from features\nfeatures = features[~np.isnan(outcome)]\noutcome = outcome[~np.isnan(outcome)]",
+  "clean_code": "import numpy as np\n\nfeatures = np.dstack(inputs)\noutcome = returns.flatten()\n\nn_days, n_stocks, n_features = features.shape\nfeatures = features.reshape(-1, n_features)\n\n# Create a single mask for both arrays\nvalid_mask = ~np.isnan(outcome) & np.all(~np.isnan(features), axis=1)\n\n# Apply mask to both simultaneously\nfeatures = features[valid_mask]\noutcome = outcome[valid_mask]",
+  "description": "Features and outcomes are filtered using separate NaN masks applied sequentially.",
+  "explanation": "When features are first filtered using outcome's NaN mask, the shape changes. Then outcome is filtered using its original mask, which no longer aligns with the already-filtered features. This causes silent misalignment where the first row of features trains on the wrong outcome.",
+  "suggested_fix": "Create a single combined boolean mask from both arrays and apply it simultaneously to ensure alignment.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Feature-target misalignment from sequential filtering",
+        "severity": "HIGH",
+        "category": "PANDAS"
+      }
+    ]
+  }
+}

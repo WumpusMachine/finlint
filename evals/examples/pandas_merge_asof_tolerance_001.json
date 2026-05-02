@@ -1,0 +1,17 @@
+{
+  "id": "pandas_merge_asof_tolerance_001",
+  "category": "PANDAS",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\nprices = pd.read_csv('prices.csv', parse_dates=['timestamp'])\nnews = pd.read_csv('news_sentiment.csv', parse_dates=['timestamp'])\n\n# merge_asof with no tolerance — matches any past news, even years old\nmerged = pd.merge_asof(\n    prices.sort_values('timestamp'),\n    news.sort_values('timestamp'),\n    on='timestamp',\n    direction='backward'\n)\n\n# Rows with no recent news use sentiment from potentially very old articles\nmerged['sentiment'] = merged['sentiment_score'].fillna(0)",
+  "clean_code": "import pandas as pd\n\nprices = pd.read_csv('prices.csv', parse_dates=['timestamp'])\nnews = pd.read_csv('news_sentiment.csv', parse_dates=['timestamp'])\n\n# merge_asof with 1-day tolerance — only use recent news\nmerged = pd.merge_asof(\n    prices.sort_values('timestamp'),\n    news.sort_values('timestamp'),\n    on='timestamp',\n    direction='backward',\n    tolerance=pd.Timedelta('1D')\n)\n\n# Rows with no recent news get NaN — acknowledged as missing, not stale\nmerged['sentiment'] = merged['sentiment_score'].fillna(0)",
+  "description": "merge_asof without tolerance matches events from arbitrarily far in the past.",
+  "explanation": "Without a tolerance parameter, merge_asof will match the most recent news article even if it was published 2 years ago. A price row in 2023 could be matched to news from 2021. That sentiment signal is completely stale and irrelevant, but the code treats it as valid current data.",
+  "suggested_fix": "Add a tolerance parameter to limit how far back to look for matching events: tolerance=pd.Timedelta('1D')",
+  "expected": {
+    "issues": [
+      {"title": "merge_asof without tolerance uses arbitrarily stale event data", "severity": "HIGH", "category": "PANDAS"},
+      {"title": "merge_asof without tolerance uses arbitrarily stale event data", "severity": "HIGH", "category": "DATA"}
+    ]
+  }
+}

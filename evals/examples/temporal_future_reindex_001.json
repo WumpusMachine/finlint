@@ -1,0 +1,16 @@
+{
+  "id": "temporal_future_reindex_001",
+  "category": "TEMPORAL",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ndf = pd.read_csv('signals.csv', parse_dates=['date'], index_col='date')\n\n# Reindex to full daily range INCLUDING future dates\nfull_range = pd.date_range('2015-01-01', '2025-12-31', freq='B')\ndf = df.reindex(full_range)\n\n# Forward fill — propagates last known signal into the future\ndf = df.ffill()\n\n# This means rows in 2025 already have values filled from 2024\nsignal = df['signal']",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('signals.csv', parse_dates=['date'], index_col='date')\n\n# Only reindex up to the last date in the data\nfull_range = pd.date_range(df.index.min(), df.index.max(), freq='B')\ndf = df.reindex(full_range)\n\n# Forward fill within known data range only\ndf = df.ffill(limit=1)\n\nsignal = df['signal']",
+  "description": "Reindex extends the DataFrame into future dates, then ffill propagates values into the future.",
+  "explanation": "reindex() to a future end date creates rows for dates that don't exist yet. ffill() then fills those rows with the last known value. Any analysis on those future rows uses data that wasn't available at that time.",
+  "suggested_fix": "Only reindex within the known data range. Never extend to future dates.",
+  "expected": {
+    "issues": [
+      {"title": "Reindex into future dates with ffill creates lookahead", "severity": "CRITICAL", "category": "TEMPORAL"}
+    ]
+  }
+}

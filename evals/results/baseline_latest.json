@@ -1,0 +1,1342 @@
+[
+  {
+    "id": "clean_concat_preserve_index_001",
+    "passed": false,
+    "reason": "False positive: flagged 5 issue(s)",
+    "expected_count": 0,
+    "actual_count": 5,
+    "false_positives": 5
+  },
+  {
+    "id": "clean_context_bounds_check_001",
+    "passed": false,
+    "reason": "False positive: flagged 4 issue(s)",
+    "expected_count": 0,
+    "actual_count": 4,
+    "false_positives": 4
+  },
+  {
+    "id": "clean_decimal_money_001",
+    "passed": false,
+    "reason": "API call failed or returned invalid JSON",
+    "expected_count": 0,
+    "actual_count": 0
+  },
+  {
+    "id": "clean_example_001",
+    "passed": false,
+    "reason": "False positive: flagged 3 issue(s)",
+    "expected_count": 0,
+    "actual_count": 3,
+    "false_positives": 3
+  },
+  {
+    "id": "clean_expanding_features_001",
+    "passed": false,
+    "reason": "False positive: flagged 5 issue(s)",
+    "expected_count": 0,
+    "actual_count": 5,
+    "false_positives": 5
+  },
+  {
+    "id": "clean_ffill_with_limit_001",
+    "passed": false,
+    "reason": "False positive: flagged 5 issue(s)",
+    "expected_count": 0,
+    "actual_count": 5,
+    "false_positives": 5
+  },
+  {
+    "id": "clean_groupby_rolling_001",
+    "passed": false,
+    "reason": "False positive: flagged 4 issue(s)",
+    "expected_count": 0,
+    "actual_count": 4,
+    "false_positives": 4
+  },
+  {
+    "id": "clean_historical_universe_001",
+    "passed": false,
+    "reason": "False positive: flagged 5 issue(s)",
+    "expected_count": 0,
+    "actual_count": 5,
+    "false_positives": 5
+  },
+  {
+    "id": "clean_iloc_integer_001",
+    "passed": false,
+    "reason": "False positive: flagged 5 issue(s)",
+    "expected_count": 0,
+    "actual_count": 5,
+    "false_positives": 5
+  },
+  {
+    "id": "clean_log_returns_001",
+    "passed": false,
+    "reason": "False positive: flagged 5 issue(s)",
+    "expected_count": 0,
+    "actual_count": 5,
+    "false_positives": 5
+  },
+  {
+    "id": "clean_max_drawdown_001",
+    "passed": false,
+    "reason": "False positive: flagged 3 issue(s)",
+    "expected_count": 0,
+    "actual_count": 3,
+    "false_positives": 3
+  },
+  {
+    "id": "clean_merge_asof_backward_001",
+    "passed": false,
+    "reason": "False positive: flagged 3 issue(s)",
+    "expected_count": 0,
+    "actual_count": 3,
+    "false_positives": 3
+  },
+  {
+    "id": "clean_merge_asset_date_001",
+    "passed": false,
+    "reason": "False positive: flagged 5 issue(s)",
+    "expected_count": 0,
+    "actual_count": 5,
+    "false_positives": 5
+  },
+  {
+    "id": "clean_merge_correct_001",
+    "passed": false,
+    "reason": "False positive: flagged 3 issue(s)",
+    "expected_count": 0,
+    "actual_count": 3,
+    "false_positives": 3
+  },
+  {
+    "id": "clean_nan_mask_alignment_001",
+    "passed": false,
+    "reason": "False positive: flagged 4 issue(s)",
+    "expected_count": 0,
+    "actual_count": 4,
+    "false_positives": 4
+  },
+  {
+    "id": "clean_pivot_pairwise_corr_001",
+    "passed": false,
+    "reason": "False positive: flagged 4 issue(s)",
+    "expected_count": 0,
+    "actual_count": 4,
+    "false_positives": 4
+  },
+  {
+    "id": "clean_point_in_time_universe_001",
+    "passed": false,
+    "reason": "False positive: flagged 5 issue(s)",
+    "expected_count": 0,
+    "actual_count": 5,
+    "false_positives": 5
+  },
+  {
+    "id": "clean_position_sizing_001",
+    "passed": false,
+    "reason": "False positive: flagged 5 issue(s)",
+    "expected_count": 0,
+    "actual_count": 5,
+    "false_positives": 5
+  },
+  {
+    "id": "clean_reindex_ffill_limit_001",
+    "passed": false,
+    "reason": "False positive: flagged 4 issue(s)",
+    "expected_count": 0,
+    "actual_count": 4,
+    "false_positives": 4
+  },
+  {
+    "id": "clean_resample_merge_001",
+    "passed": false,
+    "reason": "False positive: flagged 5 issue(s)",
+    "expected_count": 0,
+    "actual_count": 5,
+    "false_positives": 5
+  },
+  {
+    "id": "clean_rolling_apply_local_001",
+    "passed": false,
+    "reason": "False positive: flagged 4 issue(s)",
+    "expected_count": 0,
+    "actual_count": 4,
+    "false_positives": 4
+  },
+  {
+    "id": "clean_rolling_signal_001",
+    "passed": false,
+    "reason": "False positive: flagged 5 issue(s)",
+    "expected_count": 0,
+    "actual_count": 5,
+    "false_positives": 5
+  },
+  {
+    "id": "clean_rolling_zscore_001",
+    "passed": false,
+    "reason": "False positive: flagged 5 issue(s)",
+    "expected_count": 0,
+    "actual_count": 5,
+    "false_positives": 5
+  },
+  {
+    "id": "clean_scaler_proper_001",
+    "passed": false,
+    "reason": "False positive: flagged 4 issue(s)",
+    "expected_count": 0,
+    "actual_count": 4,
+    "false_positives": 4
+  },
+  {
+    "id": "clean_sharpe_ratio_001",
+    "passed": false,
+    "reason": "False positive: flagged 4 issue(s)",
+    "expected_count": 0,
+    "actual_count": 4,
+    "false_positives": 4
+  },
+  {
+    "id": "clean_shift_correct_001",
+    "passed": false,
+    "reason": "False positive: flagged 4 issue(s)",
+    "expected_count": 0,
+    "actual_count": 4,
+    "false_positives": 4
+  },
+  {
+    "id": "clean_sort_reindex_target_001",
+    "passed": false,
+    "reason": "False positive: flagged 3 issue(s)",
+    "expected_count": 0,
+    "actual_count": 3,
+    "false_positives": 3
+  },
+  {
+    "id": "clean_timezone_aware_001",
+    "passed": false,
+    "reason": "API call failed or returned invalid JSON",
+    "expected_count": 0,
+    "actual_count": 0
+  },
+  {
+    "id": "clean_train_inference_separated_001",
+    "passed": false,
+    "reason": "False positive: flagged 5 issue(s)",
+    "expected_count": 0,
+    "actual_count": 5,
+    "false_positives": 5
+  },
+  {
+    "id": "clean_train_test_split_001",
+    "passed": false,
+    "reason": "False positive: flagged 8 issue(s)",
+    "expected_count": 0,
+    "actual_count": 8,
+    "false_positives": 8
+  },
+  {
+    "id": "clean_vectorbt_backtest_001",
+    "passed": false,
+    "reason": "False positive: flagged 5 issue(s)",
+    "expected_count": 0,
+    "actual_count": 5,
+    "false_positives": 5
+  },
+  {
+    "id": "clean_walk_forward_cv_001",
+    "passed": false,
+    "reason": "False positive: flagged 4 issue(s)",
+    "expected_count": 0,
+    "actual_count": 4,
+    "false_positives": 4
+  },
+  {
+    "id": "clean_zipline_initialize_001",
+    "passed": false,
+    "reason": "False positive: flagged 5 issue(s)",
+    "expected_count": 0,
+    "actual_count": 5,
+    "false_positives": 5
+  },
+  {
+    "id": "clean_zipline_pipeline_factor_001",
+    "passed": false,
+    "reason": "False positive: flagged 6 issue(s)",
+    "expected_count": 0,
+    "actual_count": 6,
+    "false_positives": 6
+  },
+  {
+    "id": "data_adjusted_prices_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['DATA'], got ['', '', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 5,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "data_forward_fill_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['DATA'], got ['', '']) | ~ Wrong severity (expected HIGH, got ['ERROR', 'WARNING'])",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": false,
+    "severity_match": false,
+    "actual_titles": [
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "data_index_constituents_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['DATA'], got ['', '', '', '', '']) | ~ Wrong severity (expected CRITICAL, got ['HIGH', 'HIGH', 'MEDIUM', 'MEDIUM', 'LOW'])",
+    "expected_count": 1,
+    "actual_count": 5,
+    "category_match": false,
+    "severity_match": false,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "data_merge_frequency_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['TEMPORAL', 'PANDAS'], got ['', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 2,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "data_merge_misalignment_real_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['DATA', 'PANDAS'], got ['', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 2,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "data_nan_as_zero_return_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['DATA'], got ['', '', '', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 6,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "data_nan_filter_misalignment_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['PANDAS'], got ['', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "data_price_correlation_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['DATA'], got ['', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "data_report_vs_filing_date_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['DATA', 'TEMPORAL'], got ['', '', '', '', '']) | ~ Wrong severity (expected CRITICAL, got ['HIGH', 'HIGH', 'MEDIUM', 'MEDIUM', 'LOW'])",
+    "expected_count": 2,
+    "actual_count": 5,
+    "category_match": false,
+    "severity_match": false,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "data_split_handling_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['DATA'], got ['', '', '', '']) | ~ Wrong severity (expected CRITICAL, got ['HIGH', 'HIGH', 'MEDIUM', 'LOW'])",
+    "expected_count": 1,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": false,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "data_survivorship_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['DATA'], got ['', '', '', '']) | ~ Wrong severity (expected CRITICAL, got ['HIGH', 'HIGH', 'MEDIUM', 'LOW'])",
+    "expected_count": 1,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": false,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "data_weekend_returns_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['DATA'], got ['', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "execution_bid_ask_midpoint_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['EXECUTION'], got ['', '', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 5,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "execution_no_can_trade_check_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['EXECUTION'], got ['', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "execution_no_volume_limit_001",
+    "passed": false,
+    "reason": "API call failed or returned invalid JSON",
+    "expected_count": 1,
+    "actual_count": 0
+  },
+  {
+    "id": "execution_open_fill_assumption_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['EXECUTION'], got ['', '', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 5,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "execution_partial_fills_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['EXECUTION'], got ['', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "execution_slippage_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['EXECUTION'], got ['', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "execution_slippage_lookahead_real_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['EXECUTION', 'TEMPORAL'], got ['', '', '', '', '']) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 2,
+    "actual_count": 5,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "execution_unrealistic_fill_real_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['EXECUTION'], got ['', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "logic_context_reset_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['LOGIC'], got ['', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "logic_global_state_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['LOGIC'], got ['', '', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 5,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "logic_index_error_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['LOGIC'], got ['', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "logic_leverage_error_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['LOGIC'], got ['', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "logic_mutable_default_001",
+    "passed": false,
+    "reason": "API call failed or returned invalid JSON",
+    "expected_count": 1,
+    "actual_count": 0
+  },
+  {
+    "id": "logic_premature_signal_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['LOGIC'], got ['', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "logic_retrain_loop_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['LOGIC'], got ['', '', '', '', '']) | \u2713 Correct severity (MEDIUM)",
+    "expected_count": 1,
+    "actual_count": 5,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "logic_stale_model_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['LOGIC'], got ['', '', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 5,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "logic_state_leak_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['LOGIC'], got ['', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "logic_training_in_compute_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['LOGIC', 'STATISTICAL'], got ['', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 2,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "logic_unclosed_position_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['LOGIC'], got ['', '', '', '']) | \u2713 Correct severity (MEDIUM)",
+    "expected_count": 1,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_alignment_bug_real_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['PANDAS'], got ['', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_apply_type_mismatch_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['PANDAS'], got ['', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_boolean_reset_index_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['PANDAS'], got ['', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_chained_indexing_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['PANDAS'], got ['', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_concat_index_loss_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['TEMPORAL', 'PANDAS'], got ['', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 2,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_crosstab_temporal_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['TEMPORAL', 'PANDAS'], got ['', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 2,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_cumsum_returns_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['PANDAS'], got ['', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_fillna_future_mean_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['STATISTICAL', 'PANDAS'], got ['', '', '', '']) | ~ Wrong severity (expected CRITICAL, got ['HIGH', 'MEDIUM', 'MEDIUM', 'LOW'])",
+    "expected_count": 2,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": false,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_groupby_leak_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['STATISTICAL', 'TEMPORAL', 'PANDAS'], got ['', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 3,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_iloc_loc_confusion_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['PANDAS'], got ['', '', '']) | ~ Wrong severity (expected HIGH, got ['ERROR', 'ERROR', 'WARNING'])",
+    "expected_count": 1,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": false,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_inplace_slice_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['PANDAS'], got ['', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_melt_alignment_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['PANDAS'], got ['', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_merge_asof_direction_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['TEMPORAL'], got ['', '', '']) | ~ Wrong severity (expected CRITICAL, got ['HIGH', 'MEDIUM', 'LOW'])",
+    "expected_count": 1,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": false,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_merge_asof_tolerance_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['DATA', 'PANDAS'], got ['', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 2,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_merge_key_error_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['PANDAS'], got ['', '', '']) | \u2713 Correct severity (MEDIUM)",
+    "expected_count": 1,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_outer_join_nan_001",
+    "passed": false,
+    "reason": "API call failed or returned invalid JSON",
+    "expected_count": 1,
+    "actual_count": 0
+  },
+  {
+    "id": "pandas_pct_change_boundary_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['PANDAS'], got ['', '']) | ~ Wrong severity (expected CRITICAL, got ['HIGH', 'MEDIUM'])",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": false,
+    "severity_match": false,
+    "actual_titles": [
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_pivot_nan_drop_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['DATA'], got ['', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_reindex_ffill_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['DATA'], got ['', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_resample_ohlc_wrong_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['PANDAS'], got ['', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 2,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_rolling_apply_closure_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['TEMPORAL'], got ['', '', '']) | ~ Wrong severity (expected CRITICAL, got ['HIGH', 'MEDIUM', 'LOW'])",
+    "expected_count": 1,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": false,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_shift_group_boundary_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['PANDAS'], got ['', '', '', '']) | ~ Wrong severity (expected CRITICAL, got ['HIGH', 'HIGH', 'MEDIUM', 'LOW'])",
+    "expected_count": 1,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": false,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_sort_unstable_alignment_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['PANDAS'], got ['', '', '']) | ~ Wrong severity (expected HIGH, got ['CRITICAL', 'CRITICAL', 'MEDIUM'])",
+    "expected_count": 1,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": false,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "pandas_wrong_shift_direction_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['TEMPORAL', 'PANDAS'], got ['', '', '']) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 2,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "statistical_feature_selection_leak_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['STATISTICAL'], got ['', '', '', '', '']) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 1,
+    "actual_count": 5,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "statistical_in_sample_optimization_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['STATISTICAL'], got ['', '', '', '', '', '']) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 1,
+    "actual_count": 6,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "statistical_multiple_testing_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['STATISTICAL'], got ['', '', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 5,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "statistical_no_validation_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['STATISTICAL'], got ['', '', '']) | \u2713 Correct severity (MEDIUM)",
+    "expected_count": 1,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "statistical_normal_var_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['STATISTICAL'], got ['', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "statistical_pca_leakage_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['STATISTICAL'], got ['', '', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 5,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "statistical_scaler_leakage_real_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['STATISTICAL'], got ['', '', '', '']) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 1,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "statistical_sharpe_no_rf_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['STATISTICAL'], got ['', '', '', '', '']) | \u2713 Correct severity (MEDIUM)",
+    "expected_count": 1,
+    "actual_count": 5,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "statistical_target_in_feature_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['STATISTICAL', 'TEMPORAL'], got ['', '', '', '', '', '']) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 2,
+    "actual_count": 6,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "statistical_target_leak_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['TEMPORAL'], got ['', '', '', '', '']) | \u2713 Correct severity (MEDIUM)",
+    "expected_count": 1,
+    "actual_count": 5,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "statistical_train_test_leak_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['STATISTICAL'], got ['', '', '']) | ~ Wrong severity (expected HIGH, got ['CRITICAL', 'MEDIUM', 'LOW'])",
+    "expected_count": 1,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": false,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "statistical_zero_fill_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['DATA', 'STATISTICAL'], got ['', '', '']) | \u2713 Correct severity (MEDIUM)",
+    "expected_count": 2,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "temporal_alignment_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['TEMPORAL', 'PANDAS'], got ['', '', '', '']) | ~ Wrong severity (expected CRITICAL, got ['HIGH', 'MEDIUM', 'MEDIUM', 'LOW'])",
+    "expected_count": 2,
+    "actual_count": 4,
+    "category_match": false,
+    "severity_match": false,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "temporal_cumulative_return_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['TEMPORAL'], got ['', '', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 1,
+    "actual_count": 5,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "temporal_future_reindex_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['TEMPORAL'], got ['', '', '']) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 1,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "temporal_lookahead_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['TEMPORAL'], got ['', '', '']) | ~ Wrong severity (expected CRITICAL, got ['HIGH', 'MEDIUM', 'LOW'])",
+    "expected_count": 1,
+    "actual_count": 3,
+    "category_match": false,
+    "severity_match": false,
+    "actual_titles": [
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "temporal_lookahead_real_001",
+    "passed": false,
+    "reason": "API call failed or returned invalid JSON",
+    "expected_count": 1,
+    "actual_count": 0
+  },
+  {
+    "id": "temporal_rolling_no_min_periods_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['DATA', 'TEMPORAL'], got ['', '', '', '', '']) | \u2713 Correct severity (HIGH)",
+    "expected_count": 2,
+    "actual_count": 5,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+  {
+    "id": "temporal_train_predict_overlap_001",
+    "passed": false,
+    "reason": "\u2717 Wrong category (expected ['STATISTICAL', 'TEMPORAL'], got ['', '', '', '', '', '']) | \u2713 Correct severity (CRITICAL)",
+    "expected_count": 2,
+    "actual_count": 6,
+    "category_match": false,
+    "severity_match": true,
+    "actual_titles": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "id": "execution_partial_fills_001",
+  "category": "EXECUTION",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "from zipline.api import order, get_open_orders\n\ndef handle_data(context, data):\n    # Place new order every bar ignoring pending orders\n    if context.signal > 0:\n        order(context.asset, 100)\n    elif context.signal < 0:\n        order(context.asset, -100)",
+  "clean_code": "from zipline.api import order, get_open_orders, order_target\n\ndef handle_data(context, data):\n    # Check for open orders before placing new ones\n    open_orders = get_open_orders()\n    if context.asset in open_orders:\n        return  # Wait for pending orders to fill\n\n    if context.signal > 0:\n        order_target(context.asset, 100)\n    elif context.signal < 0:\n        order_target(context.asset, -100)",
+  "description": "New orders placed every bar without checking for existing open orders.",
+  "explanation": "If orders from previous bars haven't filled yet, placing new orders each bar causes order accumulation. A strategy targeting 100 shares can end up with 500 pending orders after 5 bars, creating massive unintended positions when they eventually fill. This is especially dangerous for limit orders in illiquid markets.",
+  "suggested_fix": "Check get_open_orders() before placing new orders. Use order_target() instead of order() to specify the desired final position rather than incremental changes.",
+  "expected": {
+    "issues": [
+      {"title": "New orders placed without checking existing open orders", "severity": "HIGH", "category": "EXECUTION"}
+    ]
+  }
+}

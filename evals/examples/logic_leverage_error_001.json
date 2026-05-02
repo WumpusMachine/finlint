@@ -1,0 +1,16 @@
+{
+  "id": "logic_leverage_error_001",
+  "category": "LOGIC",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "from zipline.api import order_target_percent\n\ndef rebalance(context, data):\n    # Try to go 50% long in 3 assets\n    for asset in context.long_assets:\n        order_target_percent(asset, 0.50)\n\n    # Try to go 30% short in 2 assets\n    for asset in context.short_assets:\n        order_target_percent(asset, -0.30)",
+  "clean_code": "from zipline.api import order_target_percent\n\ndef rebalance(context, data):\n    n_long = len(context.long_assets)\n    n_short = len(context.short_assets)\n\n    # Target 100% gross exposure: 50% long, 50% short\n    long_weight = 0.50 / n_long if n_long > 0 else 0\n    short_weight = -0.50 / n_short if n_short > 0 else 0\n\n    for asset in context.long_assets:\n        order_target_percent(asset, long_weight)\n\n    for asset in context.short_assets:\n        order_target_percent(asset, short_weight)",
+  "description": "Fixed weights applied to variable number of assets, creating unintended leverage.",
+  "explanation": "Applying 50% to each of 3 long assets = 150% gross long exposure. Plus 30% to each of 2 short assets = 60% short. Total gross exposure = 210%. This is 2.1x leverage, which may violate margin requirements or risk limits. The error compounds as the number of assets changes dynamically.",
+  "suggested_fix": "Always divide target weights by the number of assets to maintain intended gross exposure.",
+  "expected": {
+    "issues": [
+      {"title": "Fixed weights applied to multiple assets creates unintended leverage", "severity": "HIGH", "category": "LOGIC"}
+    ]
+  }
+}

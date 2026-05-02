@@ -1,0 +1,25 @@
+{
+  "id": "data_merge_misalignment_real_001",
+  "category": "DATA",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\nprices = pd.read_csv('daily_prices.csv', parse_dates=['date'], index_col='date')\nnews = pd.read_csv('intraday_news.csv', parse_dates=['timestamp'])\n\n# Direct merge without frequency alignment\nmerged = prices.merge(news, left_index=True, right_on='timestamp', how='left')\n\n# Generate feature from merged data\nmerged['sentiment_signal'] = merged['sentiment'].fillna(0)",
+  "clean_code": "import pandas as pd\n\nprices = pd.read_csv('daily_prices.csv', parse_dates=['date'], index_col='date')\nnews = pd.read_csv('intraday_news.csv', parse_dates=['timestamp'], index_col='timestamp')\n\n# Aggregate intraday news to daily frequency first\nnews_daily = news.groupby(pd.Grouper(freq='D')).agg({\n    'sentiment': 'mean',  # or 'last', 'max', depending on signal\n    'volume': 'sum'\n})\n\n# Now merge at same frequency\nmerged = prices.merge(news_daily, left_index=True, right_index=True, how='left')\n\n# Generate feature from correctly aligned data\nmerged['sentiment_signal'] = merged['sentiment'].fillna(0)",
+  "description": "Daily price data is merged directly with intraday news data.",
+  "explanation": "Prices have one row per day. News has multiple rows per day (intraday timestamps). A direct merge without resampling either drops most news rows (if timestamp is a datetime) or creates duplicate price rows (if timestamp is just the date). Either way, data alignment is corrupted and features become misaligned with price data.",
+  "suggested_fix": "Resample the higher-frequency data to match the lower frequency before merging. Be explicit about the aggregation method (mean, last, sum, etc.).",
+  "expected": {
+    "issues": [
+      {
+        "title": "Cross-frequency merge",
+        "severity": "HIGH",
+        "category": "DATA"
+      },
+      {
+        "title": "Cross-frequency merge",
+        "severity": "HIGH",
+        "category": "PANDAS"
+      }
+    ]
+  }
+}

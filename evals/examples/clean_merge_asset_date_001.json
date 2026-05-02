@@ -1,0 +1,14 @@
+{
+  "id": "clean_merge_asset_date_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\nprices = pd.read_csv('prices.csv', parse_dates=['date'])\nfactors = pd.read_csv('factors.csv', parse_dates=['date'])\n\n# Merge on both date AND asset — no Cartesian product\nmerged = prices.merge(\n    factors,\n    on=['date', 'asset'],\n    how='left'\n)\n\n# Verify no duplicate rows after merge\nassert len(merged) == len(prices), 'Merge created unexpected duplicates'\n\n# Fill missing factor values with 0 only after logging\nmissing_count = merged['momentum'].isna().sum()\nif missing_count > 0:\n    print(f'Warning: {missing_count} missing factor values')\nmerged['momentum'] = merged['momentum'].fillna(0)",
+  "clean_code": "import pandas as pd\n\nprices = pd.read_csv('prices.csv', parse_dates=['date'])\nfactors = pd.read_csv('factors.csv', parse_dates=['date'])\n\nmerged = prices.merge(\n    factors,\n    on=['date', 'asset'],\n    how='left'\n)\n\nassert len(merged) == len(prices), 'Merge created unexpected duplicates'\n\nmissing_count = merged['momentum'].isna().sum()\nif missing_count > 0:\n    print(f'Warning: {missing_count} missing factor values')\nmerged['momentum'] = merged['momentum'].fillna(0)",
+  "description": "Clean example — merge on both date and asset keys with post-merge validation.",
+  "explanation": "Merging on ['date', 'asset'] ensures each row matches the correct asset on the correct date. Assertion checks no duplicate rows were created. Missing values are logged before being filled.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

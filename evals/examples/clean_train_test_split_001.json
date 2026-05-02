@@ -1,0 +1,14 @@
+{
+  "id": "clean_train_test_split_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import pandas as pd\nimport numpy as np\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.linear_model import Ridge\n\ndf = pd.read_csv('features.csv', index_col='date', parse_dates=True).sort_index()\n\n# Chronological split — no shuffling\nsplit = int(len(df) * 0.8)\ntrain = df.iloc[:split]\ntest = df.iloc[split:]\n\nX_train = train.drop('target', axis=1).values\ny_train = train['target'].values\nX_test = test.drop('target', axis=1).values\ny_test = test['target'].values\n\n# Fit scaler on training data only\nscaler = StandardScaler()\nX_train_scaled = scaler.fit_transform(X_train)\nX_test_scaled = scaler.transform(X_test)\n\nmodel = Ridge(alpha=1.0)\nmodel.fit(X_train_scaled, y_train)\npreds = model.predict(X_test_scaled)",
+  "clean_code": "import pandas as pd\nimport numpy as np\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.linear_model import Ridge\n\ndf = pd.read_csv('features.csv', index_col='date', parse_dates=True).sort_index()\n\nsplit = int(len(df) * 0.8)\ntrain = df.iloc[:split]\ntest = df.iloc[split:]\n\nX_train = train.drop('target', axis=1).values\ny_train = train['target'].values\nX_test = test.drop('target', axis=1).values\ny_test = test['target'].values\n\nscaler = StandardScaler()\nX_train_scaled = scaler.fit_transform(X_train)\nX_test_scaled = scaler.transform(X_test)\n\nmodel = Ridge(alpha=1.0)\nmodel.fit(X_train_scaled, y_train)\npreds = model.predict(X_test_scaled)",
+  "description": "Clean example — proper chronological train/test split with scaler fit on training data only.",
+  "explanation": "Data is sorted by date before splitting. No shuffling. Scaler is fit only on X_train, then transform() is applied to X_test. No data leakage from test set into training.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

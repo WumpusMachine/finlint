@@ -1,0 +1,39 @@
+# deps
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# next
+/.next/
+/out/
+
+# prod
+/build
+
+# env
+.env
+.env*.local
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# python
+__pycache__/
+*.py[cod]
+
+# editors
+.vscode/
+
+# os
+.DS_Store
+Thumbs.db

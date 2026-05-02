@@ -1,0 +1,16 @@
+{
+  "id": "pandas_inplace_slice_001",
+  "category": "PANDAS",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ndf = pd.read_csv('prices.csv', parse_dates=['date'], index_col='date')\n\n# Slice then fill inplace — may not affect original\nrecent = df.loc['2020-01-01':]\nrecent.fillna(method='ffill', inplace=True)\n\n# df still has NaN values from before 2020\nprint(df.isna().sum())",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('prices.csv', parse_dates=['date'], index_col='date')\n\n# Modify the original DataFrame directly\ndf.loc['2020-01-01':] = df.loc['2020-01-01':].ffill()\n\nprint(df.isna().sum())",
+  "description": "inplace=True on a DataFrame slice may not propagate changes to the original.",
+  "explanation": "When you slice a DataFrame with .loc[], pandas may return a view or a copy depending on the operation. Calling fillna(inplace=True) on a copy changes the copy, not the original. The original df still has NaN values. This is a common trap that produces silent incorrect results — no error is raised.",
+  "suggested_fix": "Assign back explicitly: df.loc['2020-01-01':] = df.loc['2020-01-01':].ffill()",
+  "expected": {
+    "issues": [
+      {"title": "inplace operation on slice may not modify original DataFrame", "severity": "HIGH", "category": "PANDAS"}
+    ]
+  }
+}

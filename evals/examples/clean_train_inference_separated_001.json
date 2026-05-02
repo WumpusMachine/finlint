@@ -1,0 +1,14 @@
+{
+  "id": "clean_train_inference_separated_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "from sklearn.linear_model import Ridge\nfrom sklearn.preprocessing import StandardScaler\nimport numpy as np\n\nclass MomentumModel:\n    def __init__(self):\n        self.model = Ridge(alpha=1.0)\n        self.scaler = StandardScaler()\n        self.is_trained = False\n\n    def train(self, X_train, y_train):\n        \"\"\"Call once before backtesting begins.\"\"\"\n        X_scaled = self.scaler.fit_transform(X_train)\n        self.model.fit(X_scaled, y_train)\n        self.is_trained = True\n\n    def predict(self, X):\n        \"\"\"Call during backtesting — inference only, no training.\"\"\"\n        if not self.is_trained:\n            raise RuntimeError('Model must be trained before predicting')\n        X_scaled = self.scaler.transform(X)\n        return self.model.predict(X_scaled)\n\nmodel = MomentumModel()\nmodel.train(X_train, y_train)\npredictions = model.predict(X_test)",
+  "clean_code": "from sklearn.linear_model import Ridge\nfrom sklearn.preprocessing import StandardScaler\nimport numpy as np\n\nclass MomentumModel:\n    def __init__(self):\n        self.model = Ridge(alpha=1.0)\n        self.scaler = StandardScaler()\n        self.is_trained = False\n\n    def train(self, X_train, y_train):\n        X_scaled = self.scaler.fit_transform(X_train)\n        self.model.fit(X_scaled, y_train)\n        self.is_trained = True\n\n    def predict(self, X):\n        if not self.is_trained:\n            raise RuntimeError('Model must be trained before predicting')\n        X_scaled = self.scaler.transform(X)\n        return self.model.predict(X_scaled)\n\nmodel = MomentumModel()\nmodel.train(X_train, y_train)\npredictions = model.predict(X_test)",
+  "description": "Clean example — model training and inference cleanly separated into distinct methods.",
+  "explanation": "train() calls fit_transform() on training data only. predict() calls transform() only — no fitting. Guard raises error if predict() called before training. No training inside inference loop.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

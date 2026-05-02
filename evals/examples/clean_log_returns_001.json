@@ -1,0 +1,14 @@
+{
+  "id": "clean_log_returns_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import numpy as np\nimport pandas as pd\n\nprices = pd.read_csv('prices.csv', index_col='date', parse_dates=True)\n\n# Log returns for better statistical properties\nlog_returns = np.log(prices['close'] / prices['close'].shift(1))\n\n# Drop first NaN from shift\nlog_returns = log_returns.dropna()\n\n# Annualized stats\nmean_annual = log_returns.mean() * 252\nvol_annual = log_returns.std() * np.sqrt(252)\n\nprint(f'Annual return: {mean_annual:.2%}, Vol: {vol_annual:.2%}')",
+  "clean_code": "import numpy as np\nimport pandas as pd\n\nprices = pd.read_csv('prices.csv', index_col='date', parse_dates=True)\n\nlog_returns = np.log(prices['close'] / prices['close'].shift(1))\nlog_returns = log_returns.dropna()\n\nmean_annual = log_returns.mean() * 252\nvol_annual = log_returns.std() * np.sqrt(252)\n\nprint(f'Annual return: {mean_annual:.2%}, Vol: {vol_annual:.2%}')",
+  "description": "Clean example — correct log return calculation with proper annualization.",
+  "explanation": "Log returns computed as log(P_t / P_{t-1}). NaN dropped after shift. Annualized correctly using 252 trading days.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

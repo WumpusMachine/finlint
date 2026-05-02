@@ -1,0 +1,25 @@
+{
+  "id": "pandas_concat_index_loss_001",
+  "category": "PANDAS",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\n# Two separate DataFrames for different time periods\ndf_2019 = pd.DataFrame({\n    'price': [100, 101, 102],\n    'volume': [1000, 1100, 1200]\n}, index=pd.date_range('2019-12-30', periods=3))\n\ndf_2020 = pd.DataFrame({\n    'price': [103, 104, 105],\n    'volume': [1300, 1400, 1500]\n}, index=pd.date_range('2020-01-02', periods=3))\n\n# Concatenate but RESET the index\ncombined = pd.concat([df_2019, df_2020], ignore_index=True)\n\n# Now compute returns\ncombined['returns'] = combined['price'].pct_change()\n\n# Use as training features\nX = combined[['volume']]\ny = combined['returns']",
+  "clean_code": "import pandas as pd\n\ndf_2019 = pd.DataFrame({\n    'price': [100, 101, 102],\n    'volume': [1000, 1100, 1200]\n}, index=pd.date_range('2019-12-30', periods=3))\n\ndf_2020 = pd.DataFrame({\n    'price': [103, 104, 105],\n    'volume': [1300, 1400, 1500]\n}, index=pd.date_range('2020-01-02', periods=3))\n\n# Preserve the date index\ncombined = pd.concat([df_2019, df_2020])\n\n# Now pct_change respects time gaps correctly\ncombined['returns'] = combined['price'].pct_change()\n\n# Drop the boundary return (cross-year transition)\ncombined = combined.dropna()\nX = combined[['volume']]\ny = combined['returns']",
+  "description": "pd.concat with ignore_index=True resets the DatetimeIndex to integers 0, 1, 2...",
+  "explanation": "ignore_index=True discards the date index and replaces it with integers. This causes pct_change() to compute the return between 2019-12-31 and 2020-01-02 as if they were consecutive days, ignoring the weekend/holiday gap. The return across the year boundary is computed as (103-102)/102 = 0.98% when the real return may be very different. All time-based operations (rolling, resample, shift) break silently because the index is now integers, not dates.",
+  "suggested_fix": "Never use ignore_index=True when concatenating time series DataFrames. Preserve the DatetimeIndex so time-based operations remain valid.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Index loss from concat",
+        "severity": "HIGH",
+        "category": "TEMPORAL"
+      },
+      {
+        "title": "Index loss from concat",
+        "severity": "HIGH",
+        "category": "PANDAS"
+      }
+    ]
+  }
+}

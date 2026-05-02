@@ -1,0 +1,20 @@
+{
+  "id": "pandas_iloc_loc_confusion_001",
+  "category": "PANDAS",
+  "severity": "HIGH",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ndf = pd.read_csv('prices.csv', index_col='date')\ndf.index = pd.to_datetime(df.index)\n\n# Using iloc to access by date (WRONG)\ntoday_price = df.iloc['2020-01-15']\n\n# Using position assumption\nfirst_100_days = df.iloc[100]\n\n# This assumes position 100 is the same as index position, which it's not if there are gaps\nportfolio_value = first_100_days['price'] * 1000",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('prices.csv', index_col='date')\ndf.index = pd.to_datetime(df.index)\n\n# Using loc to access by date (CORRECT)\ntoday_price = df.loc['2020-01-15']\n\n# Using position explicitly with iloc\nfirst_row = df.iloc[0]  # First row, regardless of index\n\n# Or access by index value\nportfolio_value = df.loc['2020-01-15', 'price'] * 1000",
+  "description": "Code uses iloc to access data by date label instead of position.",
+  "explanation": "iloc is integer location-based (0, 1, 2, ...). Using iloc['2020-01-15'] will raise a TypeError because iloc doesn't accept labels. Even if it worked, iloc[100] assumes position 100, not index value 100. In backtesting with gaps (holidays, delisted stocks), position 100 and index position 100 can be very different dates, causing silent misalignment.",
+  "suggested_fix": "Use loc for label-based access (dates) and iloc only for integer positions.",
+  "expected": {
+    "issues": [
+      {
+        "title": "Incorrect use of iloc with date label",
+        "severity": "HIGH",
+        "category": "PANDAS"
+      }
+    ]
+  }
+}

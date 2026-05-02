@@ -1,0 +1,4 @@
+{
+  "generated_at": null,
+  "note": "Run `npx ts-node lib/evaluate.ts` from the finlint/ root after running both eval suites to populate this file."
+}

@@ -1,0 +1,14 @@
+{
+  "id": "clean_sharpe_ratio_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import numpy as np\nimport pandas as pd\n\ndef compute_sharpe(returns, risk_free_rate=0.04, periods_per_year=252):\n    \"\"\"\n    Compute annualized Sharpe ratio from daily returns.\n    Handles edge cases: insufficient data, zero volatility.\n    \"\"\"\n    clean = returns.dropna()\n\n    if len(clean) < 30:\n        return None\n\n    # Convert annual risk-free rate to daily\n    daily_rf = (1 + risk_free_rate) ** (1 / periods_per_year) - 1\n    excess = clean - daily_rf\n\n    std = excess.std(ddof=1)\n    if std == 0 or np.isnan(std):\n        return None\n\n    sharpe = np.sqrt(periods_per_year) * excess.mean() / std\n    return float(sharpe)\n\ndaily_returns = pd.Series([0.001, -0.002, 0.003, 0.001, -0.001])\nprint(compute_sharpe(daily_returns))",
+  "clean_code": "import numpy as np\nimport pandas as pd\n\ndef compute_sharpe(returns, risk_free_rate=0.04, periods_per_year=252):\n    clean = returns.dropna()\n\n    if len(clean) < 30:\n        return None\n\n    daily_rf = (1 + risk_free_rate) ** (1 / periods_per_year) - 1\n    excess = clean - daily_rf\n\n    std = excess.std(ddof=1)\n    if std == 0 or np.isnan(std):\n        return None\n\n    sharpe = np.sqrt(periods_per_year) * excess.mean() / std\n    return float(sharpe)\n\ndaily_returns = pd.Series([0.001, -0.002, 0.003, 0.001, -0.001])\nprint(compute_sharpe(daily_returns))",
+  "description": "Clean example — correct Sharpe ratio with proper annualization and edge case handling.",
+  "explanation": "Daily risk-free rate is derived correctly using compounding. ddof=1 for sample std. Returns None for insufficient data or zero volatility instead of returning inf or NaN. Annualized correctly using sqrt(252).",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

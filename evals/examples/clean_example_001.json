@@ -1,0 +1,14 @@
+{
+  "id": "clean_example_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "df['signal'] = df['returns'].shift(1) > 0",
+  "clean_code": "df['signal'] = df['returns'].shift(1) > 0",
+  "description": "Clean example — no bugs. Signal correctly uses past returns via shift(1).",
+  "explanation": "shift(1) moves data forward in time, meaning the signal at time T uses the return from time T-1. This is causally correct — you are only using information that was available before time T.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}

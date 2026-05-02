@@ -1,0 +1,17 @@
+{
+  "id": "pandas_wrong_shift_direction_001",
+  "category": "PANDAS",
+  "severity": "CRITICAL",
+  "language": "python",
+  "buggy_code": "import pandas as pd\n\ndf = pd.read_csv('returns.csv', parse_dates=['date'], index_col='date')\n\n# Trying to predict 5-day forward return\n# BUG: shift(-5) puts future returns as the TARGET at current time\ndf['target'] = df['returns'].rolling(5).sum().shift(-5)\n\n# Features from today\ndf['feature'] = df['returns'].rolling(20).mean()\n\n# Model trained on current features predicting future 5-day return\n# This IS correct intent but shift(-5) is applied BEFORE model training\n# creating a target that is known at time T+5, not T\ndf = df.dropna()\nX = df[['feature']].values\ny = df['target'].values",
+  "clean_code": "import pandas as pd\n\ndf = pd.read_csv('returns.csv', parse_dates=['date'], index_col='date')\n\n# Correct 5-day forward return: sum of next 5 returns\n# shift(-5) means at row T, target = sum of returns from T+1 to T+5\n# This is correct IF you understand the model will never be evaluated at T+5\n# It becomes lookahead when you evaluate on the SAME data used to create the target\ndf['target'] = df['returns'].shift(-1).rolling(5).sum()\n\ndf['feature'] = df['returns'].rolling(20).mean().shift(1)\n\n# Critical: drop the last 5 rows where target uses future data\ndf = df.iloc[:-5].dropna()\n\nX = df[['feature']].values\ny = df['target'].values",
+  "description": "5-day forward return target created with shift(-5) but model evaluated on same data.",
+  "explanation": "shift(-5) creates a target at row T that uses returns from rows T+1 through T+5. This is valid IF you train on rows 0 to N-5 and never use the last 5 rows for training or evaluation. The bug is using this target without dropping the tail rows, causing the model to train on rows where the target is partially or fully future data.",
+  "suggested_fix": "When using shift(-N) for forward returns, always drop the last N rows before training.",
+  "expected": {
+    "issues": [
+      {"title": "Forward return target includes future data in last N rows", "severity": "CRITICAL", "category": "PANDAS"},
+      {"title": "Forward return target includes future data in last N rows", "severity": "CRITICAL", "category": "TEMPORAL"}
+    ]
+  }
+}

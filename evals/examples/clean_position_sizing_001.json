@@ -1,0 +1,14 @@
+{
+  "id": "clean_position_sizing_001",
+  "category": "NONE",
+  "severity": "NONE",
+  "language": "python",
+  "buggy_code": "import numpy as np\n\ndef compute_position_size(capital, price, volatility, risk_per_trade=0.01):\n    \"\"\"\n    Kelly-inspired position sizing based on volatility.\n    Limits risk to a fixed percentage of capital per trade.\n    \"\"\"\n    if volatility <= 0 or price <= 0 or capital <= 0:\n        return 0\n\n    # Dollar risk per trade\n    dollar_risk = capital * risk_per_trade\n\n    # Position size based on volatility (1 ATR stop)\n    shares = dollar_risk / (price * volatility)\n\n    # Cap at 20% of capital\n    max_shares = (capital * 0.20) / price\n    shares = min(shares, max_shares)\n\n    return int(shares)",
+  "clean_code": "import numpy as np\n\ndef compute_position_size(capital, price, volatility, risk_per_trade=0.01):\n    if volatility <= 0 or price <= 0 or capital <= 0:\n        return 0\n\n    dollar_risk = capital * risk_per_trade\n    shares = dollar_risk / (price * volatility)\n    max_shares = (capital * 0.20) / price\n    shares = min(shares, max_shares)\n\n    return int(shares)",
+  "description": "Clean example — volatility-adjusted position sizing with capital limits and edge case guards.",
+  "explanation": "Guards against zero/negative inputs. Sizes position based on dollar risk and volatility. Caps at 20% of capital. Returns integer shares.",
+  "suggested_fix": "N/A",
+  "expected": {
+    "issues": []
+  }
+}
