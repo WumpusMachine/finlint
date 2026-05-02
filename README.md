@@ -68,7 +68,7 @@ Run the eval suite yourself — see [Running evals](#running-evals).
 
 ```bash
 # macOS / Linux
-git clone <repo-url>
+git clone https://github.com/WumpusMachine/finlint
 cd finlint
 export ANTHROPIC_API_KEY="sk-ant-..."
 pip install anthropic flask
@@ -77,7 +77,7 @@ python web/server.py
 
 ```powershell
 # Windows
-git clone <repo-url>
+git clone https://github.com/WumpusMachine/finlint
 cd finlint
 $env:ANTHROPIC_API_KEY = "sk-ant-..."
 .\get-finlint.ps1
